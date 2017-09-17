@@ -1,4 +1,4 @@
-# Bedrock [![Build Status](https://travis-ci.org/joemaidman/bedrock.svg?branch=master)]
+# Bedrock [![Build Status](https://travis-ci.org/joemaidman/bedrock.svg?branch=master)](https://travis-ci.org/joemaidman/bedrock)
 
 ```
            ,                  /\.__      _.-\
