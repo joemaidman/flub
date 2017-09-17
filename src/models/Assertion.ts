@@ -6,12 +6,18 @@ export default class Assertion {
     expected: any;
     counter: number;
     des: string;
+    a: any;
+    to: any;
+    be: any;
+
 
     constructor(subject: any, counter: number, des: string) {
         this.subject = subject;
         this.counter = counter;
         this.des = des;
     }
+
+
 
     isEqual = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
@@ -34,7 +40,7 @@ export default class Assertion {
         return this.assert(this.subject.constructor.name === type.toString());
     }
 
-    isPrimitiveOf = function (type: any): boolean {
+    isType = function (type: any): boolean {
         this.expected = type.toString;
         return this.assert(this.subject.typeof(type));
     }

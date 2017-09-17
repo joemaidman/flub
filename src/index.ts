@@ -1,4 +1,4 @@
-import { context, it, assert } from './models/core'
+import { context, it, assert } from './models/Core'
 
 export {
     context,

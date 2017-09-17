@@ -5,7 +5,7 @@ import * as measureTime from 'measure-time';
 import * as chokidar from 'chokidar';
 import * as clearRequire from 'clear-require';
 import * as path from 'path';
-import { context, it, assert } from './models/core';
+import { context, it, assert } from './models/Core';
 import * as flags from 'flags'
 
 global['testCount'] = 0;

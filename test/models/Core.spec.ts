@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { assert, context, it } from '../../src/models/core'
+import { assert, context, it } from '../../src/models/Core'
 import Assertion from '../../src/models/Assertion'
 
 describe('Core', () => {
