@@ -9,7 +9,6 @@
     j# ##### #"#\&&"####/###&  #"#&## #&" #"#&#"#'\
    /#"#"#####"###'\&##"/&#"####"### # #&#&##"#"### \
   J#"###"#"#"#"####'\# #"##"#"##"#"#####&"## "#"&"##|\ 
-  
   ```
 
 Bedrock is a lightweight javascript BDD / TDD testing framework for Node. It comprises a CLI test runner, assertion library and utilities including doubles, mocks, stubs and spies.
@@ -22,22 +21,22 @@ Bedrock is a lightweight javascript BDD / TDD testing framework for Node. It com
 
 Add one of the following to scripts in package.json
 
-    $ 'test' : 'bed-rock'
+    'test' : 'bed-rock'
 
-    $ 'test' : 'bed-rock --watch'
+    'test' : 'bed-rock --watch'
 
 Bedrock will automatically load any files that match *.spec.js.
 
 ## Usage
-Bedrock exposes three functions for composing tests:
+Bedrock exposes three functions for composing tests
 
-$ context(description, testDefinitions)</br>
+```context(description, testDefinitions)```</br>
 A container for one or more tests (can be nested with other contexts).
 
-$ it(description, testAssertions)</br>
+```it(description, testAssertions)```</br>
 A container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be passing and a spec with any failures will fail.
 
-$ assert(actual) -> matchers</br>
+```assert(actual) -> matchers```</br>
 Creates an assertion for a test.
 
 ## Example tests
@@ -62,19 +61,19 @@ context("GIVEN that something has happened", () => {
 
 ## Matchers
 
-$ isEqualTo(expected)</br>
+```isEqualTo(expected)```</br>
 actual value is equal to the expected using deep equality.
 
-$ isEmptyString()</br>
+```isEmptyString()```</br>
 actual value is an empty string
 
-$ isDefined()</br>
+```isDefined()```</br>
 actual value is not undefined
 
-$ isInstanceOf(expected)</br>
+```isInstanceOf(expected)```</br>
 actual value an instance of expected
 
-$ isTypeOf(expected)</br>
+```isTypeOf(expected)```</br>
 actual value is of type expected
 
 ## Roadmap
