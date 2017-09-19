@@ -1,16 +1,15 @@
-import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { expect } from 'chai'
 
-import { assert, context, it } from '../../src/models/Core'
-import Assertion from '../../src/models/Assertion'
+import { expect as expectBR } from '../../src/models/Core'
+import Expectation from '../../src/models/Expectation'
 
 describe('Core', () => {
 
-    describe('GIVEN assert is called', () => {
+    describe('GIVEN expect is called', () => {
 
-        it('THEN it returns a new Assertion with a subject', () => {
-            const assertion: Assertion = assert(1);
-            expect(assertion).to.be.instanceof(Assertion);
+        it('THEN it returns a new Expectation with a subject', () => {
+            const assertion: Expectation = expectBR(1);
+            expect(assertion).to.be.instanceof(Expectation);
             expect(assertion.subject).to.equal(1);
         })
 

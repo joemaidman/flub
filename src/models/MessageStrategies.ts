@@ -96,7 +96,7 @@ export class RootMessageStrategy implements MessageStrategy {
     }
 
     print(message: string, counter: number, stdout: any): void {
-        stdout.log(colors.blue(' '.repeat(counter * this.SPACES) + '[' + message + ']'));
+        stdout.log(colors.blue(' '.repeat(counter * this.SPACES) + message));
     }
 
 }

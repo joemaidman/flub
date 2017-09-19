@@ -28,32 +28,32 @@ Add one of the following to scripts in package.json
 Bedrock will automatically load any files that match *.spec.js.
 
 ## Usage
-Bedrock exposes three functions for composing tests
+Bedrock exposes three functions for composing tests:
 
 ```context(description, testDefinitions)```</br>
 A container for one or more tests (can be nested with other contexts).
 
-```it(description, testAssertions)```</br>
+```test(description, testAssertions)```</br>
 A container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be passing and a spec with any failures will fail.
 
-```assert(actual) -> matchers```</br>
+```expect(actual) -> matchers```</br>
 Creates an assertion for a test.
 
 ## Example tests
 
 ```js
 var context = require('bed-rock').context;  
-var it = require('bed-rock').it;  
-var assert = require('bed-rock').assert;  
+var test = require('bed-rock').test;  
+var expect = require('bed-rock').expect;  
 
 context("GIVEN that something has happened", () => {
     
-    it('THEN this test should pass',() =>{
-        assert(1).isEqualTo(1);
+    test('THEN this test should pass',() =>{
+        expect(1).toEqual(1);
     });
 
-    it('THEN this test should fail',() =>{
-        assert(1).isEqualTo(2);
+    test('THEN this test should fail',() =>{
+        expect(1).toEqual(2);
     });
 
 })
@@ -78,14 +78,15 @@ actual value is of type expected
 
 ## Roadmap
 
-~~bin execution command~~</br>
-~~--watch mode~~</br>
+~~bin execution~~</br>
+~~Watch mode~~</br>
 Matchers (see below)</br>
 Virtual DOM</br>
 Stubs/Spies</br>
-Mocks</br>
 Regex matcher</br>
 Time manipulation</br>
+Callback matchers</br>
+Custom configuration options
 
 ## Matchers
 
@@ -94,17 +95,21 @@ Time manipulation</br>
 ~~isDefined~~</br>
 ~~isInstanceof~~</br>
 ~~isType~~</br>
-not</br>
-isUndefined</br>
-isNull</br>
-isTruthy</br>
-isFalsy</br>
-contains</br>
-isLessThan</br>
-isGreaterThan</br>
+~~isUndefined~~</br>
+~~isNull~~</br>
+~~isTruthy~~</br>
+~~isFalsy~~</br>
+~~contains~~</br>
+~~isLessThan~~</br>
+~~isGreaterThan~~</br>
+~~isLessThanOrEqualTo~~</br>
+~~isGreaterThanOrEqualTo~~</br>
 isCloseTo</br>
 throws</br>
 throwsError</br>
-isBetween</br>
-hasLength</br>
-respondsTo</br>
+~~isBetween~~</br>
+~~hasLength~~</br>
+~~respondsTo~~</br>
+not</br>
+~~toBe~~</br>
+

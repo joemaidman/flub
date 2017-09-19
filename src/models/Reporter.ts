@@ -8,7 +8,7 @@ import {
     getMessageStrategy
 } from './MessageStrategies'
 
-export default class Reporter {
+class Reporter {
 
     private static instance: Reporter;
 
@@ -24,3 +24,5 @@ export default class Reporter {
     }
 
 }
+
+export default Reporter;

@@ -5,19 +5,20 @@ import * as measureTime from 'measure-time';
 import * as chokidar from 'chokidar';
 import * as clearRequire from 'clear-require';
 import * as path from 'path';
-import { context, it, assert } from './models/Core';
 import * as flags from 'flags'
 
-global['testCount'] = 0;
+import { printTestHeader, printTestSummary, printWatching } from './models/logging';
 
-let getElapsed: Function;
-
-const BedRock = () => {
-  console.log(process.cwd())
+const BedRock = (() => {
+  let getElapsed: Function;
   const globString: string = "*.spec.js";
   const regexString: RegExp = new RegExp('.*?(?=\.spec).*?\.js');
   let testFiles: Array<string> = new Array<string>();
+
+  global['testCount'] = 0;
   getElapsed = measureTime();
+
+  printTestHeader();
 
   glob(globString, { cwd: process.cwd() }, function (error: any, files: Array<string>) {
 
@@ -26,35 +27,29 @@ const BedRock = () => {
       require(process.cwd() + '/' + file);
     });
 
-    reportTests(getElapsed());
+    printTestSummary(getElapsed());
 
     if (process.argv.indexOf('--watch') > 0) {
+
+      printWatching();
 
       const watcher = chokidar.watch(process.cwd());
 
       watcher.on('change', (event: string) => {
 
+        testFiles = new Array();
         clearRequire.match(regexString);
         getElapsed = measureTime();
+        printTestHeader();
 
         files.forEach((file: any) => {
           testFiles.push(process.cwd() + '/' + file);
           require(process.cwd() + '/' + file);
         });
 
-        reportTests(getElapsed())
+        printTestSummary(getElapsed())
 
       });
     }
   });
-}
-
-const reportTests = (elapsed: any) => {
-  console.log("Ran "
-    + global['testCount'] +
-    " tests in " +
-    elapsed.millisecondsTotal +
-    " ms");
-}
-
-BedRock();
+})()

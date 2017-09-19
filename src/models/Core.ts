@@ -1,4 +1,4 @@
-import Assertion from './Assertion'
+import Expectation from './Expectation'
 import MessageType from './MessageType'
 import Reporter from './Reporter'
 import testCount from '../Bedrock'
@@ -13,14 +13,14 @@ export const context = (des: string, context: Function): void => {
     --depth;
 }
 
-export const it = (des: string, tests: () => any): void => {
+export const test = (des: string, tests: () => any): void => {
     currentDescription = des;
     tests();
 }
 
-export const assert = (subject: any): Assertion => {
+export const expect = (subject: any): Expectation => {
     global['testCount']++;
-    return new Assertion(subject, depth, currentDescription);
+    return new Expectation(subject, depth, currentDescription);
 }
 
 const levelType = (): MessageType => {
