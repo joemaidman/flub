@@ -78,38 +78,41 @@ actual value is of type expected
 
 ## Roadmap
 
-~~bin execution~~</br>
+~~Bin execution~~</br>
 ~~Watch mode~~</br>
 Matchers (see below)</br>
-Virtual DOM</br>
+~~Virtual DOM~~</br>
 Stubs/Spies</br>
 Regex matcher</br>
 Time manipulation</br>
 Callback matchers</br>
-Custom configuration options
+Custom configuration options</br>
+Additional hooks (before/beforeAll/after/afterAll)
 
 ## Matchers
 
 ~~isEqualTo~~</br>
-~~isEmptyString~~</br>
-~~isDefined~~</br>
-~~isInstanceof~~</br>
-~~isType~~</br>
-~~isUndefined~~</br>
-~~isNull~~</br>
-~~isTruthy~~</br>
-~~isFalsy~~</br>
-~~contains~~</br>
-~~isLessThan~~</br>
-~~isGreaterThan~~</br>
-~~isLessThanOrEqualTo~~</br>
-~~isGreaterThanOrEqualTo~~</br>
-isCloseTo</br>
+~~toBe</br>
+~~toBeTypeOf~~</br>
+~~toBeDefined~~</br>
+~~toBeUndefined~~</br>
+~~toBeNotNull~~</br>
+~~toBeNull~~</br>
+~~toBeTruthy~~</br>
+~~toBeFalsy~~</br>
+~~toBeLessThan~~</br>
+~~toBeGreaterThan~~</br>
+~~toBeLessThanOrEqualTo~~</br>
+~~toBeGreaterThanOrEqualTo~~</br>
+~~toBeCloseToInclusive~~</br>
+~~toBeCloseToExclusive~~</br>
+~~toBeBetweenInclusive~~</br>
+~~toBeBetweenExclusive~~</br>
+~~toHaveLength~~</br>
+~~toContain~~</br>
+~~toHaveKey~~</br>
+~~toRespondTo~~</br>
 throws</br>
 throwsError</br>
-~~isBetween~~</br>
-~~hasLength~~</br>
-~~respondsTo~~</br>
 not</br>
-~~toBe~~</br>
 

@@ -13,6 +13,10 @@ describe('Core', () => {
             expect(assertion.subject).to.equal(1);
         })
 
+        it('test an array', () => {
+            expect('123').to.be.greaterThan(1);
+        })
+
     });
 
 });

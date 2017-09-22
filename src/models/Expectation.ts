@@ -1,5 +1,8 @@
-import Reporter from './Reporter'
-import MessageType from './MessageType'
+import { expect } from 'chai';
+import Reporter from './Reporter';
+import Report from './Report';
+import MessageType from './MessageType';
+import Counter from './Counter';
 
 class Expectation {
 
@@ -7,11 +10,20 @@ class Expectation {
     expected: any;
     counter: number;
     des: string;
+    messages: Array<Report>;
+    not: Expectation;
+    isNot: boolean;
 
-    constructor(subject: any, counter: number, des: string) {
+    constructor(subject: any, counter: number, des: string, isNot: boolean = false) {
+        Counter.incrementTestCount();
         this.subject = subject;
         this.counter = counter;
         this.des = des;
+        this.messages = new Array<Report>();
+        this.isNot = isNot;
+        if (isNot === false) {
+            this.not = new Expectation(this.subject, counter, des, true);
+        }
     }
 
     toBe = (objectToMatch: any): boolean => {
@@ -21,7 +33,7 @@ class Expectation {
 
     toEqual = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
-        return this.assert(this.subject.toString() === objectToMatch.toString());
+        return this.assert(this.subject === objectToMatch);
     }
 
     toBeDefined = (): boolean => {
@@ -29,9 +41,30 @@ class Expectation {
         return this.assert(typeof (this.subject) !== "undefined");
     }
 
+
+    toBeUndefined = (): boolean => {
+        this.expected = Object;
+        return this.assert(typeof (this.subject) === "undefined");
+    }
+
+    toBeNotNull = (): boolean => {
+        this.expected = Object;
+        return this.assert(this.subject !== null);
+    }
+
     toBeNull = (): boolean => {
         this.expected = Object;
         return this.assert(this.subject === null);
+    }
+
+    toBeGreaterThanOrEqualTo = (objectToMatch: any): boolean => {
+        this.expected = objectToMatch;
+        return this.assert(this.subject >= this.expected);
+    }
+
+    toBeLessThanOrEqualTo = (objectToMatch: any): boolean => {
+        this.expected = objectToMatch;
+        return this.assert(this.subject <= this.expected);
     }
 
     toBeGreaterThan = (objectToMatch: any): boolean => {
@@ -72,9 +105,7 @@ class Expectation {
             || this.subject.constructor.name === "Map") {
             return this.assert(this.subject.size === length);
         }
-
         return false;
-
     }
 
     toBeFalsey = function (): boolean {
@@ -98,11 +129,22 @@ class Expectation {
     }
 
     toContain = function (item: any) {
+        this.expected = item;
+
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.includes(item));
         }
         else if (this.subject.constructor.name === "Set") {
             return this.assert(this.subject.has(item));
+        }
+        else {
+            this.messages.push(new Report(['Subject is a '
+                + this.subject.constructor.name
+                + ', not an Array or Set']
+                , MessageType.COMPARISON
+                , this.counter));
+
+            return this.assert(false);
         }
     }
 
@@ -111,24 +153,21 @@ class Expectation {
     }
 
     assert = function (x: boolean): boolean {
-        try {
-            if (!x) {
-                Reporter.getInstance().report(this.des, MessageType.ERROR, this.counter);
-                Reporter.getInstance().report("Expected: " + this.expected.toString() +
-                    " | Actual: " + this.subject.toString(), MessageType.COMPARISON, this.counter);
-                return false;
-            }
-            else {
+        if (this.isNot ? x : !x) {
+            Reporter.getInstance().report(new Report([this.des], MessageType.ERROR, this.counter));
+            Reporter.getInstance().report(new Report(['Expected', this.expected, ' => ', this.expected.constructor.name, ' | Actual: ', this.subject, ' => ', this.subject.constructor.name], MessageType.COMPARISON, this.counter));
 
-                Reporter.getInstance().report(this.des, MessageType.OK, this.counter);
-                return true;
-            }
-        } catch (error) {
-
-            Reporter.getInstance().report(this.des, MessageType.ERROR, this.counter);
-            Reporter.getInstance().report(error.stack, MessageType.ERROR, this.counter);
-
+            Counter.incrementFailCount();
             return false;
+        }
+        else {
+
+            Reporter.getInstance().report(new Report([this.des], MessageType.OK, this.counter));
+            this.messages.forEach((message: Report) => {
+                Reporter.getInstance().report(message);
+            });
+            Counter.incrementPassCount();
+            return true;
         }
     }
 }

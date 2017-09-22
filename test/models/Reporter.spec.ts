@@ -50,7 +50,7 @@ describe('Reporter', () => {
         it('THEN it prints the message in blue', () => {
             reporter.report("Root message", MessageType.ROOT, 0);
             sinon.assert.calledOnce(consoleSpy);
-            sinon.assert.calledWith(consoleSpy, colors.blue("[Root message]"));
+            sinon.assert.calledWith(consoleSpy, colors.blue("Root message"));
         })
 
     });

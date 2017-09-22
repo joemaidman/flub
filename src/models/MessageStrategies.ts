@@ -1,11 +1,22 @@
 import * as _ from 'lodash'
-import * as colors from 'chalk'
+import * as con from 'manakin'
 
 import MessageType from './MessageType'
 
-export interface MessageStrategy {
-    handles: (messageType: MessageType) => boolean;
-    print: (message: string, counter: number, stdout: any) => void;
+export abstract class MessageStrategy {
+    messageType: MessageType;
+    SPACES: number = 2;
+
+    constructor(messageType: MessageType) {
+        this.messageType = messageType;
+    }
+
+    abstract print(messages: Array<string>, counter: number, stdout: any): void;
+
+    handles(messageType: MessageType): boolean {
+        return this.messageType === messageType;
+    }
+
 }
 
 export const loadMessageStrategies = (): Array<MessageStrategy> => {
@@ -25,97 +36,98 @@ export const getMessageStrategy = (messageType: MessageType): MessageStrategy =>
         }) || new DefaultMessageStrategy();
 }
 
-export class DefaultMessageStrategy implements MessageStrategy {
-
-    messageType: MessageType;
-    SPACES: number = 2;
+export class DefaultMessageStrategy extends MessageStrategy {
 
     constructor() {
-        this.messageType = MessageType.DEFAULT;
+        super(MessageType.DEFAULT);
     }
 
-    handles(messageType: MessageType): boolean {
-        return this.messageType === messageType;
-    }
+    print(messages: Array<string> | string, counter: number, stdout: any): void {
 
-    print(message: string, counter: number, stdout: any): void {
-        stdout.log(colors.white(' '.repeat(counter * this.SPACES) + message));
+        typeof messages === 'string'
+            ? messages = [messages]
+            : messages = messages.map((message: string, index: number) => {
+                return index === 0
+                    ? ' '.repeat(counter * this.SPACES) + message
+                    : message;
+            });
+        con.log.apply(con, messages);
     }
 
 }
 
-export class ErrorMessageStrategy implements MessageStrategy {
-
-    messageType: MessageType;
-    SPACES: number = 2;
+export class ErrorMessageStrategy extends MessageStrategy {
 
     constructor() {
-        this.messageType = MessageType.ERROR;
+        super(MessageType.ERROR);
     }
 
-    handles(messageType: MessageType): boolean {
-        return this.messageType === messageType;
-    }
-
-    print(message: string, counter: number, stdout: any): void {
-        stdout.log(colors.red(' '.repeat(counter * this.SPACES) + '\u2717 ' + message));
+    print(messages: Array<string> | string, counter: number, stdout: any): void {
+        typeof messages === 'string' ?
+            messages = ['\u2717 ' + ' '.repeat(counter * this.SPACES) + messages] :
+            messages = messages.map((message: string, index: number) => {
+                return index === 0
+                    ? (' '.repeat(counter * this.SPACES) + '\u2717 ' + message)
+                    : message
+            });
+        con.error.apply(con, messages);
     }
 
 }
 
-export class OKMessageStrategy implements MessageStrategy {
-
-    messageType: MessageType;
-    SPACES: number = 2;
+export class OKMessageStrategy extends MessageStrategy {
 
     constructor() {
-        this.messageType = MessageType.OK;
+        super(MessageType.OK);
     }
 
-    handles(messageType: MessageType): boolean {
-        return this.messageType === messageType;
-    }
-
-    print(message: string, counter: number, stdout: any): void {
-        stdout.log(colors.green(' '.repeat(counter * this.SPACES) + '\u2714 ' + message));
+    print(messages: Array<string> | string, counter: number, stdout: any): void {
+        typeof messages === 'string' ?
+            messages = ['\u2714 ' + ' '.repeat(counter * this.SPACES) + messages] :
+            messages = messages.map((message: string, index: number) => {
+                return index === 0
+                    ? (' '.repeat(counter * this.SPACES) + '\u2714 ' + message)
+                    : message
+            });
+        con.success.apply(con, messages);
     }
 
 }
 
-export class RootMessageStrategy implements MessageStrategy {
-
-    messageType: MessageType;
-    SPACES: number = 2;
+export class RootMessageStrategy extends MessageStrategy {
 
     constructor() {
-        this.messageType = MessageType.ROOT;
+        super(MessageType.ROOT);
     }
 
-    handles(messageType: MessageType): boolean {
-        return this.messageType === messageType;
-    }
-
-    print(message: string, counter: number, stdout: any): void {
-        stdout.log(colors.blue(' '.repeat(counter * this.SPACES) + message));
+    print(messages: Array<string> | string, counter: number, stdout: any): void {
+        typeof messages === 'string'
+            ? messages = [messages]
+            : messages = messages.map((message: string, index: number) => {
+                return index === 0
+                    ? ' '.repeat(counter * this.SPACES) + message
+                    : message;
+            });
+        con.info.apply(con, messages);
     }
 
 }
 
-export class ComparisonMessageStrategy implements MessageStrategy {
-
-    messageType: MessageType;
-    SPACES: number = 2;
+export class ComparisonMessageStrategy extends MessageStrategy {
 
     constructor() {
-        this.messageType = MessageType.COMPARISON;
+        super(MessageType.COMPARISON);
     }
 
-    handles(messageType: MessageType): boolean {
-        return this.messageType === messageType;
-    }
-
-    print(message: string, counter: number, stdout: any): void {
-        stdout.log(colors.red(' '.repeat(counter * this.SPACES) + message));
+    print(messages: Array<string> | string, counter: number, stdout: any): void {
+        typeof messages === 'string'
+            ? messages = [messages]
+            : messages = messages.map((message: string, index: number) => {
+                return index === 0
+                    ? ' '.repeat(counter * this.SPACES) + message
+                    : message;
+            });
+        con.error.apply(con, messages);
     }
 
 }

@@ -1,4 +1,5 @@
 import MessageType from './MessageType'
+import Report from './Report'
 import {
     MessageStrategy,
     DefaultMessageStrategy,
@@ -19,9 +20,11 @@ class Reporter {
         return Reporter.instance;
     }
 
-    report(message: string, messageType: MessageType, counter: number): void {
-        getMessageStrategy(messageType).print(message, counter, console);
+    report(report: Report): void {
+        getMessageStrategy(report.messageType)
+            .print(report.messages, report.counter, console);
     }
+    
 
 }
 
