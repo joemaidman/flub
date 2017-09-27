@@ -1,8 +1,10 @@
+import { stub } from './Core';
 import { expect } from 'chai';
 import Reporter from './Reporter';
 import Report from './Report';
 import MessageType from './MessageType';
 import Counter from './Counter';
+import * as R from 'ramda';
 
 class Expectation {
 
@@ -13,6 +15,7 @@ class Expectation {
     messages: Array<Report>;
     not: Expectation;
     isNot: boolean;
+    throwsArgs: Array<any>;
 
     constructor(subject: any, counter: number, des: string, isNot: boolean = false) {
         Counter.incrementTestCount();
@@ -26,9 +29,21 @@ class Expectation {
         }
     }
 
+    checkType = (name: string | Array<string>): void => {
+        typeof name === 'string'
+            ? name = [name]
+            : name = name;
+        if (!this.subject.constructor
+            || !R.contains(this.subject.constructor.name, name)) {
+            throw new Error('Subject is not a '
+                + name.join('/')
+                + ' object');
+        }
+    }
+
     toBe = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
-        return this.assert(this.subject.toString() === objectToMatch.toString());
+        return this.assert(this.subject === objectToMatch);
     }
 
     toEqual = (objectToMatch: any): boolean => {
@@ -40,7 +55,6 @@ class Expectation {
         this.expected = Object;
         return this.assert(typeof (this.subject) !== "undefined");
     }
-
 
     toBeUndefined = (): boolean => {
         this.expected = Object;
@@ -87,17 +101,19 @@ class Expectation {
         return this.assert(this.subject > min && this.subject < max);
     }
 
-    toBeTypeOf = function (type: string): boolean {
+    toBeTypeOf = (type: string): boolean => {
         this.expected = type;
         return this.assert(this.subject.constructor.name.toLowerCase() === type.toLowerCase());
     }
 
-    toRespondTo = function (functionName: string): boolean {
+    toRespondTo = (functionName: string): boolean => {
         this.expected = functionName;
+        // What about properties?
         return typeof this.subject[functionName] === 'function';
     }
 
-    toHaveLength = function (length: number): boolean {
+    toHaveLength = (length: number): boolean => {
+        this.expected = length;
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.length === length);
         }
@@ -105,32 +121,32 @@ class Expectation {
             || this.subject.constructor.name === "Map") {
             return this.assert(this.subject.size === length);
         }
-        return false;
+        return this.assert(false);
     }
 
-    toBeFalsey = function (): boolean {
+    toBeFalsey = (): boolean => {
         return this.assert(!this.subject);
     }
 
-    toBeTruthy = function (): boolean {
+    toBeTruthy = (): boolean => {
         return this.assert(this.subject);
     }
 
-    toBeCloseToInclusive = function (target: number, delta: number) {
+    toBeCloseToInclusive = (target: number, delta: number): boolean => {
         const min = target - delta;
         const max = target + delta;
         return this.assert(this.subject >= min && this.subject <= max);
     }
 
-    toBeCloseToExclusive = function (target: number, delta: number) {
+    toBeCloseToExclusive = (target: number, delta: number): boolean => {
         const min = target - delta;
         const max = target + delta;
         return this.assert(this.subject > min && this.subject < max);
     }
 
-    toContain = function (item: any) {
+    toContain = (item: any): boolean => {
         this.expected = item;
-
+        //This should work for objects too
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.includes(item));
         }
@@ -148,15 +164,94 @@ class Expectation {
         }
     }
 
-    toHaveKey = function (item: any) {
+    toThrow = (message: string): boolean => {
+        this.expected = message;
+        let didThrow: boolean = false;
+        let thrownMessage: string = '';
+        try {
+
+            this.throwsArgs
+                ? this.subject(this.throwsArgs)
+                : this.subject();
+        }
+        catch (e) {
+            didThrow = true;
+            thrownMessage = e;
+        }
+    
+        return this.assert(didThrow === true
+            && thrownMessage === message)
+    }
+
+    with = function (): boolean {
+        this.throwsArgs = Array.prototype.slice.call(arguments);
+        return this;
+    }
+
+    toThrowError = (type: any, message: string): boolean => {
+        this.expected = message;
+        let thrownType: any = 'Error';
+        let didThrow: boolean = false;
+        let thrownMessage: string = '';
+        let errorType: any;
+        try {
+            this.subject();
+        }
+        catch (e) {
+            didThrow = true;
+            thrownType = e.name;
+            thrownMessage = e.message;
+        }
+
+        return this.assert(didThrow === true
+            && thrownMessage === message
+            && thrownType === type.name)
+    }
+
+    toHaveKey = (item: any): boolean => {
+        //This should work for objects too
         return this.assert(this.subject.has(item));
     }
 
-    assert = function (x: boolean): boolean {
+    toHaveBeenCalled = (times: number): boolean => {
+        this.checkType('Spy');
+        this.expected = times;
+        return this.assert(this.subject.getCallCount() === times);
+    }
+
+    toHaveBeenCalledWith = function (): boolean {
+        this.checkType('Spy');
+        this.expected = arguments;
+        return this.assert(
+            R.contains(
+                Array.prototype.slice.call(arguments),
+                this.subject.getCallHistory()
+            ));
+    }
+
+    assert = (x: boolean): boolean => {
         if (this.isNot ? x : !x) {
             Reporter.getInstance().report(new Report([this.des], MessageType.ERROR, this.counter));
-            Reporter.getInstance().report(new Report(['Expected', this.expected, ' => ', this.expected.constructor.name, ' | Actual: ', this.subject, ' => ', this.subject.constructor.name], MessageType.COMPARISON, this.counter));
-
+            if (this.subject) {
+                Reporter.getInstance().report(new Report(['Expected', this.expected,
+                    ' => ',
+                    this.expected.constructor.name,
+                    ' | Actual: ',
+                    this.subject,
+                    ' => ',
+                    this.subject.constructor.name],
+                    MessageType.COMPARISON,
+                    this.counter));
+            }
+            else {
+                Reporter.getInstance().report(new Report(['Expected',
+                    this.expected,
+                    ' => ',
+                    this.expected.constructor.name,
+                    ' | Actual: ', this.subject],
+                    MessageType.COMPARISON,
+                    this.counter));
+            }
             Counter.incrementFailCount();
             return false;
         }

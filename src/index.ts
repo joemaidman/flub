@@ -1,7 +1,12 @@
-import { context, test, expect } from './models/Core'
+import { context, test, expect, spy, setupEach, tearDownEach, setup, tearDown } from './models/Core'
 
 export {
     context,
     test,
-    expect
+    expect,
+    spy,
+    setupEach,
+    tearDownEach,
+    setup,
+    tearDown
 }

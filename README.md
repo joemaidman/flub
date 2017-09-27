@@ -23,7 +23,9 @@ Add one of the following to scripts in package.json
 
     'test' : 'bed-rock'
 
-    'test' : 'bed-rock --watch'
+    'test:watch' : 'bed-rock --watch'
+
+Run npm test / npm run test:watch
 
 Bedrock will automatically load any files that match *.spec.js.
 
@@ -38,6 +40,9 @@ A container for a single test. Can contain one or more assertions. A spec whose 
 
 ```expect(actual) -> matchers```</br>
 Creates an assertion for a test.
+
+hooks
+
 
 ## Example tests
 
@@ -81,13 +86,13 @@ actual value is of type expected
 ~~Bin execution~~</br>
 ~~Watch mode~~</br>
 Matchers (see below)</br>
+Expectation failure details</br>
 ~~Virtual DOM~~</br>
-Stubs/Spies</br>
+~~Stubs/Spies~~</br>
 Regex matcher</br>
 Time manipulation</br>
-Callback matchers</br>
 Custom configuration options</br>
-Additional hooks (before/beforeAll/after/afterAll)
+~~Additional hooks (before/beforeAll/after/afterAll)~~
 
 ## Matchers
 
@@ -112,7 +117,7 @@ Additional hooks (before/beforeAll/after/afterAll)
 ~~toContain~~</br>
 ~~toHaveKey~~</br>
 ~~toRespondTo~~</br>
-throws</br>
-throwsError</br>
-not</br>
+~~throws~~</br>
+~~throwsError~~</br>
+~~not~~</br>
 

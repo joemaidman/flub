@@ -9,7 +9,7 @@ module.exports = function (config) {
         files: [
             'test/**/*.spec.ts'
         ],
-        exclude: [],
+        exclude: ['src/BedRock.ts'],
         preprocessors: {
             "test/**/*.spec.ts": ["webpack"]
         },
