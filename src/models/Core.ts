@@ -22,10 +22,10 @@ export const context = (des: string, context: Function): void => {
 }
 
 export const test = (des: string, tests: () => any): void => {
-    Hooks.getSetupEachHook()();
+    Hooks.runHooks('setupEachHooks');
     currentDescription = des;
     tests();
-    Hooks.getTearDownEachHook()();
+    Hooks.runHooks('tearDownEachHooks');
 }
 
 export const expect = (subject: any): Expectation => {
@@ -33,19 +33,19 @@ export const expect = (subject: any): Expectation => {
 }
 
 export const setup = (func: Function): void => {
-    func();
+    Hooks.addHook('setuphHooks', Counter.getDepth(), func);
 }
 
 export const setupEach = (func: Function): void => {
-    Hooks.setSetupEachHook(func);
+    Hooks.addHook('setupEachHooks', Counter.getDepth(), func);
 }
 
 export const tearDownEach = (func: Function): void => {
-    Hooks.setTearDownEachHook(func);
+    Hooks.addHook('tearDownEachHooks', Counter.getDepth(), func);
 }
 
 export const tearDown = (func: Function): void => {
-    Hooks.setTearDownHook(func);
+    Hooks.addHook('tearDownHooks', Counter.getDepth(), func);
 }
 
 export const spy = (target: any, functionName: string): Spy => {
