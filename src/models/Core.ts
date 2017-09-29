@@ -6,10 +6,6 @@ import Counter from './Counter';
 import Spy from './Spy';
 import Hooks from './Hooks';
 
-export class branch {
-    contexts: Array<any> = new Array<any>();
-}
-
 let currentDescription: string;
 
 export const context = (des: string, context: Function): void => {
@@ -19,11 +15,16 @@ export const context = (des: string, context: Function): void => {
     Counter.incrementDepth();
     context();
     Counter.decrementDepth();
+    Hooks.runHook('tearDownHooks', Counter.getDepth());
+    Hooks.removeHook('setupEachHooks', Counter.getDepth());
+    Hooks.removeHook('tearDownHooks', Counter.getDepth());
+    Hooks.removeHook('tearDownEachHooks', Counter.getDepth());
 }
 
 export const test = (des: string, tests: () => any): void => {
     Hooks.runHooks('setupEachHooks');
     currentDescription = des;
+    Counter.incrementTestCount();
     tests();
     Hooks.runHooks('tearDownEachHooks');
 }
@@ -33,19 +34,19 @@ export const expect = (subject: any): Expectation => {
 }
 
 export const setup = (func: Function): void => {
-    Hooks.addHook('setuphHooks', Counter.getDepth(), func);
+   func();
 }
 
 export const setupEach = (func: Function): void => {
-    Hooks.addHook('setupEachHooks', Counter.getDepth(), func);
+    Hooks.addHook('setupEachHooks', func);
 }
 
 export const tearDownEach = (func: Function): void => {
-    Hooks.addHook('tearDownEachHooks', Counter.getDepth(), func);
+    Hooks.addHook('tearDownEachHooks', func);
 }
 
 export const tearDown = (func: Function): void => {
-    Hooks.addHook('tearDownHooks', Counter.getDepth(), func);
+    Hooks.addHook('tearDownHooks', func);
 }
 
 export const spy = (target: any, functionName: string): Spy => {
@@ -54,10 +55,6 @@ export const spy = (target: any, functionName: string): Spy => {
         spy
     );
     return spy;
-}
-
-export const stub = (target: any, functionName: string) => {
-
 }
 
 const levelType = (): MessageType => {

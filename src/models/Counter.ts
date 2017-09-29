@@ -43,7 +43,6 @@ class Counter {
         return Counter.getInstance().failCount;
     }
 
-
     static incrementTestCount(): number {
         return Counter.getInstance().testCount++;
     }

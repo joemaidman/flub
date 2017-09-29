@@ -1,4 +1,3 @@
-
 module.exports = function (config) {
     config.set({
         mime: {
@@ -9,7 +8,7 @@ module.exports = function (config) {
         files: [
             'test/**/*.spec.ts'
         ],
-        exclude: ['src/BedRock.ts'],
+        exclude: [],
         preprocessors: {
             "test/**/*.spec.ts": ["webpack"]
         },

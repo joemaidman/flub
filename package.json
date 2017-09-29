@@ -5,15 +5,16 @@
   "version": "1.0.20",
   "description": "A javascript unit testing framework",
   "main": "dist/index.js",
-  "bin": "dist/Bedrock.js",
+  "bin": "dist/app.js",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc --declaration --outDir dist/",
     "build:watch": "tsc --watch --declaration --outDir dist/",
     "bundle": "webpack --config ./webpack.config.js",
     "bundle:watch": "webpack --watch --config ./webpack.config.js",
-    "test:watch": "karma start",
-    "test": "karma start --singleRun=true"
+    "pretest": "tsc --declaration --outDir dist/",
+    "test": "mocha dist/test/**/*.js",
+    "test:watch": "mocha dist/test/**/*.js --watch"
   },
   "dependencies": {
     "@types/chokidar": "^1.7.2",
@@ -74,6 +75,7 @@
     "timekeeper": "^1.0.0",
     "tslib": "^1.7.1",
     "typescript": "^2.5.2",
-    "webpack": "^3.5.5"
+    "webpack": "^3.5.5",
+    "webpack-node-externals": "^1.6.0"
   }
 }

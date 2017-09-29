@@ -87,7 +87,7 @@ actual value is of type expected
 ~~Watch mode~~</br>
 Matchers (see below)</br>
 Expectation failure details</br>
-~~Virtual DOM~~</br>
+~~Virtual DOM~~</br>    
 ~~Stubs/Spies~~</br>
 Regex matcher</br>
 Time manipulation</br>

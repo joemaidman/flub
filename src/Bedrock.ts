@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import * as glob from 'glob';
 import * as measureTime from 'measure-time';
 import * as chokidar from 'chokidar';
@@ -19,7 +17,7 @@ import {
   printCaughtException
 } from './models/Logging';
 
-const BedRock = (() => {
+const BedRock = () => {
   global['window'] = new JSDOM().window;
   global['document'] = window.document;
   let getElapsed: Function;
@@ -42,7 +40,6 @@ const BedRock = (() => {
         Spy.clearSpyList();
         printCaughtException(error);
       }
-      Hooks.getTearDownHook()();
       Hooks.clearHooks();
     });
 
@@ -74,11 +71,12 @@ const BedRock = (() => {
             Spy.clearSpyList();
             printCaughtException(error);
           }
-          Hooks.getTearDownHook()();
           Hooks.clearHooks();
         });
         printTestSummary(getElapsed())
       });
     }
   });
-})();
+};
+
+export default BedRock;

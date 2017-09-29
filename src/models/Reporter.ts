@@ -1,13 +1,6 @@
 import MessageType from './MessageType'
 import Report from './Report'
-import {
-    MessageStrategy,
-    DefaultMessageStrategy,
-    OKMessageStrategy,
-    ErrorMessageStrategy,
-    RootMessageStrategy,
-    getMessageStrategy
-} from './MessageStrategies'
+import { getMessageStrategy } from './MessageStrategies'
 
 class Reporter {
 
@@ -24,7 +17,6 @@ class Reporter {
         getMessageStrategy(report.messageType)
             .print(report.messages, report.counter, console);
     }
-    
 
 }
 

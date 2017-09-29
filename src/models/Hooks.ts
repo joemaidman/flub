@@ -1,11 +1,8 @@
-import { tearDownEach } from './Core';
-import * as _ from 'lodash';
 class Hooks {
     private static instance: Hooks;
-    private static setupHooks: Map<number, Function> = new Map<number, Function>();
-    private static setupEachHooks: Map<number, Function> = new Map<number, Function>();
-    private static tearDownEachHooks: Map<number, Function> = new Map<number, Function>();
-    private static tearDownHooks: Map<number, Function> = new Map<number, Function>();
+    private static setupEachHooks: Array<Function> = new Array<Function>();
+    private static tearDownEachHooks: Array<Function> = new Array<Function>();
+    private static tearDownHooks: Array<Function> = new Array<Function>();
 
     static getInstance() {
         return Hooks.instance
@@ -13,29 +10,34 @@ class Hooks {
             : Hooks.instance;
     }
 
-    static getHooks(name: string): Map<number, Function> {
-        return this[name];
+    static getHooks(name: string): Array<Function> {
+        return Hooks[name];
     }
 
-    static addHook(name: string, id: number, func: Function): void {
-        this[name][id] = func;
+    static addHook(name: string, func: Function): void {
+        Hooks.getHooks(name).push(func);
     }
 
-    static removeHook(name: string, id: number, func: Function): void {
-        this[name].delete(id);
+    static removeHook(name: string, index: number): void {
+        Hooks.getHooks(name).splice(index);
     }
 
     static runHooks(name: string): void {
-        Hooks.getHooks(name).forEach((hook: Function) => {
+        Hooks.getHooks(name).forEach((hook) => {
             hook();
         });
     }
 
+    static runHook(name: string, index: number): void {
+        if (Hooks.getHooks(name)[index]) {
+            Hooks.getHooks(name)[index]()
+        }
+    }
+
     static clearHooks(): void {
-        Hooks.setupHooks = new Map<number, Function>();
-        Hooks.setupEachHooks = new Map<number, Function>();
-        Hooks.tearDownEachHooks = new Map<number, Function>();
-        Hooks.tearDownHooks = new Map<number, Function>();
+        Hooks.setupEachHooks = new Array<Function>();
+        Hooks.tearDownEachHooks = new Array<Function>();
+        Hooks.tearDownHooks = new Array<Function>();
     }
 
 }

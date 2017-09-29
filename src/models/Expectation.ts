@@ -1,9 +1,9 @@
-import { stub } from './Core';
 import { expect } from 'chai';
 import Reporter from './Reporter';
 import Report from './Report';
 import MessageType from './MessageType';
 import Counter from './Counter';
+import { checkType } from './Utilities'
 import * as R from 'ramda';
 
 class Expectation {
@@ -18,7 +18,6 @@ class Expectation {
     throwsArgs: Array<any>;
 
     constructor(subject: any, counter: number, des: string, isNot: boolean = false) {
-        Counter.incrementTestCount();
         this.subject = subject;
         this.counter = counter;
         this.des = des;
@@ -26,18 +25,6 @@ class Expectation {
         this.isNot = isNot;
         if (isNot === false) {
             this.not = new Expectation(this.subject, counter, des, true);
-        }
-    }
-
-    checkType = (name: string | Array<string>): void => {
-        typeof name === 'string'
-            ? name = [name]
-            : name = name;
-        if (!this.subject.constructor
-            || !R.contains(this.subject.constructor.name, name)) {
-            throw new Error('Subject is not a '
-                + name.join('/')
-                + ' object');
         }
     }
 
@@ -108,8 +95,7 @@ class Expectation {
 
     toRespondTo = (functionName: string): boolean => {
         this.expected = functionName;
-        // What about properties?
-        return typeof this.subject[functionName] === 'function';
+        return this.assert(this.subject[functionName]);
     }
 
     toHaveLength = (length: number): boolean => {
@@ -178,7 +164,7 @@ class Expectation {
             didThrow = true;
             thrownMessage = e;
         }
-    
+
         return this.assert(didThrow === true
             && thrownMessage === message)
     }
@@ -214,13 +200,13 @@ class Expectation {
     }
 
     toHaveBeenCalled = (times: number): boolean => {
-        this.checkType('Spy');
+        checkType('Spy', this.subject);
         this.expected = times;
         return this.assert(this.subject.getCallCount() === times);
     }
 
     toHaveBeenCalledWith = function (): boolean {
-        this.checkType('Spy');
+        checkType('Spy', this.subject);
         this.expected = arguments;
         return this.assert(
             R.contains(
@@ -232,7 +218,7 @@ class Expectation {
     assert = (x: boolean): boolean => {
         if (this.isNot ? x : !x) {
             Reporter.getInstance().report(new Report([this.des], MessageType.ERROR, this.counter));
-            if (this.subject) {
+            if (this.subject && this.expected) {
                 Reporter.getInstance().report(new Report(['Expected', this.expected,
                     ' => ',
                     this.expected.constructor.name,
@@ -240,15 +226,6 @@ class Expectation {
                     this.subject,
                     ' => ',
                     this.subject.constructor.name],
-                    MessageType.COMPARISON,
-                    this.counter));
-            }
-            else {
-                Reporter.getInstance().report(new Report(['Expected',
-                    this.expected,
-                    ' => ',
-                    this.expected.constructor.name,
-                    ' | Actual: ', this.subject],
                     MessageType.COMPARISON,
                     this.counter));
             }

@@ -13,8 +13,13 @@ describe('Expectation', () => {
 
     before(() => {
         reporter = Reporter.getInstance();
-        reportStub = sinon.spy(reporter, 'report');
+        reportStub = sinon.stub(reporter, 'report');
     })
+
+
+    after(function () {
+        reportStub.restore();
+    });
 
     describe('Given a reporter is passed', () => {
 
@@ -409,6 +414,7 @@ describe('Expectation', () => {
             describe('WHEN a true expectation is made', () => {
 
                 it('THEN it evaluates to true', () => {
+
                     expectation = new Expectation(new Map().set(1, 2), 0, 'Description');
                     expect(expectation.toHaveKey(1)).to.be.true;
                 })
