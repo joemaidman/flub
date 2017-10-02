@@ -7,6 +7,7 @@ import Spy from './Spy';
 import Hooks from './Hooks';
 
 let currentDescription: string;
+let hooks: Hooks = new Hooks();
 
 export const context = (des: string, context: Function): void => {
     Reporter.getInstance().report(

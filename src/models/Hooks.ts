@@ -4,32 +4,39 @@ class Hooks {
     private static tearDownEachHooks: Array<Function> = new Array<Function>();
     private static tearDownHooks: Array<Function> = new Array<Function>();
 
-    static getInstance() {
-        return Hooks.instance
-            ? Hooks.instance = new Hooks()
-            : Hooks.instance;
+    static getInstance(): Hooks {
+        if (!Hooks.instance) {
+            Hooks.instance = new Hooks();
+        }
+        return Hooks.instance;
     }
 
     static getHooks(name: string): Array<Function> {
-        return Hooks[name];
+        return Hooks.getInstance()[name];
     }
 
     static addHook(name: string, func: Function): void {
-        Hooks.getHooks(name).push(func);
+        if (Hooks.getHooks(name)) {
+            Hooks.getHooks(name).push(func);
+        }
     }
 
     static removeHook(name: string, index: number): void {
-        Hooks.getHooks(name).splice(index);
+        if (Hooks.getHooks(name)) {
+            Hooks.getHooks(name).splice(index);
+        }
     }
 
     static runHooks(name: string): void {
-        Hooks.getHooks(name).forEach((hook) => {
-            hook();
-        });
+        if (Hooks.getHooks(name)) {
+            Hooks.getHooks(name).forEach((hook) => {
+                hook();
+            });
+        }
     }
 
     static runHook(name: string, index: number): void {
-        if (Hooks.getHooks(name)[index]) {
+        if (Hooks.getHooks(name) && Hooks.getHooks(name)[index]) {
             Hooks.getHooks(name)[index]()
         }
     }
@@ -39,7 +46,6 @@ class Hooks {
         Hooks.tearDownEachHooks = new Array<Function>();
         Hooks.tearDownHooks = new Array<Function>();
     }
-
 }
 
 export default Hooks;

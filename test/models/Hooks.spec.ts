@@ -1,4 +1,4 @@
-import { setupEach } from './../../src/models/Core';
+import { setupEach, spy } from './../../src/models/Core';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -6,9 +6,10 @@ import Hooks from '../../src/models/Hooks'
 
 describe('Hooks', () => {
 
-    let hookSpy;
-    let mockHookList;
-    let getHookSpy;
+    let hookSpy: sinon.SinonSpy;
+    let mockHookList: Array<any>;
+    let getHookSpy: sinon.SinonStub;
+    let hooks: Hooks;
 
     before(() => {
         hookSpy = sinon.spy();
@@ -16,16 +17,9 @@ describe('Hooks', () => {
         getHookSpy = sinon.stub(Hooks, 'getHooks').callsFake(() => { return mockHookList });
     })
 
-
-    describe('WHEN Hooks has been called', () => {
-
-        it('THEN it always returns the same static instance', () => {
-            const instanceA = Hooks.getInstance();
-            const instanceB = Hooks.getInstance();
-            expect(instanceA).to.equal(instanceB);
-        });
-
-    });
+    after(() => {
+        getHookSpy.restore();
+    })
 
     describe('WHEN addHook has been called', () => {
 

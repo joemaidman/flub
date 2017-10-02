@@ -17,7 +17,6 @@ class Reporter {
         getMessageStrategy(report.messageType)
             .print(report.messages, report.counter, console);
     }
-
 }
 
 export default Reporter;
