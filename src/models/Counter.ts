@@ -3,6 +3,7 @@ class Counter {
     private testCount: number = 0;
     private passCount: number = 0;
     private failCount: number = 0;
+    private depth: number = 0;
     private static instance: Counter;
 
     static getInstance(): Counter {
@@ -18,6 +19,18 @@ class Counter {
         Counter.getInstance().failCount = 0;
     }
 
+    static getDepth(): number {
+        return Counter.getInstance().depth;
+    }
+
+    static incrementDepth(): number {
+        return Counter.getInstance().depth++;
+    }
+
+    static decrementDepth(): number {
+        return Counter.getInstance().depth--;
+    }
+
     static getTestCount(): number {
         return Counter.getInstance().testCount;
     }
@@ -29,7 +42,6 @@ class Counter {
     static getFailCount(): number {
         return Counter.getInstance().failCount;
     }
-
 
     static incrementTestCount(): number {
         return Counter.getInstance().testCount++;

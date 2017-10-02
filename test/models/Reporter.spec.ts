@@ -1,72 +1,41 @@
+
+import { OKMessageStrategy } from './../../src/models/MessageStrategies';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as colors from 'chalk'
 
 import Reporter from '../../src/models/Reporter'
+import Report from '../../src/models/Report';
 import MessageType from '../../src/models/MessageType'
+import { DefaultMessageStrategy } from '../../src/models/MessageStrategies'
+import { getMessageStrategy } from '../../src/models/MessageStrategies'
+import * as GetMessageStrategyParent from '../../src/models/MessageStrategies'
 
 describe('Reporter', () => {
 
-    let consoleSpy: sinon.SinonSpy;
-    let reporter: Reporter;
+    let defaultMessageStrategy = new DefaultMessageStrategy();
+    let getMessageStrategySpy = sinon.stub(GetMessageStrategyParent, 'getMessageStrategy').returns(defaultMessageStrategy);
+    let printSpy = sinon.spy(defaultMessageStrategy, 'print');
 
-    beforeEach(() => {
-        reporter = Reporter.getInstance();
-        consoleSpy = sinon.stub(console, 'log');
-    })
-
-    describe('GIVEN report function is called with a DEFAULT strategy', () => {
-
-        it('THEN it prints the message in white', () => {
-            reporter.report("Message", MessageType.DEFAULT, 0);
-            sinon.assert.calledOnce(consoleSpy);
-            sinon.assert.calledWith(consoleSpy, colors.white("Message"));
-        })
-
+    describe('WHEN Reporter has been called', () => {
+        it('THEN it always returns the same static instance', () => {
+            const instanceA = Reporter.getInstance();
+            const instanceB = Reporter.getInstance();
+            expect(instanceA).to.equal(instanceB);
+        });
     });
 
-    describe('GIVEN report function is called with an ERROR strategy', () => {
+    describe('WHEN report has been called', () => {
 
-        it('THEN it prints the message in red with the X symbol', () => {
-            reporter.report("Failing message", MessageType.ERROR, 0);
-            sinon.assert.calledOnce(consoleSpy);
-            sinon.assert.calledWith(consoleSpy, colors.red("\u2717 Failing message"));
-        })
 
-    });
+        Reporter.getInstance().report(new Report('Test', MessageType.DEFAULT, 0));
 
-    describe('GIVEN report function is called with an OK strategy', () => {
+        it('THEN getMessageStrategy will have been called', () => {
+            sinon.assert.calledOnce(getMessageStrategySpy);
+        });
 
-        it('THEN it prints the message in green with the tick symbol', () => {
-            reporter.report("Passing message", MessageType.OK, 0);
-            sinon.assert.calledOnce(consoleSpy);
-            sinon.assert.calledWith(consoleSpy, colors.green("\u2714 Passing message"));
-        })
-
-    });
-
-    describe('GIVEN report function is called with a ROOT strategy', () => {
-
-        it('THEN it prints the message in blue', () => {
-            reporter.report("Root message", MessageType.ROOT, 0);
-            sinon.assert.calledOnce(consoleSpy);
-            sinon.assert.calledWith(consoleSpy, colors.blue("Root message"));
-        })
-
-    });
-
-    describe('GIVEN report function is called with a COMPARISON strategy', () => {
-
-        it('THEN it prints the message in red', () => {
-            reporter.report("Comparison message", MessageType.COMPARISON, 0);
-            sinon.assert.calledOnce(consoleSpy);
-            sinon.assert.calledWith(consoleSpy, colors.red("Comparison message"));
-        })
-
-    });
-
-    afterEach(function () {
-        consoleSpy.restore();
+        it('THEN print is called on a MessageStrategy', () => {
+            sinon.assert.calledOnce(printSpy);
+        });
     });
 
 });
