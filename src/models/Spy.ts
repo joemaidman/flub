@@ -6,17 +6,13 @@ export default class Spy {
     private override: any;
     private callHistory: Array<Array<any>>;
 
-    constructor(target: any, originalFunction: Function) {
+    constructor(target: any, originalFunction: string) {
         this.target = target;
-        this.originalFunction = originalFunction;
+        this.originalFunction = target[originalFunction];
         this.callCount = 0;
         this.callHistory = new Array<Array<any>>();
-        this.target[originalFunction.name] = this.call.bind(this);
-    }
-
-    restore(): void {
-        this.target[this.originalFunction.name] = this.originalFunction;
-        Spy.removeSpyFromList(this.target, this.originalFunction.name);
+        this.target[originalFunction] = this.call.bind(this);
+        Spy.getSpyList().push(this);
     }
 
     getCallCount(): number {
@@ -39,10 +35,26 @@ export default class Spy {
         return this;
     }
 
-    call(): void {
-        this.callHistory.push(Array.prototype.slice.call(arguments));
+    call(...args: any[]): any {
+        this.callHistory.push(Array.prototype.slice.call(args));
         this.callCount++;
-        return this.override ? this.override() : this.originalFunction();
+        if (this.override) {
+            return this.override(Array.prototype.slice.call(args));
+        }
+        else {
+            return this.originalFunction(Array.prototype.slice.call(args));
+        }
+    }
+
+    reset(): void {
+        this.callCount = 0;
+        this.callHistory = new Array<Array<any>>();
+    }
+
+    restore(): void {
+        this.target[this.originalFunction.name] = this.originalFunction;
+        this.override = null;
+        Spy.removeSpy(this.target, this.originalFunction.name);
     }
 
     static getSpyList(): Array<Spy> {
@@ -51,20 +63,20 @@ export default class Spy {
             : Spy.spyList = new Array<Spy>();
     }
 
-    static removeSpyFromList(target: any, name: string): void {
-        Spy.spyList = Spy.spyList.filter((spy: Spy): any => {
+    static removeSpy(target: any, name: string): void {
+        Spy.spyList = Spy.getSpyList().filter((spy: Spy): any => {
             spy.target !== target && spy.originalFunction.name !== name;
         });
     }
 
     static clearSpyList(): void {
-        if (Spy.spyList) Spy.spyList = [];
+        if (Spy.getSpyList()) Spy.spyList = [];
     }
 
     static restoreAllSpies(): void {
         Spy.getSpyList().forEach((spy: Spy) => {
             spy.target[spy.originalFunction.name] = spy.originalFunction;
-        })
+        });
     }
 
 }

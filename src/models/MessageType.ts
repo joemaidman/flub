@@ -3,7 +3,8 @@ enum MessageType {
     ROOT = 'ROOT',
     OK = 'OK',
     ERROR = 'ERROR',
-    COMPARISON = 'COMPARISON'
+    COMPARISON = 'COMPARISON',
+    STACK = 'STACK'
 }
 
 export default MessageType;

@@ -20,20 +20,22 @@ export abstract class MessageStrategy {
 }
 
 export const loadMessageStrategies = (): Array<MessageStrategy> => {
-    return Array<MessageStrategy>(
+    return [
         new DefaultMessageStrategy(),
         new OKMessageStrategy(),
         new ErrorMessageStrategy(),
         new RootMessageStrategy(),
-        new ComparisonMessageStrategy()
-    );
+        new ComparisonMessageStrategy(),
+        new StackMessageStrategy()
+    ];
 }
 
 export const getMessageStrategy = (messageType: MessageType): MessageStrategy => {
     return _.find(loadMessageStrategies(),
         (strategy: MessageStrategy) => {
-            return strategy.handles(messageType) === true;
-        }) || new DefaultMessageStrategy();
+            return strategy.handles(messageType);
+        })
+        || new OKMessageStrategy();
 }
 
 export class DefaultMessageStrategy extends MessageStrategy {
@@ -43,7 +45,6 @@ export class DefaultMessageStrategy extends MessageStrategy {
     }
 
     print(messages: Array<string> | string, counter: number, stdout: any): void {
-
         typeof messages === 'string'
             ? messages = [messages]
             : messages = messages.map((message: string, index: number) => {
@@ -128,6 +129,25 @@ export class ComparisonMessageStrategy extends MessageStrategy {
                     : message;
             });
         con.error.apply(con, messages);
+    }
+
+}
+
+export class StackMessageStrategy extends MessageStrategy {
+
+    constructor() {
+        super(MessageType.STACK);
+    }
+
+    print(messages: Array<string> | string, counter: number, stdout: any): void {
+        typeof messages === 'string'
+            ? messages = [messages]
+            : messages = messages.map((message: string, index: number) => {
+                return index === 0
+                    ? ' '.repeat(counter * this.SPACES) + message
+                    : message;
+            });
+        con.write(messages, 90);
     }
 
 }

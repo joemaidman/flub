@@ -6,7 +6,7 @@ import * as path from 'path';
 import * as flags from 'flags'
 import { JSDOM } from 'jsdom';
 
-import Counter from './models/Counter';
+import * as Counter from './models/Counter';
 import Spy from './models/Spy';
 import Hooks from './models/Hooks'
 import {
@@ -24,7 +24,7 @@ const BedRock = () => {
   const globString: string = "*.spec.js";
   const regexString: RegExp = new RegExp('.*?(?=\.spec).*?\.js');
   let testFiles: Array<string> = new Array<string>();
-  Counter.resetCount();
+  Counter.reset();
   getElapsed = measureTime();
   printStartHeader();
 
@@ -35,7 +35,7 @@ const BedRock = () => {
         require(process.cwd() + '/' + file);
       }
       catch (error) {
-        Counter.resetCount();
+        Counter.reset();
         Spy.restoreAllSpies();
         Spy.clearSpyList();
         printCaughtException(error);
@@ -51,7 +51,7 @@ const BedRock = () => {
 
       watcher.on('change', (event: string) => {
         testFiles = new Array();
-        Counter.resetCount();
+        Counter.reset();
         Spy.restoreAllSpies();
         Spy.clearSpyList();
 
@@ -66,7 +66,7 @@ const BedRock = () => {
             require(process.cwd() + '/' + file)
           }
           catch (error) {
-            Counter.resetCount();
+            Counter.reset();
             Spy.restoreAllSpies();
             Spy.clearSpyList();
             printCaughtException(error);

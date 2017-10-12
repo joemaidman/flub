@@ -4,15 +4,8 @@ class Hooks {
     private static tearDownEachHooks: Array<Function> = new Array<Function>();
     private static tearDownHooks: Array<Function> = new Array<Function>();
 
-    static getInstance(): Hooks {
-        if (!Hooks.instance) {
-            Hooks.instance = new Hooks();
-        }
-        return Hooks.instance;
-    }
-
     static getHooks(name: string): Array<Function> {
-        return Hooks.getInstance()[name];
+        return Hooks[name];
     }
 
     static addHook(name: string, func: Function): void {

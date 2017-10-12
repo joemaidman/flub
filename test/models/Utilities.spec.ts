@@ -13,7 +13,7 @@ describe('Utilities', () => {
                 expect(checkType('String', 'test')).to.equal(true);
             });
 
-            it('THEN is returns false if the obect is not of hte stated type', () => {
+            it('THEN is throws an error if the obect is not of the stated type', () => {
                 try {
                     checkType('test', 1)
 
