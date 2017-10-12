@@ -4,8 +4,10 @@
   "license": "ISC",
   "version": "1.0.20",
   "description": "A javascript unit testing framework",
-  "main": "dist/index.js",
-  "bin": "dist/app.js",
+  "main": "dist/src/index.js",
+  "bin": {
+    "bed-rock": "dist/src/app.js"
+  },
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc --declaration --outDir dist/",
@@ -24,6 +26,8 @@
     "@types/jsdom": "^11.0.2",
     "@types/lodash": "^4.14.74",
     "@types/ramda": "^0.24.13",
+    "@types/stack-trace": "0.0.28",
+    "better-stack-traces": "^1.1.0",
     "chokidar": "^1.7.0",
     "clear-require": "^2.0.0",
     "colors": "^1.1.2",
@@ -38,6 +42,7 @@
     "path": "^0.12.7",
     "ramda": "^0.24.1",
     "require": "^2.4.20",
+    "stack-trace": "0.0.10",
     "typescript": "^2.4.2"
   },
   "devDependencies": {

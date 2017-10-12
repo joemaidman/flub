@@ -1,21 +1,13 @@
 import MessageType from './MessageType'
 import Report from './Report'
 import { getMessageStrategy } from './MessageStrategies'
+import * as Counter from './Counter';
 
 class Reporter {
 
-    private static instance: Reporter;
-
-    static getInstance() {
-        if (!Reporter.instance) {
-            Reporter.instance = new Reporter();
-        }
-        return Reporter.instance;
-    }
-
-    report(report: Report): void {
+    static report(report: Report): void {
         getMessageStrategy(report.messageType)
-            .print(report.messages, report.counter, console);
+            .print(report.messages, Counter.depth, console);
     }
 }
 

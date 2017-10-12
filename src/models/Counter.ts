@@ -1,59 +1,32 @@
-class Counter {
+export let testCount: number = 0;
+export let passCount: number = 0;
+export let failCount: number = 0;
+export let depth: number = 0;
 
-    private testCount: number = 0;
-    private passCount: number = 0;
-    private failCount: number = 0;
-    private depth: number = 0;
-    private static instance: Counter;
+export const reset = () => {
+    testCount = 0;
+    passCount = 0;
+    failCount = 0;
+}
 
-    static getInstance(): Counter {
-        if (!Counter.instance) {
-            Counter.instance = new Counter();
-        }
-        return Counter.instance;
-    }
+export const incrementDepth = () => {
+    depth++;
+}
 
-    static resetCount(): void {
-        Counter.getInstance().testCount = 0;
-        Counter.getInstance().passCount = 0;
-        Counter.getInstance().failCount = 0;
-    }
-
-    static getDepth(): number {
-        return Counter.getInstance().depth;
-    }
-
-    static incrementDepth(): number {
-        return Counter.getInstance().depth++;
-    }
-
-    static decrementDepth(): number {
-        return Counter.getInstance().depth--;
-    }
-
-    static getTestCount(): number {
-        return Counter.getInstance().testCount;
-    }
-
-    static getPassCount(): number {
-        return Counter.getInstance().passCount;
-    }
-
-    static getFailCount(): number {
-        return Counter.getInstance().failCount;
-    }
-
-    static incrementTestCount(): number {
-        return Counter.getInstance().testCount++;
-    }
-
-    static incrementPassCount(): number {
-        return Counter.getInstance().passCount++;
-    }
-
-    static incrementFailCount(): number {
-        return Counter.getInstance().failCount++;
+export const decrementDepth = () => {
+    if (depth > 0) {
+        depth--;
     }
 }
 
-export default Counter;
+export const incrementTestCount = () => {
+    testCount++;
+}
+
+export const incrementPassCount = () => {
+    passCount++;
+}
+
+export const incrementFailCount = () => {
+    failCount++;
+}

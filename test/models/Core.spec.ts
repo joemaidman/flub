@@ -9,7 +9,7 @@ import Spy from '../../src/models/Spy';
 import Reporter from '../../src/models/Reporter';
 import Report from '../../src/models/Report';
 import MessageType from '../../src/models/MessageType';
-import Counter from '../../src/models/Counter';
+import * as Counter from '../../src/models/Counter';
 import Hooks from '../../src/models/Hooks'
 
 describe('Core', () => {
@@ -23,8 +23,7 @@ describe('Core', () => {
     let addSingleHookSpy: sinon.SinonSpy;
 
     before(() => {
-        reporter = Reporter.getInstance();
-        reportStub = sinon.stub(reporter, 'report');
+        reportStub = sinon.stub(Reporter, 'report');
         mockBodyFunction = sinon.stub();
         runHooksSpy = sinon.spy(Hooks, 'runHooks');
         runSingleHookSpy = sinon.spy(Hooks, 'runHook');
@@ -51,7 +50,7 @@ describe('Core', () => {
     describe('GIVEN expect is called', () => {
         const assertion: Expectation = expectBR(1);
 
-        it('THEN it returns a new Expectation with a subject', () => {
+        it('THEN it returns a new Expectation', () => {
             expect(assertion).to.be.instanceof(Expectation);
         });
 
@@ -64,15 +63,16 @@ describe('Core', () => {
         let mockContext: any;
 
         beforeEach(() => {
+            Counter.reset();
             mockContext = context('Context description', mockBodyFunction);
         })
 
         it('THEN is prints its description', () => {
-            sinon.assert.calledWith(reportStub, new Report('Context description', MessageType.ROOT, 0));
+            sinon.assert.calledWith(reportStub, new Report('Context description', MessageType.ROOT));
         });
 
         it('THEN is increments and decrements depth', () => {
-            expect(Counter.getDepth()).to.equal(0);
+            expect(Counter.depth).to.equal(0);
         });
 
         it('THEN is runs its body', () => {
@@ -116,6 +116,10 @@ describe('Core', () => {
         it('THEN it increments the test counter', () => {
             sinon.assert.calledOnce(testcountSpy);
         });
+
+        after(() => {
+            testcountSpy.restore();
+        })
 
     });
 

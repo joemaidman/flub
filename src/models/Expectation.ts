@@ -2,29 +2,35 @@ import { expect } from 'chai';
 import Reporter from './Reporter';
 import Report from './Report';
 import MessageType from './MessageType';
-import Counter from './Counter';
+import * as Counter from './Counter';
 import { checkType } from './Utilities'
 import * as R from 'ramda';
+import * as StackTrace from 'stack-trace';
+import {
+    printStartHeader,
+    printReloadHeader,
+    printTestSummary,
+    printWatching,
+    printCaughtException
+  } from './Logging';
 
 class Expectation {
 
     subject: any;
     expected: any;
-    counter: number;
     des: string;
     messages: Array<Report>;
     not: Expectation;
     isNot: boolean;
     throwsArgs: Array<any>;
 
-    constructor(subject: any, counter: number, des: string, isNot: boolean = false) {
+    constructor(subject: any, des: string, isNot: boolean = false) {
         this.subject = subject;
-        this.counter = counter;
         this.des = des;
         this.messages = new Array<Report>();
         this.isNot = isNot;
         if (isNot === false) {
-            this.not = new Expectation(this.subject, counter, des, true);
+            this.not = new Expectation(this.subject, des, true);
         }
     }
 
@@ -144,7 +150,7 @@ class Expectation {
                 + this.subject.constructor.name
                 + ', not an Array or Set']
                 , MessageType.COMPARISON
-                , this.counter));
+                ));
 
             return this.assert(false);
         }
@@ -217,9 +223,9 @@ class Expectation {
 
     assert = (x: boolean): boolean => {
         if (this.isNot ? x : !x) {
-            Reporter.getInstance().report(new Report([this.des], MessageType.ERROR, this.counter));
+            Reporter.report(new Report([this.des], MessageType.ERROR));
             if (this.subject && this.expected) {
-                Reporter.getInstance().report(new Report(['Expected', this.expected,
+                Reporter.report(new Report(['Expected', this.expected,
                     ' => ',
                     this.expected.constructor.name,
                     ' | Actual: ',
@@ -227,16 +233,22 @@ class Expectation {
                     ' => ',
                     this.subject.constructor.name],
                     MessageType.COMPARISON,
-                    this.counter));
+                    ));
             }
             Counter.incrementFailCount();
+            try{
+            throw new Error('Assertion error');
+            }
+            catch(e){
+                printCaughtException(e);
+            }
             return false;
         }
         else {
 
-            Reporter.getInstance().report(new Report([this.des], MessageType.OK, this.counter));
+            Reporter.report(new Report([this.des], MessageType.OK));
             this.messages.forEach((message: Report) => {
-                Reporter.getInstance().report(message);
+                Reporter.report(message);
             });
             Counter.incrementPassCount();
             return true;

@@ -1,89 +1,76 @@
 import MessageType from './MessageType';
 import Reporter from './Reporter';
 import Report from './Report';
-import Counter from './Counter';
+import * as Counter from './Counter';
 
 export const printStartHeader = () => {
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report('Bedrock starting...',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report('',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
 }
 
 export const printReloadHeader = () => {
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report(
             '',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report('Bedrock reloading...',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report([''],
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
 }
 
 export const printWatching = () => {
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report(
             '',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report('Watching files...',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report('',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
 }
 
 export const printTestSummary = (elapsed: any) => {
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report('',
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
-        new Report("Ran " + Counter.getTestCount()
+    Reporter.report(
+        new Report("Ran " + Counter.testCount
             + " tests in "
             + elapsed.millisecondsTotal
             + " ms",
-            MessageType.DEFAULT,
-            0)
+            MessageType.DEFAULT)
     );
-    Reporter.getInstance().report(
-        new Report(Counter.getPassCount() + ' passed',
-            MessageType.OK,
-            0)
+    Reporter.report(
+        new Report(Counter.passCount + ' passed',
+            MessageType.OK)
     );
-    Reporter.getInstance().report(
-        new Report(Counter.getFailCount() + ' failed',
-            MessageType.ERROR,
-            0)
+    Reporter.report(
+        new Report(Counter.failCount + ' failed',
+            MessageType.ERROR)
     );
 }
 
 export const printCaughtException = (error: Error) => {
-    Reporter.getInstance().report(
+    Reporter.report(
         new Report([error.message, error.stack || ''],
-            MessageType.ERROR,
-            0)
+            MessageType.STACK)
     );
 }
