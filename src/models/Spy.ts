@@ -8,10 +8,10 @@ export default class Spy {
 
     constructor(target: any, originalFunction: string) {
         this.target = target;
-        this.originalFunction = target[originalFunction];
+        this.originalFunction = this.target[originalFunction];
         this.callCount = 0;
         this.callHistory = new Array<Array<any>>();
-        this.target[originalFunction] = this.call.bind(this);
+        target[originalFunction] = this.call.bind(this);
         Spy.getSpyList().push(this);
     }
 
@@ -75,7 +75,9 @@ export default class Spy {
 
     static restoreAllSpies(): void {
         Spy.getSpyList().forEach((spy: Spy) => {
-            spy.target[spy.originalFunction.name] = spy.originalFunction;
+            if (spy.originalFunction) {
+                spy.target[spy.originalFunction.name] = spy.originalFunction;
+            }
         });
     }
 

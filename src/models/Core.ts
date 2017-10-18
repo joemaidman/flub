@@ -51,7 +51,7 @@ export const tearDown = (func: Function): void => {
 }
 
 export const spy = (target: any, functionName: string): Spy => {
-    const spy: Spy = new Spy(target, target[functionName]);
+    const spy: Spy = new Spy(target, functionName);
     return spy;
 }
 

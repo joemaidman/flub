@@ -38,7 +38,7 @@ const BedRock = () => {
         Counter.reset();
         Spy.restoreAllSpies();
         Spy.clearSpyList();
-        printCaughtException(error);
+        printCaughtException(error.message, error.stack);
       }
       Hooks.clearHooks();
     });
@@ -69,11 +69,11 @@ const BedRock = () => {
             Counter.reset();
             Spy.restoreAllSpies();
             Spy.clearSpyList();
-            printCaughtException(error);
+            printCaughtException(error.message, error.stack);
           }
           Hooks.clearHooks();
         });
-        printTestSummary(getElapsed())
+        printTestSummary(getElapsed());
       });
     }
   });
