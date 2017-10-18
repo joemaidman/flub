@@ -19,7 +19,7 @@ describe("MessageStrategies", () => {
     describe('loadMessageStrategies', () => {
 
         it('should return an array of all message strategies', () => {
-            expect(loadMessageStrategies()).to.have.length(5);
+            expect(loadMessageStrategies()).to.have.length(6);
             expect(loadMessageStrategies()[0].constructor.name).to.equal('DefaultMessageStrategy');
             expect(loadMessageStrategies()[1].constructor.name).to.equal('OKMessageStrategy');
             expect(loadMessageStrategies()[2].constructor.name).to.equal('ErrorMessageStrategy');

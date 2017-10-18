@@ -68,9 +68,9 @@ export const printTestSummary = (elapsed: any) => {
     );
 }
 
-export const printCaughtException = (error: Error) => {
+export const printCaughtException = (message: string, stack: string) => {
     Reporter.report(
-        new Report([error.message, error.stack || ''],
+        new Report([message, stack || ''],
             MessageType.STACK)
     );
 }

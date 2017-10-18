@@ -104,13 +104,10 @@ describe('Spy', () => {
         describe('GIVEN the spy has been restored', () => {
 
             beforeEach(() => {
-                spy = new Spy(Math, 'round');
+                spy = new Spy(Math, 'round').andFake(() => {return 50});
                 spy.restore();
             });
 
-            afterEach(() => {
-                spy.restore();
-            });
             it('THEN it runs the restored original function', () => {
                 expect(spy.call(1)).to.equal(1);
             });

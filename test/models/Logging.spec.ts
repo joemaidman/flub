@@ -89,12 +89,12 @@ describe('Logging', () => {
             reporterSpy.reset();
             const mockError = new Error('Test error message');
             mockError.stack = "Test stack trace";
-            Logging.printCaughtException(mockError);
+            Logging.printCaughtException(mockError.message, mockError.stack);
         })
 
         it('THEN it calls report on Reporter once with the correct arguments', () => {
             sinon.assert.calledOnce(reporterSpy);
-            sinon.assert.calledWithMatch(reporterSpy, new Report(['Test error message', 'Test stack trace'], MessageType.ERROR));
+            sinon.assert.calledWithMatch(reporterSpy, new Report(['Test error message', 'Test stack trace'], MessageType.STACK));
         });
 
     });

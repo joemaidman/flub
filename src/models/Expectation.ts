@@ -5,20 +5,22 @@ import MessageType from './MessageType';
 import * as Counter from './Counter';
 import { checkType } from './Utilities'
 import * as R from 'ramda';
-import * as StackTrace from 'stack-trace';
+import * as PrettyError from 'pretty-error';
+import { Fail, fails } from './Failure'
 import {
     printStartHeader,
     printReloadHeader,
     printTestSummary,
     printWatching,
     printCaughtException
-  } from './Logging';
+} from './Logging';
 
 class Expectation {
 
     subject: any;
     expected: any;
     des: string;
+    failureDetails: Array<string>;
     messages: Array<Report>;
     not: Expectation;
     isNot: boolean;
@@ -27,6 +29,7 @@ class Expectation {
     constructor(subject: any, des: string, isNot: boolean = false) {
         this.subject = subject;
         this.des = des;
+        this.failureDetails = new Array<string>();
         this.messages = new Array<Report>();
         this.isNot = isNot;
         if (isNot === false) {
@@ -34,78 +37,110 @@ class Expectation {
         }
     }
 
+    with = function (): boolean {
+        this.throwsArgs = Array.prototype.slice.call(arguments);
+        return this;
+    }
+
     toBe = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
+        this.failureDetails = ['Expected', this.expected,
+            ' => ',
+            this.expected.constructor.name,
+            ' | Actual: ',
+            this.subject,
+            ' => ',
+            this.subject.constructor.name];
         return this.assert(this.subject === objectToMatch);
     }
 
     toEqual = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
+        this.failureDetails = ['Expected ', this.expected,
+        ' => ',
+        this.expected.constructor.name,
+        ' | Actual: ',
+        this.subject,
+        ' => ',
+        this.subject.constructor.name];
         return this.assert(this.subject === objectToMatch);
     }
 
     toBeDefined = (): boolean => {
         this.expected = Object;
+        this.failureDetails = ['Expected ', this.subject, ' to be defined'];
         return this.assert(typeof (this.subject) !== "undefined");
     }
 
     toBeUndefined = (): boolean => {
-        this.expected = Object;
+        this.expected = undefined;
+        this.failureDetails = ['Expected ', this.subject, ' to be undefined'];
         return this.assert(typeof (this.subject) === "undefined");
     }
 
     toBeNotNull = (): boolean => {
         this.expected = Object;
+        this.failureDetails = ['Expected ', this.subject, ' not to be null'];
         return this.assert(this.subject !== null);
     }
 
     toBeNull = (): boolean => {
-        this.expected = Object;
+        this.expected = null;
+        this.failureDetails = ['Expected ', this.subject, ' to be null'];
         return this.assert(this.subject === null);
     }
 
     toBeGreaterThanOrEqualTo = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
+        this.failureDetails = ['Expected ', this.subject, ' to be greater than or equal to ', this.expected];
         return this.assert(this.subject >= this.expected);
     }
 
     toBeLessThanOrEqualTo = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
+        this.failureDetails = ['Expected ', this.subject, ' to be less than or equal to ', this.expected];
         return this.assert(this.subject <= this.expected);
     }
 
     toBeGreaterThan = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
+        this.failureDetails = ['Expected ', this.subject, ' to be greater than ', this.expected];
         return this.assert(this.subject > this.expected);
     }
 
     toBeLessThan = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
+        this.failureDetails = ['Expected ', this.subject, ' to be less than ', this.expected];
         return this.assert(this.subject < this.expected);
     }
 
     toBeBetweenInclusive = (min: number, max: number): boolean => {
         this.expected = Object;
+        this.failureDetails = ['Expected ', this.subject, ' to be inclusively between ', min, ' and ', max];
         return this.assert(this.subject >= min && this.subject <= max);
     }
 
     toBeBetweenExclusive = (min: number, max: number): boolean => {
         this.expected = Object;
+        this.failureDetails = ['Expected ', this.subject, ' to be exclusively between ', min, ' and ', max];
         return this.assert(this.subject > min && this.subject < max);
     }
 
     toBeTypeOf = (type: string): boolean => {
         this.expected = type;
+        this.failureDetails = ['Expected ', this.subject, ' to be of type ', this.expected, ' but was ', this.subject.constructor.name];
         return this.assert(this.subject.constructor.name.toLowerCase() === type.toLowerCase());
     }
 
     toRespondTo = (functionName: string): boolean => {
         this.expected = functionName;
+        this.failureDetails = ['Expected ', this.subject, ' to respond to ', this.expected];
         return this.assert(this.subject[functionName]);
     }
 
     toHaveLength = (length: number): boolean => {
         this.expected = length;
+        this.failureDetails = ['Expected ', this.subject, ' to have length of ', this.expected];
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.length === length);
         }
@@ -117,20 +152,24 @@ class Expectation {
     }
 
     toBeFalsey = (): boolean => {
+        this.failureDetails = ['Expected ', this.subject, ' to be falsey'];
         return this.assert(!this.subject);
     }
 
     toBeTruthy = (): boolean => {
+        this.failureDetails = ['Expected ', this.subject, ' to be truthy'];
         return this.assert(this.subject);
     }
 
     toBeCloseToInclusive = (target: number, delta: number): boolean => {
+        this.failureDetails = ['Expected ', this.subject, ' to be inclusively within ', delta, ' of ', target];
         const min = target - delta;
         const max = target + delta;
         return this.assert(this.subject >= min && this.subject <= max);
     }
 
     toBeCloseToExclusive = (target: number, delta: number): boolean => {
+        this.failureDetails = ['Expected ', this.subject, ' to be exclusively within ', delta, ' of ', target];
         const min = target - delta;
         const max = target + delta;
         return this.assert(this.subject > min && this.subject < max);
@@ -138,26 +177,22 @@ class Expectation {
 
     toContain = (item: any): boolean => {
         this.expected = item;
-        //This should work for objects too
+        this.failureDetails = ['Expected ', this.subject, ' to contain ', this.expected];
+        checkType(['Array', 'Set'], this.subject);
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.includes(item));
         }
         else if (this.subject.constructor.name === "Set") {
             return this.assert(this.subject.has(item));
         }
-        else {
-            this.messages.push(new Report(['Subject is a '
-                + this.subject.constructor.name
-                + ', not an Array or Set']
-                , MessageType.COMPARISON
-                ));
-
-            return this.assert(false);
+        else{
+            return this.assert(this.subject.includes(item));
         }
     }
 
     toThrow = (message: string): boolean => {
         this.expected = message;
+        this.failureDetails = ['Expected ', this.subject, ' to throw ', this.expected];
         let didThrow: boolean = false;
         let thrownMessage: string = '';
         try {
@@ -175,11 +210,6 @@ class Expectation {
             && thrownMessage === message)
     }
 
-    with = function (): boolean {
-        this.throwsArgs = Array.prototype.slice.call(arguments);
-        return this;
-    }
-
     toThrowError = (type: any, message: string): boolean => {
         this.expected = message;
         let thrownType: any = 'Error';
@@ -194,6 +224,13 @@ class Expectation {
             thrownType = e.name;
             thrownMessage = e.message;
         }
+        if (didThrow) {
+            this.failureDetails = ['Expected ', this.subject, ' to throw ', type, ' error with ', message, 'but threw',
+                thrownType, 'error with ', thrownMessage];
+        }
+        else {
+            this.failureDetails = ['Expected ', this.subject, ' to throw ', type, ' error with ', message, 'but did not throw']
+        }
 
         return this.assert(didThrow === true
             && thrownMessage === message
@@ -201,11 +238,13 @@ class Expectation {
     }
 
     toHaveKey = (item: any): boolean => {
+        this.failureDetails = ['Expected ', this.subject, ' to have key ', item];
         //This should work for objects too
         return this.assert(this.subject.has(item));
     }
 
     toHaveBeenCalled = (times: number): boolean => {
+        this.failureDetails = ['Expected spy to have been called ', times, ' times but was called ', this.subject.getCallCount(), ' times'];
         checkType('Spy', this.subject);
         this.expected = times;
         return this.assert(this.subject.getCallCount() === times);
@@ -214,6 +253,7 @@ class Expectation {
     toHaveBeenCalledWith = function (): boolean {
         checkType('Spy', this.subject);
         this.expected = arguments;
+        this.failureDetails = ['Expected spy to have been called with ', this.expected, '. Call history: ', this.subject.getCallHistory()];
         return this.assert(
             R.contains(
                 Array.prototype.slice.call(arguments),
@@ -225,31 +265,26 @@ class Expectation {
         if (this.isNot ? x : !x) {
             Reporter.report(new Report([this.des], MessageType.ERROR));
             if (this.subject && this.expected) {
-                Reporter.report(new Report(['Expected', this.expected,
-                    ' => ',
-                    this.expected.constructor.name,
-                    ' | Actual: ',
-                    this.subject,
-                    ' => ',
-                    this.subject.constructor.name],
-                    MessageType.COMPARISON,
-                    ));
+                Reporter.report(new Report(this.failureDetails, MessageType.COMPARISON));
             }
             Counter.incrementFailCount();
-            try{
-            throw new Error('Assertion error');
+
+            try {
+                throw new Error('Assertion error');
             }
-            catch(e){
-                printCaughtException(e);
+            catch (e) {
+                var pe = new PrettyError();
+                pe.skipPackage('bedrock');
+                pe.skipPath('/Users/joemaidman/projects/bedrock');
+                pe.skipNodeFiles();
+                var renderedError = pe.render(e);
+                printCaughtException(e.message, renderedError);
             }
             return false;
         }
         else {
 
             Reporter.report(new Report([this.des], MessageType.OK));
-            this.messages.forEach((message: Report) => {
-                Reporter.report(message);
-            });
             Counter.incrementPassCount();
             return true;
         }
