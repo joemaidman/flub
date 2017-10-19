@@ -2,18 +2,21 @@
   "name": "bed-rock",
   "author": "Joe Maidman",
   "license": "ISC",
-  "version": "1.0.21",
+  "version": "1.0.31",
   "description": "A javascript unit testing framework",
-  "main": "dist/src/index.js",
+  "main": "./dist/src/index.js",
   "bin": {
-    "bed-rock": "dist/src/app.js"
+    "bed-rock": "./dist/src/app.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "prepublish": "npm run build",
     "build": "tsc --declaration --outDir dist/",
     "build:watch": "tsc --watch --declaration --outDir dist/",
     "bundle": "webpack --config ./webpack.config.js",
     "bundle:watch": "webpack --watch --config ./webpack.config.js",
+    "prepublish": "tsc --declaration --outDir dist/",
     "pretest": "tsc --declaration --outDir dist/",
     "test": "mocha dist/test/**/*.js",
     "test:watch": "mocha dist/test/**/*.js --watch"
@@ -45,7 +48,7 @@
     "ramda": "^0.24.1",
     "require": "^2.4.20",
     "stack-trace": "0.0.10",
-    "typescript": "^2.4.2"
+    "tslib": "^1.7.1"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
