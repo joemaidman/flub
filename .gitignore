@@ -1,7 +1,6 @@
 node_modules
 karmaResults
 dist
-package-lock.json
 .DS_Store
 .npmrc
 bundle
