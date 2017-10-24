@@ -1,9 +1,10 @@
+import { testCount } from './../../src/models/Counter';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as _ from 'lodash';
 
 import { expect as expectBR } from '../../src/models/Core';
-import { context, spy as spyBR, test, setup, setupEach, tearDown, tearDownEach } from '../../src/models/Core';
+import { context, xcontext, spy as spyBR, test, xtest, setup, setupEach, tearDown, tearDownEach } from '../../src/models/Core';
 import Expectation from '../../src/models/Expectation';
 import Spy from '../../src/models/Spy';
 import Reporter from '../../src/models/Reporter';
@@ -21,6 +22,9 @@ describe('Core', () => {
     let runHooksSpy: sinon.SinonSpy;
     let removeSingleHookSpy: sinon.SinonSpy;
     let addSingleHookSpy: sinon.SinonSpy;
+    let testcountSpy: sinon.SinonSpy;
+    let incrementDepthSpy: sinon.SinonSpy;
+    let decrementDepthSpy: sinon.SinonSpy;
 
     before(() => {
         reportStub = sinon.stub(Reporter, 'report');
@@ -29,6 +33,10 @@ describe('Core', () => {
         runSingleHookSpy = sinon.spy(Hooks, 'runHook');
         removeSingleHookSpy = sinon.spy(Hooks, 'removeHook');
         addSingleHookSpy = sinon.spy(Hooks, 'addHook');
+        testcountSpy = sinon.spy(Counter, 'incrementTestCount');
+        incrementDepthSpy = sinon.spy(Counter, 'incrementDepth');
+        decrementDepthSpy = sinon.spy(Counter, 'decrementDepth');
+
     })
 
     beforeEach(() => {
@@ -38,6 +46,10 @@ describe('Core', () => {
         runSingleHookSpy.reset();
         removeSingleHookSpy.reset();
         addSingleHookSpy.reset();
+        testcountSpy.reset();
+        Counter.reset();
+        incrementDepthSpy.reset();
+        decrementDepthSpy.reset();
     })
 
     after(() => {
@@ -45,6 +57,9 @@ describe('Core', () => {
         runHooksSpy.restore();
         runSingleHookSpy.restore();
         removeSingleHookSpy.restore();
+        testcountSpy.restore();
+        incrementDepthSpy.restore();
+        decrementDepthSpy.restore();
     })
 
     describe('GIVEN expect is called', () => {
@@ -63,7 +78,6 @@ describe('Core', () => {
         let mockContext: any;
 
         beforeEach(() => {
-            Counter.reset();
             mockContext = context('Context description', mockBodyFunction);
         })
 
@@ -72,6 +86,8 @@ describe('Core', () => {
         });
 
         it('THEN is increments and decrements depth', () => {
+            sinon.assert.calledOnce(incrementDepthSpy);
+            sinon.assert.calledOnce(decrementDepthSpy);
             expect(Counter.depth).to.equal(0);
         });
 
@@ -94,12 +110,23 @@ describe('Core', () => {
 
     });
 
-    describe('GIVEN test is called', () => {
-        let mockTest: any;
-        let testcountSpy: sinon.SinonSpy = sinon.spy(Counter, 'incrementTestCount')
+    describe('GIVEN xcontext is called', () => {
+        let mockContext: any;
 
         beforeEach(() => {
-            testcountSpy.reset();
+            mockContext = xcontext('Context description', mockBodyFunction);
+        });
+
+        it('THEN it does nothing', () => {
+            sinon.assert.notCalled(mockBodyFunction);
+        })
+
+    });
+
+    describe('GIVEN test is called', () => {
+        let mockTest: any;
+
+        beforeEach(() => {
             mockTest = test('Test description', mockBodyFunction);
         });
 
@@ -117,8 +144,18 @@ describe('Core', () => {
             sinon.assert.calledOnce(testcountSpy);
         });
 
-        after(() => {
-            testcountSpy.restore();
+    });
+
+    describe('GIVEN xtest is called', () => {
+        let mockTest: any;
+
+        beforeEach(() => {
+            mockTest = xtest('Test description', mockBodyFunction);
+        });
+
+        it('THEN it does nothing', () => {
+            sinon.assert.notCalled(testcountSpy);
+            sinon.assert.notCalled(mockBodyFunction);
         })
 
     });

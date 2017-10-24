@@ -27,8 +27,8 @@ Add one of the following to scripts in package.json
 
 Run npm test / npm run test:watch
 
-Bedrock will automatically load any files that match *.spec.js.
-
+Bedrock will automatically load any files that match *.spec.js. This can be changed by passing a custom pattern (see configuration)
+.
 ## Usage
 Bedrock exposes three functions for composing tests:
 
@@ -40,9 +40,6 @@ A container for a single test. Can contain one or more assertions. A spec whose 
 
 ```expect(actual) -> matchers```</br>
 Creates an assertion for a test.
-
-hooks
-
 
 ## Example tests
 
@@ -63,6 +60,10 @@ context("GIVEN that something has happened", () => {
 
 })
 ```
+
+## Hooks
+
+```before(function())```
 
 ## Matchers
 
@@ -85,14 +86,16 @@ actual value is of type expected
 
 ~~Bin execution~~</br>
 ~~Watch mode~~</br>
-Matchers (see below)</br>
-Expectation failure details</br>
+~~Matchers (see below)~~</br>
 ~~Virtual DOM~~</br>    
 ~~Stubs/Spies~~</br>
+~~Additional hooks (before/beforeAll/after/afterAll)~~
+~~Ignore tests~~
+Expectation failure details/summary</br>
 Regex matcher</br>
 Time manipulation</br>
 Custom configuration options</br>
-~~Additional hooks (before/beforeAll/after/afterAll)~~
+Focus tests
 
 ## Matchers
 
@@ -121,3 +124,4 @@ Custom configuration options</br>
 ~~throwsError~~</br>
 ~~not~~</br>
 
+## Configuration
