@@ -57,12 +57,12 @@ class Expectation {
     toEqual = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
         this.failureDetails = ['Expected ', this.expected,
-        ' => ',
-        this.expected.constructor.name,
-        ' | Actual: ',
-        this.subject,
-        ' => ',
-        this.subject.constructor.name];
+            ' => ',
+            this.expected.constructor.name,
+            ' | Actual: ',
+            this.subject,
+            ' => ',
+            this.subject.constructor.name];
         return this.assert(this.subject === objectToMatch);
     }
 
@@ -185,7 +185,7 @@ class Expectation {
         else if (this.subject.constructor.name === "Set") {
             return this.assert(this.subject.has(item));
         }
-        else{
+        else {
             return this.assert(this.subject.includes(item));
         }
     }
@@ -267,18 +267,38 @@ class Expectation {
             if (this.subject && this.expected) {
                 Reporter.report(new Report(this.failureDetails, MessageType.COMPARISON));
             }
-            Counter.incrementFailCount();
-
+            Counter.incrementFailCount();   
             try {
                 throw new Error('Assertion error');
             }
-            catch (e) {
-                var pe = new PrettyError();
-                pe.skipPackage('bedrock');
-                pe.skipPath('/Users/joemaidman/projects/bedrock');
-                pe.skipNodeFiles();
-                var renderedError = pe.render(e);
-                printCaughtException(e.message, renderedError);
+            catch (error) {
+                var prettyError = new PrettyError();
+                prettyError.skipPackage('bed-rock');
+                prettyError.appendStyle({
+               
+                    'pretty-error > trace > item > header > what': {
+                        display: 'none'
+                     },
+                     'pretty-error > trace > item': {
+                       display: 'block',
+                       marginBottom: 0,
+                       marginLeft: 2,
+                       bullet: '"<grey>-</grey>"'
+                     },
+                     'pretty-error > trace':{
+                     display: 'block',
+                     marginTop: 0
+                    },
+                    "block": {
+                        display: "block",
+                       
+                        "height": "100"
+                      }
+                 
+                        
+                });
+                var prettyTrace = prettyError.render(error);
+                printCaughtException(error.message, prettyTrace);
             }
             return false;
         }

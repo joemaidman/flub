@@ -7,12 +7,14 @@ import Spy from './Spy';
 import Hooks from './Hooks';
 
 let currentDescription: string;
+export let currentTestFocused: boolean = false;
+export const testSummary = new Array<Report>();
+export const testSummaryFocused = new Array<Report>();
 let hooks: Hooks = new Hooks();
 
+
 export const context = (des: string, context: Function): void => {
-    Reporter.report(
-        new Report(des, levelType())
-    );
+    Reporter.report(new Report(des, levelType()));
     Counter.incrementDepth();
     context();
     Counter.decrementDepth();
@@ -22,6 +24,8 @@ export const context = (des: string, context: Function): void => {
     Hooks.removeHook('tearDownEachHooks', Counter.depth);
 }
 
+export const xcontext = (des: string, context: Function): void => {}
+
 export const test = (des: string, tests: () => any): void => {
     Hooks.runHooks('setupEachHooks');
     currentDescription = des;
@@ -29,6 +33,8 @@ export const test = (des: string, tests: () => any): void => {
     tests();
     Hooks.runHooks('tearDownEachHooks');
 }
+
+export const xtest = (des: string, context: Function): void => {}
 
 export const expect = (subject: any): Expectation => {
     return new Expectation(subject, currentDescription);
