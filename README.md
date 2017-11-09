@@ -11,7 +11,7 @@
   J#"###"#"#"#"####'\# #"##"#"##"#"#####&"## "#"&"##|\ 
   ```
 
-Bedrock is a lightweight javascript BDD / TDD testing framework for Node. It comprises a CLI test runner, assertion library and utilities including doubles, mocks, stubs and spies.
+Bedrock is a lightweight javascript BDD / TDD unit testing framework for Node.js. It comprises a CLI test runner/reporter, assertion library and utilities including stubs and spies.
 
 ## Installation
 
@@ -87,20 +87,20 @@ actual value is of type expected
 ~~Bin execution~~</br>
 ~~Watch mode~~</br>
 ~~Matchers (see below)~~</br>
-~~Virtual DOM~~</br>    
+~~Virtual DOM~~</br>
 ~~Stubs/Spies~~</br>
 ~~Additional hooks (before/beforeAll/after/afterAll)~~</br>
 ~~Ignore tests~~</br>
-Expectation failure details/summary</br>
+~~Expectation failure details/summary~~</br>
 ~~Regex matcher~~</br>
-Custom configuration for test file names & </br>
+~~Custom flag for test file extentions~~</br>
 Time manipulation</br>
 Focus tests</br>
 
 ## Matchers
 
 ~~isEqualTo~~</br>
-~~toBe</br>
+~~toBe~~</br>
 ~~toBeTypeOf~~</br>
 ~~toBeDefined~~</br>
 ~~toBeUndefined~~</br>
