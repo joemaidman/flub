@@ -3,10 +3,11 @@ import Reporter from './Reporter';
 import Report from './Report';
 import MessageType from './MessageType';
 import * as Counter from './Counter';
-import { checkType } from './Utilities'
+import { checkType } from './Utilities';
 import * as R from 'ramda';
 import * as PrettyError from 'pretty-error';
-import { Fail, fails } from './Failure'
+import { FailureReport, failureList } from './FailureReport';
+
 import {
     printStartHeader,
     printReloadHeader,
@@ -20,27 +21,31 @@ class Expectation {
     subject: any;
     expected: any;
     des: string;
+    failureMessages: Array<Report>;
     failureDetails: Array<string>;
     messages: Array<Report>;
     not: Expectation;
     isNot: boolean;
     throwsArgs: Array<any>;
+    contextChain: Array<string>;
 
-    constructor(subject: any, des: string, isNot: boolean = false) {
+    constructor(subject: any, des: string, isNot: boolean = false, contextChain: Array<string> = []) {
         this.subject = subject;
         this.des = des;
         this.failureDetails = new Array<string>();
+        this.failureMessages = new Array<Report>();
         this.messages = new Array<Report>();
+        this.contextChain = contextChain;
         this.isNot = isNot;
         if (isNot === false) {
-            this.not = new Expectation(this.subject, des, true);
+            this.not = new Expectation(this.subject, des, true, contextChain);
         }
     }
 
     with = function (): boolean {
         this.throwsArgs = Array.prototype.slice.call(arguments);
         return this;
-    }
+    };
 
     toBe = (objectToMatch: any): boolean => {
         this.expected = objectToMatch;
@@ -69,13 +74,13 @@ class Expectation {
     toBeDefined = (): boolean => {
         this.expected = Object;
         this.failureDetails = ['Expected ', this.subject, ' to be defined'];
-        return this.assert(typeof (this.subject) !== "undefined");
+        return this.assert(typeof (this.subject) !== 'undefined');
     }
 
     toBeUndefined = (): boolean => {
         this.expected = undefined;
         this.failureDetails = ['Expected ', this.subject, ' to be undefined'];
-        return this.assert(typeof (this.subject) === "undefined");
+        return this.assert(typeof (this.subject) === 'undefined');
     }
 
     toBeNotNull = (): boolean => {
@@ -144,8 +149,8 @@ class Expectation {
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.length === length);
         }
-        else if (this.subject.constructor.name === "Set"
-            || this.subject.constructor.name === "Map") {
+        else if (this.subject.constructor.name === 'Set'
+            || this.subject.constructor.name === 'Map') {
             return this.assert(this.subject.size === length);
         }
         return this.assert(false);
@@ -175,6 +180,14 @@ class Expectation {
         return this.assert(this.subject > min && this.subject < max);
     }
 
+    toBeStringContaining = (text: string): boolean => {
+        return this.assert(R.contains(text, this.subject));
+    }
+
+    toBeStringMatching = (regex: RegExp): boolean => {
+        return this.assert(regex.test(this.subject));
+    }
+
     toContain = (item: any): boolean => {
         this.expected = item;
         this.failureDetails = ['Expected ', this.subject, ' to contain ', this.expected];
@@ -182,7 +195,7 @@ class Expectation {
         if (this.subject.constructor.name === 'Array') {
             return this.assert(this.subject.includes(item));
         }
-        else if (this.subject.constructor.name === "Set") {
+        else if (this.subject.constructor.name === 'Set') {
             return this.assert(this.subject.has(item));
         }
         else {
@@ -207,7 +220,7 @@ class Expectation {
         }
 
         return this.assert(didThrow === true
-            && thrownMessage === message)
+            && thrownMessage === message);
     }
 
     toThrowError = (type: any, message: string): boolean => {
@@ -229,17 +242,17 @@ class Expectation {
                 thrownType, 'error with ', thrownMessage];
         }
         else {
-            this.failureDetails = ['Expected ', this.subject, ' to throw ', type, ' error with ', message, 'but did not throw']
+            this.failureDetails = ['Expected ', this.subject, ' to throw ', type, ' error with ', message, 'but did not throw'];
         }
 
         return this.assert(didThrow === true
             && thrownMessage === message
-            && thrownType === type.name)
+            && thrownType === type.name);
     }
 
     toHaveKey = (item: any): boolean => {
         this.failureDetails = ['Expected ', this.subject, ' to have key ', item];
-        //This should work for objects too
+        // This should work for objects too
         return this.assert(this.subject.has(item));
     }
 
@@ -259,46 +272,66 @@ class Expectation {
                 Array.prototype.slice.call(arguments),
                 this.subject.getCallHistory()
             ));
-    }
+    };
 
-    assert = (x: boolean): boolean => {
-        if (this.isNot ? x : !x) {
+    assert = (equalityTest: boolean): boolean => {
+        if (this.isNot ? equalityTest : !equalityTest) {
             Reporter.report(new Report([this.des], MessageType.ERROR));
             if (this.subject && this.expected) {
-                Reporter.report(new Report(this.failureDetails, MessageType.COMPARISON));
+                this.failureMessages.push(new Report(this.failureDetails, MessageType.COMPARISON));
+                // Reporter.report(new Report(this.failureDetails, MessageType.COMPARISON));
             }
-            Counter.incrementFailCount();   
+            Counter.incrementFailCount();
             try {
                 throw new Error('Assertion error');
             }
             catch (error) {
-                var prettyError = new PrettyError();
+                let prettyError = new PrettyError();
                 prettyError.skipPackage('bed-rock');
                 prettyError.appendStyle({
-               
-                    'pretty-error > trace > item > header > what': {
+
+                    'pretty-error > header > title > kind': {
                         display: 'none'
                      },
-                     'pretty-error > trace > item': {
-                       display: 'block',
-                       marginBottom: 0,
-                       marginLeft: 2,
-                       bullet: '"<grey>-</grey>"'
+                     'pretty-error > header > colon': {
+                        // we hide that too: 
+                        display: 'none'
                      },
-                     'pretty-error > trace':{
-                     display: 'block',
-                     marginTop: 0
+                   
+                     // our error message 
+                     'pretty-error > header > message': {
+                         display: 'none'
+                     },
+                     'pretty-error > trace > item > header > pointer > file': {
+                        color: 'cyan'
+                     },
+                   
+                     'pretty-error > trace > item > header > pointer > colon': {
+                        color: 'cyan'
+                     },
+                   
+                     'pretty-error > trace > item > header > pointer > line': {
+                        color: 'cyan'
+                     },
+                    'pretty-error > trace > item': {
+                        display: 'block',
+                        marginBottom: 0,
+                        marginLeft: 2,
+                        bullet: '"<grey></grey>"'
                     },
-                    "block": {
-                        display: "block",
-                       
-                        "height": "100"
-                      }
-                 
-                        
+                    'pretty-error > trace': {
+                        display: 'block',
+                        marginTop: 0
+                    }
+
+
                 });
-                var prettyTrace = prettyError.render(error);
-                printCaughtException(error.message, prettyTrace);
+                
+                let prettyTrace = prettyError.render(error);
+                failureList.push(new FailureReport(
+                    this.des, (failureList.length + 1) + ') ' + this.contextChain.join(' => ') + ' => ' + this.des + ': ', error.message, this.failureMessages, prettyTrace
+                ));
+                // printCaughtException(error.message, prettyTrace);
             }
             return false;
         }

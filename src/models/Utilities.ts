@@ -12,8 +12,8 @@ export const checkType = (name: string | Array<string>, object: any): boolean =>
         return false;
     }
     return true;
-}
+};
 
 export const throwing = (message: string): void => {
     throw new Error(message);
-}
+};

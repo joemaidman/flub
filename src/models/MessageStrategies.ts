@@ -1,7 +1,7 @@
-import * as _ from 'lodash'
-import * as con from 'manakin'
+import * as _ from 'lodash';
+import * as con from 'manakin';
 
-import MessageType from './MessageType'
+import MessageType from './MessageType';
 
 export abstract class MessageStrategy {
     messageType: MessageType;
@@ -28,7 +28,7 @@ export const loadMessageStrategies = (): Array<MessageStrategy> => {
         new ComparisonMessageStrategy(),
         new StackMessageStrategy()
     ];
-}
+};
 
 export const getMessageStrategy = (messageType: MessageType): MessageStrategy => {
     return _.find(loadMessageStrategies(),
@@ -36,7 +36,7 @@ export const getMessageStrategy = (messageType: MessageType): MessageStrategy =>
             return strategy.handles(messageType);
         })
         || new OKMessageStrategy();
-}
+};
 
 export class DefaultMessageStrategy extends MessageStrategy {
 
@@ -69,7 +69,7 @@ export class ErrorMessageStrategy extends MessageStrategy {
             messages = messages.map((message: string, index: number) => {
                 return index === 0
                     ? (' '.repeat(counter * this.SPACES) + '\u2717 ' + message)
-                    : message
+                    : message;
             });
         con.error.apply(con, messages);
     }
@@ -88,7 +88,7 @@ export class OKMessageStrategy extends MessageStrategy {
             messages = messages.map((message: string, index: number) => {
                 return index === 0
                     ? (' '.repeat(counter * this.SPACES) + '\u2714 ' + message)
-                    : message
+                    : message;
             });
         con.success.apply(con, messages);
     }

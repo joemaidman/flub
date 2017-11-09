@@ -12,7 +12,7 @@ export const printStartHeader = () => {
         new Report('',
             MessageType.DEFAULT)
     );
-}
+};
 
 export const printReloadHeader = () => {
     Reporter.report(
@@ -28,7 +28,7 @@ export const printReloadHeader = () => {
         new Report([''],
             MessageType.DEFAULT)
     );
-}
+};
 
 export const printWatching = () => {
     Reporter.report(
@@ -44,7 +44,7 @@ export const printWatching = () => {
         new Report('',
             MessageType.DEFAULT)
     );
-}
+};
 
 export const printTestSummary = (elapsed: any) => {
     Reporter.report(
@@ -52,10 +52,10 @@ export const printTestSummary = (elapsed: any) => {
             MessageType.DEFAULT)
     );
     Reporter.report(
-        new Report("Ran " + Counter.testCount
-            + " tests in "
+        new Report('Ran ' + Counter.testCount
+            + ' tests in '
             + elapsed.millisecondsTotal
-            + " ms",
+            + ' ms',
             MessageType.DEFAULT)
     );
     Reporter.report(
@@ -66,11 +66,11 @@ export const printTestSummary = (elapsed: any) => {
         new Report(Counter.failCount + ' failed',
             MessageType.ERROR)
     );
-}
+};
 
-export const printCaughtException = (message: string, stack: string) => {
+export const printCaughtException = (stack: string, message: string = '') => {
     Reporter.report(
-        new Report([message, stack || ''],
+        new Report(message === '' ? [stack || ''] : [message, stack || ''],
             MessageType.STACK)
     );
-}
+};
