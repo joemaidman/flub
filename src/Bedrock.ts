@@ -30,13 +30,14 @@ const BedRock = () => {
   global['document'] = window.document;
   let getElapsed: Function;
 
-  flags.defineString('ext', '*.spec.js', 'Test file extentions');
+  flags.defineString('ext', 'spec', 'Test file extentions');
   flags.defineBoolean('watch');
   flags.parse();
 
-  const globString: string = flags.get('ext') ? flags.get('ext') : '*.spec.js';
+  const globString: string = flags.get('ext') ? '*.' + flags.get('ext') + '.js' : '*.spec.js';
 
-  const regexString: RegExp = new RegExp('.*?(?=\.spec).*?\.js');
+// '.*?(?=\.spec).*?\.js'
+  const regexString: RegExp = new RegExp('.*?(?=\.' + flags.get('ext') + ').*?\.js');
   let testFiles: Array<string> = new Array<string>();
   Counter.reset();
   getElapsed = measureTime();

@@ -2,7 +2,7 @@
   "name": "bed-rock",
   "author": "Joe Maidman",
   "license": "ISC",
-  "version": "1.0.32",
+  "version": "2.1.0",
   "description": "A javascript unit testing framework",
   "main": "./dist/src/index.js",
   "bin": {
