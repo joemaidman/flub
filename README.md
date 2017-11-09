@@ -99,7 +99,7 @@ Focus tests</br>
 
 ## Matchers
 
-~~isEqualTo~~</br>
+~~toEqual~~</br>
 ~~toBe~~</br>
 ~~toBeTypeOf~~</br>
 ~~toBeDefined~~</br>
@@ -107,7 +107,7 @@ Focus tests</br>
 ~~toBeNotNull~~</br>
 ~~toBeNull~~</br>
 ~~toBeTruthy~~</br>
-~~toBeFalsy~~</br>
+~~toBeFalsey~~</br>
 ~~toBeLessThan~~</br>
 ~~toBeGreaterThan~~</br>
 ~~toBeLessThanOrEqualTo~~</br>
@@ -116,12 +116,17 @@ Focus tests</br>
 ~~toBeCloseToExclusive~~</br>
 ~~toBeBetweenInclusive~~</br>
 ~~toBeBetweenExclusive~~</br>
+~~toBeStringContaining~~</br>
+~~toBeStringMatching~~</br>
 ~~toHaveLength~~</br>
 ~~toContain~~</br>
 ~~toHaveKey~~</br>
 ~~toRespondTo~~</br>
-~~throws~~</br>
-~~throwsError~~</br>
+~~toThrow~~</br>
+~~toThrowError~~</br>
+~~toHaveBeenCalled~~</br>
+~~toHaveBeenCalledWith~~</br>
 ~~not~~</br>
+~~with~~</br>
 
 ## Configuration
