@@ -89,13 +89,13 @@ actual value is of type expected
 ~~Matchers (see below)~~</br>
 ~~Virtual DOM~~</br>    
 ~~Stubs/Spies~~</br>
-~~Additional hooks (before/beforeAll/after/afterAll)~~
-~~Ignore tests~~
+~~Additional hooks (before/beforeAll/after/afterAll)~~</br>
+~~Ignore tests~~</br>
 Expectation failure details/summary</br>
-Regex matcher</br>
+~~Regex matcher~~</br>
+Custom configuration for test file names & </br>
 Time manipulation</br>
-Custom configuration options</br>
-Focus tests
+Focus tests</br>
 
 ## Matchers
 

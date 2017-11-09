@@ -2,7 +2,7 @@ import { setupEach, spy } from './../../src/models/Core';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import Hooks from '../../src/models/Hooks'
+import Hooks from '../../src/models/Hooks';
 
 describe('Hooks', () => {
 
@@ -14,7 +14,7 @@ describe('Hooks', () => {
     before(() => {
         hookSpy = sinon.spy();
         mockHookList = [hookSpy];
-        getHookSpy = sinon.stub(Hooks, 'getHooks').callsFake(() => { return mockHookList });
+        getHookSpy = sinon.stub(Hooks, 'getHooks').callsFake(() => { return mockHookList; });
     })
 
     after(() => {
@@ -33,7 +33,7 @@ describe('Hooks', () => {
     describe('WHEN runHook is called', () => {
 
         it('THEN the hook is run', () => {
-            Hooks.runHook('setupEachHooks', 0)
+            Hooks.runHook('setupEachHooks', 0);
             sinon.assert.calledOnce(hookSpy);
         });
 
@@ -42,7 +42,7 @@ describe('Hooks', () => {
     describe('WHEN removeHook has been called', () => {
 
         it('THEN the array of hooks does not contains the new hook', () => {
-            Hooks.removeHook('setupEachHooks', 0)
+            Hooks.removeHook('setupEachHooks', 0);
             expect(Hooks.getHooks('setupEachHooks')).to.have.lengthOf(0);
         });
 

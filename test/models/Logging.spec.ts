@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import * as Logging from '../../src/models/Logging';
-import Report from '../../src/models/Report'
+import Report from '../../src/models/Report';
 import Reporter from '../../src/models/Reporter';
 import MessageType from '../../src/models/MessageType';
-import * as Counter from '../../src/models/Counter'
+import * as Counter from '../../src/models/Counter';
 
 describe('Logging', () => {
 
@@ -85,14 +85,23 @@ describe('Logging', () => {
     });
 
     describe('WHEN printCaughtException is called', () => {
-        before(() => {
-            reporterSpy.reset();
-            const mockError = new Error('Test error message');
-            mockError.stack = "Test stack trace";
-            Logging.printCaughtException(mockError.message, mockError.stack);
-        })
+        const mockError: Error = new Error('Test error message');
+        
 
-        it('THEN it calls report on Reporter once with the correct arguments', () => {
+        beforeEach(() => {
+            reporterSpy.reset();
+        });
+
+        it('THEN it calls report on Reporter once with the correct arguments when no message is passed', () => {
+            mockError.stack = 'Test stack trace';
+            Logging.printCaughtException(mockError.stack);
+            sinon.assert.calledOnce(reporterSpy);
+            sinon.assert.calledWithMatch(reporterSpy, new Report(['Test stack trace'], MessageType.STACK));
+        });
+
+        it('THEN it calls report on Reporter once with the correct arguments when a message is passed', () => {
+            mockError.stack = 'Test stack trace';
+            Logging.printCaughtException(mockError.stack, mockError.message);
             sinon.assert.calledOnce(reporterSpy);
             sinon.assert.calledWithMatch(reporterSpy, new Report(['Test error message', 'Test stack trace'], MessageType.STACK));
         });
