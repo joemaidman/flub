@@ -1,4 +1,15 @@
-import { context, xcontext, test, xtest, expect, spy, setupEach, tearDownEach, setup, tearDown } from './models/Core'
+import {
+    context,
+    xcontext,
+    test,
+    xtest,
+    expect,
+    spy,
+    setupEach,
+    tearDownEach,
+    setup,
+    tearDown
+} from './models/Core';
 
 export {
     context,
@@ -11,4 +22,4 @@ export {
     tearDownEach,
     setup,
     tearDown
-}
+};

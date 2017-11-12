@@ -15,13 +15,13 @@ describe('Logging', () => {
         reporterSpy = sinon.stub(Reporter, 'report').returns(true);
     });
 
-    describe('WHEN printStartHeader is called', () => {
+    describe('printStartHeader', () => {
         before(() => {
             reporterSpy.reset();
             Logging.printStartHeader();
         });
 
-        it('THEN it calls report on Reporter twice with the correct arguments', () => {
+        it('should call report on Reporter twice with the correct arguments', () => {
             sinon.assert.calledTwice(reporterSpy);
             sinon.assert.calledWith(reporterSpy, new Report('Bedrock starting...', MessageType.DEFAULT));
             sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
@@ -29,13 +29,13 @@ describe('Logging', () => {
 
     });
 
-    describe('WHEN printReloadHeader is called', () => {
+    describe('printReloadHeader', () => {
         before(() => {
             reporterSpy.reset();
             Logging.printReloadHeader();
         });
 
-        it('THEN it calls report on Reporter thrice with the correct arguments', () => {
+        it('should call report on Reporter thrice with the correct arguments', () => {
             sinon.assert.calledThrice(reporterSpy);
             sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
             sinon.assert.calledWith(reporterSpy, new Report('Bedrock reloading...', MessageType.DEFAULT));
@@ -45,13 +45,13 @@ describe('Logging', () => {
     });
 
 
-    describe('WHEN printWatching is called', () => {
+    describe('printWatching', () => {
         before(() => {
             reporterSpy.reset();
             Logging.printWatching();
         });
 
-        it('THEN it calls report on Reporter thrice with the correct arguments', () => {
+        it('should call report on Reporter thrice with the correct arguments', () => {
             sinon.assert.calledThrice(reporterSpy);
             sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
             sinon.assert.calledWith(reporterSpy, new Report('Watching files...', MessageType.DEFAULT));
@@ -60,7 +60,7 @@ describe('Logging', () => {
 
     });
 
-    describe('WHEN printTestSummary is called', () => {
+    describe('printTestSummary', () => {
 
         let testCountStub: sinon.SinonStub;
         let passCountStub: sinon.SinonStub;
@@ -74,7 +74,7 @@ describe('Logging', () => {
             Logging.printTestSummary(mockElapsed);
         });
 
-        it('THEN it calls report on Reporter thrice with the correct arguments', () => {
+        it('should call report on Reporter thrice with the correct arguments', () => {
             expect(reporterSpy.callCount).to.equal(4);
             sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
             sinon.assert.calledWith(reporterSpy, new Report('Ran 0 tests in 100 ms', MessageType.DEFAULT));
@@ -84,22 +84,21 @@ describe('Logging', () => {
 
     });
 
-    describe('WHEN printCaughtException is called', () => {
+    describe('printCaughtException', () => {
         const mockError: Error = new Error('Test error message');
-        
 
         beforeEach(() => {
             reporterSpy.reset();
         });
 
-        it('THEN it calls report on Reporter once with the correct arguments when no message is passed', () => {
+        it('should call report on Reporter once with the correct arguments when no message is passed', () => {
             mockError.stack = 'Test stack trace';
             Logging.printCaughtException(mockError.stack);
             sinon.assert.calledOnce(reporterSpy);
             sinon.assert.calledWithMatch(reporterSpy, new Report(['Test stack trace'], MessageType.STACK));
         });
 
-        it('THEN it calls report on Reporter once with the correct arguments when a message is passed', () => {
+        it('should call report on Reporter once with the correct arguments when a message is passed', () => {
             mockError.stack = 'Test stack trace';
             Logging.printCaughtException(mockError.stack, mockError.message);
             sinon.assert.calledOnce(reporterSpy);

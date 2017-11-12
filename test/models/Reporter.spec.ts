@@ -12,13 +12,13 @@ describe('Reporter', () => {
 
     let defaultMessageStrategy = new DefaultMessageStrategy();
     let getMessageStrategySpy: sinon.SinonStub;
-    let printSpy: sinon.SinonSpy;
+    let printSpy: sinon.SinonStub;
 
     describe('WHEN report has been called', () => {
 
         before(() => {
             getMessageStrategySpy = sinon.stub(GetMessageStrategyParent, 'getMessageStrategy').returns(defaultMessageStrategy);
-            printSpy = sinon.spy(defaultMessageStrategy, 'print');
+            printSpy = sinon.stub(defaultMessageStrategy, 'print');
             Reporter.report(new Report('Test', MessageType.DEFAULT));
         });
 

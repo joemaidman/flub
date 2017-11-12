@@ -1,4 +1,4 @@
-import MessageType from './MessageType'
+import MessageType from './MessageType';
 
 export default class Report {
     messages: Array<string>;

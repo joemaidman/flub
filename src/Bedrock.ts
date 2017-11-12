@@ -26,17 +26,21 @@ import Reporter from './models/Reporter';
 import MessageType from './models/MessageType';
 
 const BedRock = () => {
-  global['window'] = new JSDOM().window;
-  global['document'] = window.document;
-  let getElapsed: Function;
-
   flags.defineString('ext', 'spec', 'Test file extentions');
   flags.defineBoolean('watch');
+  flags.defineBoolean('nodom');
+  flags.defineBoolean('nosumm');
   flags.parse();
+
+  if (!flags.get('nodom')) {
+    global['window'] = new JSDOM().window;
+    global['document'] = window.document;
+  }
+
+  let getElapsed: Function;
 
   const globString: string = flags.get('ext') ? '*.' + flags.get('ext') + '.js' : '*.spec.js';
 
-// '.*?(?=\.spec).*?\.js'
   const regexString: RegExp = new RegExp('.*?(?=\.' + flags.get('ext') + ').*?\.js');
   let testFiles: Array<string> = new Array<string>();
   Counter.reset();
@@ -58,8 +62,11 @@ const BedRock = () => {
       Hooks.clearHooks();
     });
 
-    printTestSummary(getElapsed());
-    printFailures();
+    if (!flags.get('nosumm')) {
+      printTestSummary(getElapsed());
+      printFailures();
+    }
+
     clearFailures();
 
     if (flags.get('watch')) {
@@ -90,8 +97,12 @@ const BedRock = () => {
           }
           Hooks.clearHooks();
         });
-        printTestSummary(getElapsed());
-        printFailures();
+
+        if (!flags.get('nosumm')) {
+          printTestSummary(getElapsed());
+          printFailures();
+        }
+
         clearFailures();
       });
     }

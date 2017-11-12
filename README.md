@@ -48,14 +48,12 @@ var context = require('bed-rock').context;
 var test = require('bed-rock').test;  
 var expect = require('bed-rock').expect;  
 
-context("GIVEN that something has happened", () => {
-    
-    test('THEN this test should pass',() =>{
-        expect(1).toEqual(1);
-    });
+context("GIVEN the state of the world", () => {
 
-    test('THEN this test should fail',() =>{
-        expect(1).toEqual(2);
+    context("WHEN some action(s) have been performed")
+
+    test('THEN I expect this outcome',() =>{
+        expect(1).toEqual(1);
     });
 
 })
@@ -98,7 +96,6 @@ Time manipulation</br>
 Focus tests</br>
 
 ## Matchers
-
 ~~toEqual~~</br>
 ~~toBe~~</br>
 ~~toBeTypeOf~~</br>
@@ -130,3 +127,13 @@ Focus tests</br>
 ~~with~~</br>
 
 ## Configuration
+--ext</br>
+--watch</br>
+--nodom</br>
+
+##Giants shoulders
+manakin</br>
+chokadir</br>
+flags</br>
+pretty-error</br>
+glob</br>

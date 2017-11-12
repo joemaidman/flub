@@ -1,22 +1,35 @@
-import { testCount } from './../../src/models/Counter';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as _ from 'lodash';
 
 import { expect as expectBR } from '../../src/models/Core';
-import { context, xcontext, spy as spyBR, test, xtest, setup, setupEach, tearDown, tearDownEach } from '../../src/models/Core';
+import {
+    context,
+    xcontext,
+    spy as spyBR,
+    test,
+    xtest,
+    setup,
+    setupEach,
+    tearDown,
+    tearDownEach,
+    currentDescription,
+    levelType
+} from '../../src/models/Core';
 import Expectation from '../../src/models/Expectation';
 import Spy from '../../src/models/Spy';
 import Reporter from '../../src/models/Reporter';
 import Report from '../../src/models/Report';
 import MessageType from '../../src/models/MessageType';
 import * as Counter from '../../src/models/Counter';
-import Hooks from '../../src/models/Hooks'
+import Hooks from '../../src/models/Hooks';
+import ContextChain from '../../src/models/ContextChain';
+import { testCount } from './../../src/models/Counter';
 
 describe('Core', () => {
 
     let reporter: Reporter;
-    let reportStub: sinon.SinonSpy;
+    let reportSpy: sinon.SinonSpy;
     let mockBodyFunction: sinon.SinonSpy;
     let runSingleHookSpy: sinon.SinonSpy;
     let runHooksSpy: sinon.SinonSpy;
@@ -25,9 +38,11 @@ describe('Core', () => {
     let testcountSpy: sinon.SinonSpy;
     let incrementDepthSpy: sinon.SinonSpy;
     let decrementDepthSpy: sinon.SinonSpy;
+    let pushContextChainSpy: sinon.SinonSpy;
+    let popContextChainSpy: sinon.SinonSpy;
 
     before(() => {
-        reportStub = sinon.stub(Reporter, 'report');
+        reportSpy = sinon.stub(Reporter, 'report');
         mockBodyFunction = sinon.stub();
         runHooksSpy = sinon.spy(Hooks, 'runHooks');
         runSingleHookSpy = sinon.spy(Hooks, 'runHook');
@@ -36,11 +51,13 @@ describe('Core', () => {
         testcountSpy = sinon.spy(Counter, 'incrementTestCount');
         incrementDepthSpy = sinon.spy(Counter, 'incrementDepth');
         decrementDepthSpy = sinon.spy(Counter, 'decrementDepth');
+        pushContextChainSpy = sinon.spy(ContextChain, 'push');
+        popContextChainSpy = sinon.spy(ContextChain, 'pop');
 
-    })
+    });
 
     beforeEach(() => {
-        reportStub.reset();
+        reportSpy.reset();
         mockBodyFunction.reset();
         runHooksSpy.reset();
         runSingleHookSpy.reset();
@@ -50,57 +67,68 @@ describe('Core', () => {
         Counter.reset();
         incrementDepthSpy.reset();
         decrementDepthSpy.reset();
-    })
+        pushContextChainSpy.reset();
+        popContextChainSpy.reset();
+    });
 
     after(() => {
-        reportStub.restore();
+        reportSpy.restore();
         runHooksSpy.restore();
         runSingleHookSpy.restore();
         removeSingleHookSpy.restore();
         testcountSpy.restore();
         incrementDepthSpy.restore();
         decrementDepthSpy.restore();
-    })
-
-    describe('GIVEN expect is called', () => {
-        const assertion: Expectation = expectBR(1);
-
-        it('THEN it returns a new Expectation', () => {
-            expect(assertion).to.be.instanceof(Expectation);
-        });
-
-        it('THEN the returned Expectation has the correct subject', () => {
-            expect(assertion.subject).to.equal(1);
-        });
+        pushContextChainSpy.restore();
+        popContextChainSpy.restore();
     });
 
-    describe('GIVEN context is called', () => {
+    describe('expect', () => {
+        const assertion: Expectation = expectBR(1);
+
+        it('should return a new Expectation with the correct subject', () => {
+            expect(assertion).to.be.instanceof(Expectation);
+            expect(assertion.subject).to.equal(1);
+        });
+
+    });
+
+    describe('context', () => {
         let mockContext: any;
 
         beforeEach(() => {
             mockContext = context('Context description', mockBodyFunction);
-        })
-
-        it('THEN is prints its description', () => {
-            sinon.assert.calledWith(reportStub, new Report('Context description', MessageType.ROOT));
         });
 
-        it('THEN is increments and decrements depth', () => {
+        it('prints its description', () => {
+            sinon.assert.calledWith(reportSpy, new Report('Context description', MessageType.ROOT));
+        });
+
+        it('should increment and decrement depth', () => {
             sinon.assert.calledOnce(incrementDepthSpy);
             sinon.assert.calledOnce(decrementDepthSpy);
             expect(Counter.depth).to.equal(0);
         });
 
-        it('THEN is runs its body', () => {
+        it('should run its body', () => {
             sinon.assert.calledOnce(mockBodyFunction);
         });
 
-        it('THEN is runs tearDownHooks', () => {
+        it('should add the description to the CurrentContext chain', () => {
+            sinon.assert.calledOnce(pushContextChainSpy);
+            sinon.assert.calledWith(pushContextChainSpy, 'Context description');
+        });
+
+        it('should remove the description to the CurrentContext chain', () => {
+            sinon.assert.calledOnce(popContextChainSpy);
+        });
+
+        it('should run tearDownHooks', () => {
             sinon.assert.calledOnce(runSingleHookSpy);
             sinon.assert.calledWith(runSingleHookSpy, 'tearDownHooks', 0);
         });
 
-        it('THEN is runs removeHook three times', () => {
+        it('should run removeHook three times', () => {
             sinon.assert.calledThrice(removeSingleHookSpy);
             sinon.assert.calledWith(removeSingleHookSpy, 'setupEachHooks', 0);
             sinon.assert.calledWith(removeSingleHookSpy, 'tearDownHooks', 0);
@@ -108,59 +136,68 @@ describe('Core', () => {
 
         });
 
+        it('should clear the context chain', () => {
+            expect(ContextChain.chain).to.be.empty;
+        });
+
+
     });
 
-    describe('GIVEN xcontext is called', () => {
+    describe('xcontext', () => {
         let mockContext: any;
 
         beforeEach(() => {
             mockContext = xcontext('Context description', mockBodyFunction);
         });
 
-        it('THEN it does nothing', () => {
+        it('should do nothing', () => {
             sinon.assert.notCalled(mockBodyFunction);
-        })
+        });
 
     });
 
-    describe('GIVEN test is called', () => {
+    describe('test', () => {
         let mockTest: any;
 
         beforeEach(() => {
             mockTest = test('Test description', mockBodyFunction);
         });
 
-        it('THEN it runs setupEach and tearDownEach hooks', () => {
+        it('should run setupEach and tearDownEach hooks', () => {
             sinon.assert.calledTwice(runHooksSpy);
             sinon.assert.calledWith(runHooksSpy, 'setupEachHooks');
             sinon.assert.calledWith(runHooksSpy, 'tearDownEachHooks');
         });
 
-        it('THEN is runs its body', () => {
+        it('should run its body', () => {
             sinon.assert.calledOnce(mockBodyFunction);
         });
 
-        it('THEN it increments the test counter', () => {
+        it('should increment the test counter', () => {
             sinon.assert.calledOnce(testcountSpy);
+        });
+
+        it('should set the current description to the test description', () => {
+            expect(currentDescription).to.equal('Test description');
         });
 
     });
 
-    describe('GIVEN xtest is called', () => {
+    describe('xtest', () => {
         let mockTest: any;
 
         beforeEach(() => {
             mockTest = xtest('Test description', mockBodyFunction);
         });
 
-        it('THEN it does nothing', () => {
+        it('should do nothing', () => {
             sinon.assert.notCalled(testcountSpy);
             sinon.assert.notCalled(mockBodyFunction);
-        })
+        });
 
     });
 
-    describe('GIVEN setup is called', () => {
+    describe('setup', () => {
 
         let mockSetup: any;
 
@@ -168,13 +205,13 @@ describe('Core', () => {
             mockSetup = setup(mockBodyFunction);
         });
 
-        it('THEN is runs its body', () => {
+        it('should run its body', () => {
             sinon.assert.calledOnce(mockBodyFunction);
         });
 
     });
 
-    describe('GIVEN setupEach is called', () => {
+    describe('setupEach', () => {
 
         let mockSetup: any;
 
@@ -182,14 +219,14 @@ describe('Core', () => {
             mockSetup = setupEach(mockBodyFunction);
         });
 
-        it('THEN is runs addHook', () => {
+        it('should run addHook', () => {
             sinon.assert.calledOnce(addSingleHookSpy);
-            sinon.assert.calledWith(addSingleHookSpy, 'setupEachHooks', mockBodyFunction)
+            sinon.assert.calledWith(addSingleHookSpy, 'setupEachHooks', mockBodyFunction);
         });
 
     });
 
-    describe('GIVEN tearDown is called', () => {
+    describe('tearDown', () => {
 
         let mockTearDown: any;
 
@@ -197,14 +234,14 @@ describe('Core', () => {
             mockTearDown = tearDown(mockBodyFunction);
         });
 
-        it('THEN is runs addHook', () => {
+        it('should run addHook', () => {
             sinon.assert.calledOnce(addSingleHookSpy);
-            sinon.assert.calledWith(addSingleHookSpy, 'tearDownHooks', mockBodyFunction)
+            sinon.assert.calledWith(addSingleHookSpy, 'tearDownHooks', mockBodyFunction);
         });
 
     });
 
-    describe('GIVEN tearDownEach is called', () => {
+    describe('tearDownEach', () => {
 
         let mockTearDownEach: any;
 
@@ -212,20 +249,20 @@ describe('Core', () => {
             mockTearDownEach = tearDownEach(mockBodyFunction);
         });
 
-        it('THEN is runs addHook', () => {
+        it('should run addHook', () => {
             sinon.assert.calledOnce(addSingleHookSpy);
-            sinon.assert.calledWith(addSingleHookSpy, 'tearDownEachHooks', mockBodyFunction)
+            sinon.assert.calledWith(addSingleHookSpy, 'tearDownEachHooks', mockBodyFunction);
         });
 
     });
 
-    describe('GIVEN spy has been called', () => {
+    describe('spy', () => {
         const spy: Spy = spyBR(Math, 'round');
 
-        it('THEN is returns a spy object', () => {
+        it('should return a spy object', () => {
             expect(spy).to.be.instanceof(Spy);
         });
 
     });
-
+    
 });
