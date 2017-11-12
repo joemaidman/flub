@@ -14,7 +14,7 @@ import {
 } from '../../src/models/MessageStrategies';
 import MessageType from '../../src/models/MessageType';
 
-describe("MessageStrategies", () => {
+describe('MessageStrategies', () => {
 
     describe('loadMessageStrategies', () => {
 

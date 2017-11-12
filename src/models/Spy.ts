@@ -1,4 +1,4 @@
-export default class Spy {
+class Spy {
     private target: any;
     private originalFunction: Function;
     private callCount: number;
@@ -23,6 +23,11 @@ export default class Spy {
         return this.callHistory;
     }
 
+
+    getCallHistoryFormatted(): string {
+        return '\n    ' + this.callHistory.join('\n    ');
+    }
+
     andReturn(value: any): any {
         this.override = (): any => {
             return value;
@@ -38,12 +43,14 @@ export default class Spy {
     call(...args: any[]): any {
         this.callHistory.push(Array.prototype.slice.call(args));
         this.callCount++;
+
         if (this.override) {
             return this.override(Array.prototype.slice.call(args));
         }
         else {
             return this.originalFunction(Array.prototype.slice.call(args));
         }
+        
     }
 
     reset(): void {
@@ -82,3 +89,5 @@ export default class Spy {
     }
 
 }
+
+export default Spy;

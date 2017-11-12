@@ -1,7 +1,7 @@
-import { setupEach, spy } from './../../src/models/Core';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
+import { setupEach, spy } from './../../src/models/Core';
 import Hooks from '../../src/models/Hooks';
 
 describe('Hooks', () => {
@@ -15,33 +15,33 @@ describe('Hooks', () => {
         hookSpy = sinon.spy();
         mockHookList = [hookSpy];
         getHookSpy = sinon.stub(Hooks, 'getHooks').callsFake(() => { return mockHookList; });
-    })
+    });
 
     after(() => {
         getHookSpy.restore();
-    })
+    });
 
-    describe('WHEN addHook has been called', () => {
+    describe('addHook', () => {
 
-        it('THEN the array of hooks contains the new hook', () => {
+        it('should add the new hook to the array of hooks', () => {
             Hooks.addHook('setupEachHooks', hookSpy);
             expect(Hooks.getHooks('setupEachHooks')).to.contain(hookSpy);
         });
 
     });
 
-    describe('WHEN runHook is called', () => {
+    describe('runHook', () => {
 
-        it('THEN the hook is run', () => {
+        it('should run the hook', () => {
             Hooks.runHook('setupEachHooks', 0);
             sinon.assert.calledOnce(hookSpy);
         });
 
     });
 
-    describe('WHEN removeHook has been called', () => {
+    describe('removeHook', () => {
 
-        it('THEN the array of hooks does not contains the new hook', () => {
+        it('should remove the hook at the given index', () => {
             Hooks.removeHook('setupEachHooks', 0);
             expect(Hooks.getHooks('setupEachHooks')).to.have.lengthOf(0);
         });

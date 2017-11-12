@@ -4,6 +4,10 @@ class Hooks {
     private static tearDownEachHooks: Array<Function> = new Array<Function>();
     private static tearDownHooks: Array<Function> = new Array<Function>();
 
+    static getInstance(): Hooks {
+        return this.instance || (this.instance = new Hooks());
+    }
+
     static getHooks(name: string): Array<Function> {
         return Hooks[name];
     }
@@ -30,7 +34,7 @@ class Hooks {
 
     static runHook(name: string, index: number): void {
         if (Hooks.getHooks(name) && Hooks.getHooks(name)[index]) {
-            Hooks.getHooks(name)[index]()
+            Hooks.getHooks(name)[index]();
         }
     }
 

@@ -1,8 +1,7 @@
-import { reset } from './../../src/models/Counter';
-
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
+import { reset } from './../../src/models/Counter';
 import Spy from '../../src/models/Spy';
 
 describe('Spy', () => {
@@ -34,7 +33,7 @@ describe('Spy', () => {
             });
         });
 
-        describe('GIVEN andReturn has been set', () => {
+        describe('WHEN andReturn has been set', () => {
 
             beforeEach(() => {
                 spy = new Spy(Math, 'round').andReturn(true);
@@ -49,7 +48,7 @@ describe('Spy', () => {
             });
         });
 
-        describe('GIVEN andFake has been set', () => {
+        describe('WHEN andFake has been set', () => {
 
             beforeEach(() => {
                 spy = new Spy(Math, 'round').andFake(() => { return true });
@@ -64,7 +63,7 @@ describe('Spy', () => {
             });
         });
 
-        describe('GIVEN the spy has been manually called', () => {
+        describe('WHEN the spy has been manually called', () => {
 
             beforeEach(() => {
                 spy = new Spy(Math, 'round');
@@ -80,7 +79,7 @@ describe('Spy', () => {
             });
         });
 
-        describe('GIVEN the spy has been reset', () => {
+        describe('WHEN the spy has been reset', () => {
 
             beforeEach(() => {
                 spy = new Spy(Math, 'round').andReturn(true);
@@ -101,10 +100,10 @@ describe('Spy', () => {
             });
         });
 
-        describe('GIVEN the spy has been restored', () => {
+        describe('WHEN the spy has been restored', () => {
 
             beforeEach(() => {
-                spy = new Spy(Math, 'round').andFake(() => {return 50});
+                spy = new Spy(Math, 'round').andFake(() => { return 50 });
                 spy.restore();
             });
 
