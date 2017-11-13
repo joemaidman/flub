@@ -12,6 +12,8 @@ var test = require('bed-rock').test;
 var expect = require('bed-rock').expect;
 var setup = require('bed-rock').setup;
 var tearDown = require('bed-rock').tearDown;
+var setupEach = require('bed-rock').setupEach;
+var tearDownEach = require('bed-rock').tearDownEach;
 
 context('Matchers', () => {
 
@@ -788,6 +790,124 @@ context('Matchers', () => {
             test('Then it fails because the spy was called with 1', () => {
                 Math.round(2);
                 expect(mySpy).not.toHaveBeenCalledWith(1);
+            })
+        })
+
+    })
+
+    context('Given toHaveBeenCalledWithFirst()', () => {
+        let mySpy;
+
+        setupEach(() => {
+            if (mySpy) {
+                mySpy.reset();
+            }
+            mySpy = BedRock.spy(Math, 'round');
+        });
+
+        tearDownEach(() => {
+            mySpy.restore();
+        });
+
+        context('When the spy has been called with 1 and then 2', () => {
+            test('Then it passed because the spy has been called first with 1', () => {
+                Math.round(1);
+                Math.round(2);
+                expect(mySpy).toHaveBeenCalledWithFirst(1);
+            })
+        })
+        context('When the spy has not been called first with 1', () => {
+            test('Then it fails because the spy was not called with 1', () => {
+                expect(mySpy).toHaveBeenCalledWithFirst(1);
+            })
+        })
+
+    })
+
+    context('Given not.toHaveBeenCalledWithFirst()', () => {
+        let mySpy;
+
+        setupEach(() => {
+            if (mySpy) {
+                mySpy.reset();
+            }
+            mySpy = BedRock.spy(Math, 'round');
+        });
+
+        tearDownEach(() => {
+            mySpy.restore();
+        });
+
+        context('When the spy has been called with 2 and then 1', () => {
+            test('Then it passed because the spy has been called first with 1', () => {
+                Math.round(2);
+                expect(mySpy).not.toHaveBeenCalledWithFirst(1);
+            })
+        })
+        context('When the spy has been called with 1 and then 2', () => {
+            test('Then it fails because the spy was not called with 1', () => {
+                Math.round(1);
+                Math.round(2);
+                expect(mySpy).not.toHaveBeenCalledWithFirst(1);
+            })
+        })
+
+    })
+
+    context('Given toHaveBeenCalledWithLast()', () => {
+        let mySpy;
+
+        setupEach(() => {
+            if (mySpy) {
+                mySpy.reset();
+            }
+            mySpy = BedRock.spy(Math, 'round');
+        });
+
+        tearDownEach(() => {
+            mySpy.restore();
+        });
+
+        context('When the spy has been called with 1 and then 2', () => {
+            test('Then it passed because the spy has been called last with 2', () => {
+                Math.round(1);
+                Math.round(2);
+                expect(mySpy).toHaveBeenCalledWithLast(2);
+            })
+        })
+        context('When the spy has not been called', () => {
+            test('Then it fails because the spy was not called with 1', () => {
+                expect(mySpy).toHaveBeenCalledWithLast(1);
+            })
+        })
+
+    })
+
+    context('Given not.toHaveBeenCalledWithLast()', () => {
+        let mySpy;
+
+        setupEach(() => {
+            if (mySpy) {
+                mySpy.reset();
+            }
+            mySpy = BedRock.spy(Math, 'round');
+        });
+
+        tearDownEach(() => {
+            mySpy.restore();
+        });
+
+        context('When the spy has been called with 2', () => {
+            test('Then it passed because the spy has not been called last with 1', () => {
+                Math.round(2);
+                expect(mySpy).not.toHaveBeenCalledWithLast(1);
+            })
+        })
+        context('When the spy has been called with 1 and then 2', () => {
+            test('Then it fails because the spy was called with 2', () => {
+                Math.round(1);
+                Math.round(2);
+                expect(mySpy).not.toHaveBeenCalledWithLast(2);
             })
         })
 

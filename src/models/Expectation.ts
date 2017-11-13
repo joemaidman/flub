@@ -380,9 +380,9 @@ class Expectation {
         this.expected = arguments;
         this.failureDetails = [
             'Expected', 'spy',
-            'to have been called with (',
+            'to have been called with [',
             argsArray.join(', '),
-            ').\n ',
+            '].\n ',
             ' ',
             'Call history:',
             this.subject.getCallHistoryFormatted()
@@ -391,6 +391,53 @@ class Expectation {
             R.contains(
                 Array.prototype.slice.call(arguments),
                 this.subject.getCallHistory()
+            ));
+    };
+
+    toHaveBeenCalledWithFirst = function (...args: any[]): boolean {
+        checkType('Spy', this.subject);
+        let argsArray: Array<string> = new Array<string>();
+        for (let p in arguments) {
+            if (arguments.hasOwnProperty(p)) {
+                argsArray.push(arguments[p]);
+            }
+        }
+        this.expected = arguments;
+        this.failureDetails = [
+            'Expected', 'spy',
+            'to have been called with [',
+            argsArray.join(', '),
+            '] first but was called with',
+            R.nth(0, this.subject.getCallHistory())
+        ];
+
+        return this.assert(
+            R.equals(
+                Array.prototype.slice.call(arguments),
+                R.nth(0, this.subject.getCallHistory())
+            ));
+    };
+
+    toHaveBeenCalledWithLast = function (...args: any[]): boolean {
+        checkType('Spy', this.subject);
+        let argsArray: Array<string> = new Array<string>();
+        for (let p in arguments) {
+            if (arguments.hasOwnProperty(p)) {
+                argsArray.push(arguments[p]);
+            }
+        }
+        this.expected = arguments;
+        this.failureDetails = [
+            'Expected', 'spy',
+            'to have been called with [',
+            argsArray.join(', '),
+            '] last but was called with',
+            R.last(this.subject.getCallHistory())
+        ];
+        return this.assert(
+            R.equals(
+                Array.prototype.slice.call(arguments),
+                R.last(this.subject.getCallHistory())
             ));
     };
 

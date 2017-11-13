@@ -1,5 +1,7 @@
 # Bedrock [![Build Status](https://travis-ci.org/joemaidman/bedrock.svg?branch=master)](https://travis-ci.org/joemaidman/bedrock)
 
+[![NPM](https://nodei.co/npm/bed-rock.png?compact=true)](https://npmjs.org/package/bed-rock)
+
 ```
            ,                  /\.__      _.-\
           /~\,      __       /~    \   ./    \
@@ -15,23 +17,21 @@ Bedrock is a javascript BDD / TDD unit testing framework for Node.js.
 
 It comprises a CLI test runner/reporter, assertion library and utilities including stubs and spies.
 
-[![NPM](https://nodei.co/npm/bed-rock.png?compact=true)](https://npmjs.org/package/bed-rock)
-
 ## Installation
 
-'bed-rock' is available as an npm package
+'bed-rock' is available as an [npm package](https://www.npmjs.com/package/bed-rock):
 
     $ npm install bed-rock --save-dev
 
-Add the following to scripts in package.json (with optional configuration flags)
+Add the following to scripts in package.json (with optional configuration flags):
 
     'test' : 'bed-rock'
 
-Run tests
+Run tests:
 
     npm test
 
-Bedrock will automatically load any files that match '*.spec.js'. This can be changed by passing a custom pattern (see [configuration](#Spies-&-stubs))
+Bedrock will automatically load any files that match '*.spec.js'. This can be changed by passing a custom pattern (see [configuration](#configuration))
 
 ## Configuration
 Bedrock accepts several flags on startup:
@@ -81,7 +81,7 @@ A container for a single test which will be ignored
 
 <b>```spy(target: any, functionName: string)```</b>
 
-A wrapper to spy on or stub an existing function or property of an object. See [Spies & Stubs](#Spies-&-stubs) Spies section for more details
+A wrapper to spy on or stub an existing function or property of an object. See [Spies & Stubs](#spies-and-stubs) for more details
 
 
 ## Basic example test file
@@ -106,6 +106,7 @@ context("GIVEN the state of the world", () => {
 Comprehensive example usage of all matchers can be found in 'example-matchers.js' in the root directory.
 
 ## Hooks
+
 These must be declared before any tests in a context.
 
 <b>```setup(function)```</b>
@@ -208,7 +209,13 @@ subject (Spy) was called callCount times
 <b>```toHaveBeenCalledWith(...args: [])```</br></b>
 subject's (Spy) call history contains at least one call with specified args
 
-## Spies & Stubs
+<b>```toHaveBeenCalledWithFirst(...args: [])```</br></b>
+subject's (Spy) first call arguments equal specified args
+
+<b>```toHaveBeenCalledWithLast(...args: [])```</br></b>
+subject's (Spy) last call arguments equal specified args
+
+## Spies and Stubs
 Bedrock combines the notion of spies and stubs:
 
 <b>```spy(target: any, functionName: string)```</b>
