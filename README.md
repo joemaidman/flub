@@ -65,7 +65,11 @@ A container for a single test. Can contain one or more assertions. A spec whose 
 
 Creates an assertion for a test
 
-```context(description: string, tests: function)```
+```expect(subject: any).not```
+
+Creates an assertion for a test and reversed the evaluation logic
+
+```xcontext(description: string, tests: function)```
 
 A container for one or more tests (can be nested with other contexts) which will be ignored
 
