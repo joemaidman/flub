@@ -34,19 +34,19 @@ Bedrock will automatically load any files that match '*.spec.js'. This can be ch
 ## Configuration
 Bedrock accepts several flags on startup:
 
-Set your test file extention (default spec).
+Set your test file extention (default spec)
 
     --ext='my-test-ext'
 
-Enable watch mode; Bedrock will automatically reload on file changes.
+Enable watch mode; Bedrock will automatically reload on file changes
 
     --watch
 
-Disable create of global window and document (DOM) objects.
+Disable create of global window and document (DOM) objects
 
     --nodom
 
-Disable printing of the failure summary details.
+Disable printing of the failure summary details
 
     --nosumm
 
@@ -55,7 +55,7 @@ Bedrock exposes several core functions for composing tests:
 
 ```context(description: string, tests: function)```
 
-A container for one or more tests (can be nested with other contexts).
+A container for one or more tests (can be nested with other contexts)
 
 ```test(description: string, assertions: function)```
 
@@ -209,13 +209,17 @@ subject's (Spy) call history contains at least one call with specified args
 ## Spies & Stubs
 Bedrock combines the notion of spies and stubs:
 
+```spy(target: any, functionName: string)```
+
+A wrapper to spy on or stub an existing function or property of an object
+
 ```andReturn(value: any)```
 
-stubs the spy target's attribute to return the value.
+stubs the spy target's attribute to return the value
 
 ```andFake(function: Function)```
 
-stubs the spy target's attribute to call the function.
+stubs the spy target's attribute to call the function
 
 ```reset()```
 
