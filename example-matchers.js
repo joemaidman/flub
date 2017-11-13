@@ -41,7 +41,6 @@ context('Matchers', () => {
         });
     });
 
-
     context('Given toBe', () => {
         context('When you pass 1 and 1', () => {
             test('THEN it passes', () => {
