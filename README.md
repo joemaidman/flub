@@ -110,7 +110,7 @@ These must be declared before any tests in a context.
 
 Runs once before all tests in a context
 
-```setupEach(function)```</b>
+<b>```setupEach(function)```</b>
 
 
 Runs before each test in a context
