@@ -53,31 +53,31 @@ Disable printing of the failure summary details
 ## Usage
 Bedrock exposes several core functions for composing tests:
 
-```context(description: string, tests: function)```
+<b>```context(description: string, tests: function)```</b>
 
 A container for one or more tests (can be nested with other contexts)
 
-```test(description: string, assertions: function)```
+<b>```test(description: string, assertions: function)```</b>
 
 A container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be passing and a spec with any failures will fail
 
-```expect(subject: any)```
+<b>```expect(subject: any)```</b>
 
 Creates an assertion for a test
 
-```expect(subject: any).not```
+<b>```expect(subject: any).not```</b>
 
 Creates an assertion for a test and reversed the evaluation logic
 
-```xcontext(description: string, tests: function)```
+<b>```xcontext(description: string, tests: function)```</b>
 
 A container for one or more tests (can be nested with other contexts) which will be ignored
 
-```xtest(description: string, assertions: function)```
+<b>```xtest(description: string, assertions: function)```</b>
 
 A container for a single test which will be ignored
 
-```spy(target: any, functionName: string)```
+<b>```spy(target: any, functionName: string)```</b>
 
 A wrapper to spy on or stub an existing function or property of an object. See [Spies & Stubs](#Spies-&-stubs) Spies section for more details
 
@@ -106,134 +106,134 @@ Comprehensive example usage of all matchers can be found in 'example-matchers.js
 ## Hooks
 These must be declared before any tests in a context.
 
-```setup(function)```
+<b>```setup(function)```</b>
 
 Runs once before all tests in a context
 
-```setupEach(function)```
+```setupEach(function)```</b>
 
 
 Runs before each test in a context
 
-```teardown(function)```
+<b>```teardown(function)```</b>
 
 Runs once after all tests in a context
 
-```tearDownEach(function)```
+<b>```tearDownEach(function)```</b>
 
 Runs after each test in a context
 
 ## Matchers
 
-```toBe(value: any)```</br>
+<b>```toBe(value: any)```</br></b>
 subject and value are equal using '==='
 
-```toEqual(value: any)```</br>
+<b>```toEqual(value: any)```</br></b>
 subject and value are deeply equal
 
-```toBeDefined()```</br>
+<b>```toBeDefined()```</br></b>
 subject is defined
 
-```toBeUndefined()```</br>
+<b>```toBeUndefined()```</br></b>
 subject is undefined
 
-```toBeNull()```</br>
+<b>```toBeNull()```</br></b>
 subject is  null
 
-```toBeNotNull()```</br>
+<b>```toBeNotNull()```</br></b>
 subject is not null
 
-```toBeGreaterThan(target: number)```</br>
+<b>```toBeGreaterThan(target: number)```</br></b>
 subject is greater than a target
 
-```toBeLessThan(target: number)```</br>
+<b>```toBeLessThan(target: number)```</br></b>
 subject is less than a target
 
-```toBeGreaterThanOrEqualTo(target: number)```</br>
+<b>```toBeGreaterThanOrEqualTo(target: number)```</br></b>
 subject is greater than or equal to a target
 
-```toBeLessThanOrEqualTo(target: number)```</br>
+<b>```toBeLessThanOrEqualTo(target: number)```</br></b>
 subject is less than or equal to a target
 
-```toBeBetweenInclusive(minimumThreshold: number, maximumThreshold: number)```</br>
+<b>```toBeBetweenInclusive(minimumThreshold: number, maximumThreshold: number)```</br></b>
 subject is between the minimumThreshold and maximumThreshold including these boundaries
 
-```toBeBetweenExclusive(minimumThreshold: number, maximumThreshold: number)```</br>
+<b>```toBeBetweenExclusive(minimumThreshold: number, maximumThreshold: number)```</br></b>
 subject is between the minimumThreshold and maximumThreshold excluding these boundaries
 
-```toBeCloseToInclusive(target: number, delta: number)```</br>
+<b>```toBeCloseToInclusive(target: number, delta: number)```</br></b>
 subject is within the delta of the target, including boundaries
 
-```toBeCloseToExclusive(target: number, delta: number)```</br>
+<b>```toBeCloseToExclusive(target: number, delta: number)```</br></b>
 subject is within the delta of the target, excluding boundaries
 
-```toBeTypeOf(name: string)```</br>
+<b>```toBeTypeOf(name: string)```</br></b>
 subject is of type name
 
-```toRespondTo(name: string)```</br>
+<b>```toRespondTo(name: string)```</br></b>
 subject has property or function of name
 
-```toHaveLength(length: number)```</br>
+<b>```toHaveLength(length: number)```</br></b>
 subject (Array, Map, Set or String) has length
 
-```toHaveKey(key: any)```</br>
+<b>```toHaveKey(key: any)```</br></b>
 subject (Map or Object) contains key
 
-```toContain(item: any)```</br>
+<b>```toContain(item: any)```</br></b>
 subject (Array, Set, Map, String) contains the item
 
-```toBeFalsey()```</br>
+<b>```toBeFalsey()```</br></b>
 subject evaluates to false in a boolean context
 
-```toBeTruthy()```</br>
+<b>```toBeTruthy()```</br></b>
 subject evaluates to true in a boolean context
 
-```toBeStringContaining(text: string, caseSensitive: boolean)```</br>
+<b>```toBeStringContaining(text: string, caseSensitive: boolean)```</br></b>
 subject (string) contains text with optional case sensitivity (default false)
 
-```toBeStringMatching(regexPattern: RegEx)```</br>
+<b>```toBeStringMatching(regexPattern: RegEx)```</br></b>
 subject (string) matches the regexPatern
 
-```toThrow(message: string)```</br>
+<b>```toThrow(message: string)```</br></b>
 subject throws message. NOTE: function should be passed by name, NOT executed e.g. expect(myThrowingFunction).toThrow('My error Message'); 
 
-```toThrowError(errorType: any, errorMessage: string)```</br>
+<b>```toThrowError(errorType: any, errorMessage: string)```</br></b>
 subject throws an error of errorType with errorMessage. NOTE: function should be passed by name, NOT executed e.g. expect(myThrowingFunction).toThrow('My error Message');
 
-```toHaveBeenCalled(callCount: Number)```</br>
+<b>```toHaveBeenCalled(callCount: Number)```</br></b>
 subject (Spy) was called callCount times
 
-```toHaveBeenCalledWith(...args: [])```</br>
+<b>```toHaveBeenCalledWith(...args: [])```</br></b>
 subject's (Spy) call history contains at least one call with specified args
 
 ## Spies & Stubs
 Bedrock combines the notion of spies and stubs:
 
-```spy(target: any, functionName: string)```
+<b>```spy(target: any, functionName: string)```</b>
 
 A wrapper to spy on or stub an existing function or property of an object
 
-```andReturn(value: any)```
+<b>```andReturn(value: any)```</b>
 
 stubs the spy target's attribute to return the value
 
-```andFake(function: Function)```
+<b>```andFake(function: Function)```</b>
 
 stubs the spy target's attribute to call the function
 
-```reset()```
+<b>```reset()```</b>
 
 resets a spy, cleaing the call cound and call history
 
-```restore()```
+<b>```restore()```</b>
 
 restores the spy target's original function call or value
 
-```getCallCount()```
+<b>```getCallCount()```</b>
 
 returns the spy's call count. Prefer toHaveBeenCalled() matcher
 
-```getCallHistory```
+<b>```getCallHistory```</b>
 
 returns an array of the spy's call history. Prefer toHaveBeenCalledWith() matcher
 
