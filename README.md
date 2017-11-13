@@ -15,6 +15,8 @@ Bedrock is a javascript BDD / TDD unit testing framework for Node.js.
 
 It comprises a CLI test runner/reporter, assertion library and utilities including stubs and spies.
 
+[![NPM](https://nodei.co/npm/bed-rock.png?compact=true)](https://npmjs.org/package/bed-rock)
+
 ## Installation
 
 'bed-rock' is available as an npm package
