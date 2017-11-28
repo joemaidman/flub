@@ -1,12 +1,14 @@
 export let testCount: number = 0;
 export let passCount: number = 0;
 export let failCount: number = 0;
+export let ignoreCount: number = 0;
 export let depth: number = 0;
 
 export const reset = () => {
     testCount = 0;
     passCount = 0;
     failCount = 0;
+    ignoreCount = 0;
 };
 
 export const incrementDepth = () => {
@@ -29,4 +31,8 @@ export const incrementPassCount = () => {
 
 export const incrementFailCount = () => {
     failCount++;
+};
+
+export const incrementIgnoreCount = () => {
+    ignoreCount++;
 };

@@ -4,7 +4,9 @@ enum MessageType {
     OK = 'OK',
     ERROR = 'ERROR',
     COMPARISON = 'COMPARISON',
-    STACK = 'STACK'
+    STACK = 'STACK',
+    IGNOREDTEST = 'IGNOREDTEST',
+    IGNOREDCONTEXT = 'IGNOREDCONTEXT'
 }
 
 export default MessageType;

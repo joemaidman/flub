@@ -31,3 +31,7 @@ export class FailureReport {
 }
 
 export const failureList = new Array<FailureReport>();
+
+export const clearFailures = (): void => {
+    failureList.length = 0;
+  };

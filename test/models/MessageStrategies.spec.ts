@@ -19,7 +19,7 @@ describe('MessageStrategies', () => {
     describe('loadMessageStrategies', () => {
 
         it('should return an array of all message strategies', () => {
-            expect(loadMessageStrategies()).to.have.length(6);
+            expect(loadMessageStrategies()).to.have.length(8);
             expect(loadMessageStrategies()[0].constructor.name).to.equal('DefaultMessageStrategy');
             expect(loadMessageStrategies()[1].constructor.name).to.equal('OKMessageStrategy');
             expect(loadMessageStrategies()[2].constructor.name).to.equal('ErrorMessageStrategy');
@@ -37,6 +37,9 @@ describe('MessageStrategies', () => {
             expect(getMessageStrategy(MessageType.ERROR).messageType).to.equal(MessageType.ERROR);
             expect(getMessageStrategy(MessageType.OK).messageType).to.equal(MessageType.OK);
             expect(getMessageStrategy(MessageType.ROOT).messageType).to.equal(MessageType.ROOT);
+            expect(getMessageStrategy(MessageType.IGNOREDTEST).messageType).to.equal(MessageType.IGNOREDTEST);
+            expect(getMessageStrategy(MessageType.IGNOREDCONTEXT).messageType).to.equal(MessageType.IGNOREDCONTEXT);
+
         });
 
     });

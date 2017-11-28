@@ -6,6 +6,8 @@ import Report from '../../src/models/Report';
 import Reporter from '../../src/models/Reporter';
 import MessageType from '../../src/models/MessageType';
 import * as Counter from '../../src/models/Counter';
+import { context } from '../../src/index';
+import { FailureReport } from '../../src/models/FailureReport';
 
 describe('Logging', () => {
 
@@ -60,26 +62,61 @@ describe('Logging', () => {
 
     });
 
-    describe('printTestSummary', () => {
+    describe('GIVEN printTestSummary', () => {
 
         let testCountStub: sinon.SinonStub;
         let passCountStub: sinon.SinonStub;
         let failCountStub: sinon.SinonStub;
+        let mockElapsed = {};
 
-        before(() => {
+        beforeEach(() => {
             reporterSpy.reset();
             Counter.reset();
-            let mockElapsed = {};
             mockElapsed['millisecondsTotal'] = 100;
-            Logging.printTestSummary(mockElapsed);
         });
 
-        it('should call report on Reporter thrice with the correct arguments', () => {
-            expect(reporterSpy.callCount).to.equal(4);
-            sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
-            sinon.assert.calledWith(reporterSpy, new Report('Ran 0 tests in 100 ms', MessageType.DEFAULT));
-            sinon.assert.calledWith(reporterSpy, new Report('0 passed', MessageType.OK));
-            sinon.assert.calledWith(reporterSpy, new Report('0 failed', MessageType.ERROR));
+        describe('WHEN there are no ignored tests', () => {
+
+            it('THEN it should call report on Reporter four times with the correct arguments', () => {
+                Logging.printTestSummary(mockElapsed);
+                expect(reporterSpy.callCount).to.equal(4);
+                sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
+                sinon.assert.calledWith(reporterSpy, new Report('Ran 0 tests in 100 ms', MessageType.DEFAULT));
+                sinon.assert.calledWith(reporterSpy, new Report('0 passed', MessageType.OK));
+                sinon.assert.calledWith(reporterSpy, new Report('0 failed', MessageType.ERROR));
+            });
+
+        });
+
+        describe('WHEN exactly one test ignored', () => {
+
+            it('THEN it should call report on Reporter five times with the correct arguments', () => {
+                Counter.incrementIgnoreCount();
+                Logging.printTestSummary(mockElapsed);
+                expect(reporterSpy.callCount).to.equal(5);
+                sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
+                sinon.assert.calledWith(reporterSpy, new Report('Ran 0 tests in 100 ms', MessageType.DEFAULT));
+                sinon.assert.calledWith(reporterSpy, new Report('0 passed', MessageType.OK));
+                sinon.assert.calledWith(reporterSpy, new Report('0 failed', MessageType.ERROR));
+                sinon.assert.calledWith(reporterSpy, new Report('1 ignored', MessageType.IGNOREDTEST));
+            });
+
+        });
+
+        describe('WHEN more than one test ignored', () => {
+
+            it('THEN it should call report on Reporter five times with the correct arguments', () => {
+                Counter.incrementIgnoreCount();
+                Counter.incrementIgnoreCount();
+                Logging.printTestSummary(mockElapsed);
+                expect(reporterSpy.callCount).to.equal(5);
+                sinon.assert.calledWith(reporterSpy, new Report('', MessageType.DEFAULT));
+                sinon.assert.calledWith(reporterSpy, new Report('Ran 0 tests in 100 ms', MessageType.DEFAULT));
+                sinon.assert.calledWith(reporterSpy, new Report('0 passed', MessageType.OK));
+                sinon.assert.calledWith(reporterSpy, new Report('0 failed', MessageType.ERROR));
+                sinon.assert.calledWith(reporterSpy, new Report('2 ignored', MessageType.IGNOREDTEST));
+            });
+
         });
 
     });
@@ -107,6 +144,38 @@ describe('Logging', () => {
 
     });
 
+    describe('printFailures', () => {
+        const mockFailures: Array<FailureReport> = new Array<FailureReport>();
+        const mockFailure: FailureReport = new FailureReport(
+            'Description',
+            'Chain',
+            'Type',
+            [new Report(
+                'Report message',
+                MessageType.ERROR,
+                false)
+            ],
+            'Trace'
+        );
+        mockFailures.push(mockFailure);
+
+        beforeEach(() => {
+            reporterSpy.reset();
+        });
+
+        it('should call report on Reporter six times with the correct arguments ', () => {
+            Logging.printFailures(mockFailures);
+            sinon.assert.callCount(reporterSpy, 6);
+            sinon.assert.calledWithMatch(reporterSpy, new Report(' ', MessageType.DEFAULT));
+            sinon.assert.calledWithMatch(reporterSpy, new Report('Test Failures:', MessageType.ROOT));
+            sinon.assert.calledWithMatch(reporterSpy, new Report(' ', MessageType.DEFAULT));
+            sinon.assert.calledWithMatch(reporterSpy, new Report('Chain', MessageType.DEFAULT));
+            sinon.assert.calledWithMatch(reporterSpy, new Report('Report message', MessageType.ERROR, true));
+            sinon.assert.calledWithMatch(reporterSpy, new Report('Trace', MessageType.STACK));
+
+        });
+
+    });
 
     after(() => {
         reporterSpy.restore();

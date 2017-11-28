@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import Reporter from '../../src/models/Reporter'
+import Reporter from '../../src/models/Reporter';
 import Report from '../../src/models/Report';
-import MessageType from '../../src/models/MessageType'
-import { MessageStrategy, DefaultMessageStrategy } from '../../src/models/MessageStrategies'
-import { getMessageStrategy } from '../../src/models/MessageStrategies'
-import * as GetMessageStrategyParent from '../../src/models/MessageStrategies'
+import MessageType from '../../src/models/MessageType';
+import { MessageStrategy, DefaultMessageStrategy } from '../../src/models/MessageStrategies';
+import { getMessageStrategy } from '../../src/models/MessageStrategies';
+import * as GetMessageStrategyParent from '../../src/models/MessageStrategies';
 
 describe('Reporter', () => {
 
