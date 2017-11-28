@@ -15,7 +15,7 @@ import {
     outputSimpleCodeWithChildContextsIgnored,
     t1,
     t2
-} from '../resources/codeSamples';
+} from '../resources/CodeSamples';
 
 describe('GIVEN replaceFunctionCalls', () => {
 
