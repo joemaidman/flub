@@ -9,6 +9,7 @@ import * as Esprima from 'esprima';
 import * as estraverse from 'estraverse';
 import * as ESTree from 'estree';
 import * as fs from 'fs';
+import * as requireFromString from 'require-from-string';
 
 import * as Counter from './models/Counter';
 import Spy from './models/Spy';
@@ -18,12 +19,22 @@ import {
   printReloadHeader,
   printTestSummary,
   printWatching,
-  printCaughtException
+  printCaughtException,
+  printFailures
 } from './models/Logging';
-import { failureList, FailureReport } from './models/FailureReport';
+import {
+  failureList,
+  FailureReport,
+  clearFailures
+} from './models/FailureReport';
 import Report from './models/Report';
 import Reporter from './models/Reporter';
 import MessageType from './models/MessageType';
+import {
+  replaceFunctionCalls,
+  scanTreeForFunction,
+  replaceChildFunctionCalls
+} from './models/Parser';
 
 const BedRock = () => {
   flags.defineString('ext', 'spec', 'Test file extentions');
@@ -51,7 +62,17 @@ const BedRock = () => {
     files.forEach((file: any) => {
       testFiles.push(process.cwd() + '/' + file);
       try {
-        require(process.cwd() + '/' + file);
+        let sanitisedSource: string = fs.readFileSync(process.cwd() + '/' + file, 'UTF8');
+
+        if (scanTreeForFunction(sanitisedSource, 'xcontext')) {
+          sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'context', 'xcontext');
+          sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'test', 'xtest');
+          sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'ftest', 'xtest');
+        }
+        if (scanTreeForFunction(sanitisedSource, 'ftest')) {
+          sanitisedSource = replaceFunctionCalls(sanitisedSource, 'test', 'xtest');
+        }
+        requireFromString(sanitisedSource);
       }
       catch (error) {
         Counter.reset();
@@ -64,7 +85,7 @@ const BedRock = () => {
 
     if (!flags.get('nosumm')) {
       printTestSummary(getElapsed());
-      printFailures();
+      printFailures(failureList);
     }
 
     clearFailures();
@@ -87,39 +108,38 @@ const BedRock = () => {
           testFiles.push(
             process.cwd() + '/' + file);
           try {
-            require(process.cwd() + '/' + file);
+            let sanitisedSource: string = fs.readFileSync(process.cwd() + '/' + file, 'UTF8');
+
+            if (scanTreeForFunction(sanitisedSource, 'xcontext')) {
+              sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'context', 'xcontext');
+              sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'test', 'xtest');
+              sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'ftest', 'xtest');
+            }
+            if (scanTreeForFunction(sanitisedSource, 'ftest')) {
+              sanitisedSource = replaceFunctionCalls(sanitisedSource, 'test', 'xtest');
+            }
+            requireFromString(sanitisedSource);
           }
           catch (error) {
             Counter.reset();
             Spy.restoreAllSpies();
             Spy.clearSpyList();
-            printCaughtException(error.message, error.stack);
+            throw error;
+            // printCaughtException(error.message, error.stack);
           }
           Hooks.clearHooks();
         });
 
         if (!flags.get('nosumm')) {
           printTestSummary(getElapsed());
-          printFailures();
+          printFailures(failureList);
         }
 
         clearFailures();
+
       });
     }
   });
-};
-
-const printFailures = (): void => {
-  Reporter.report(new Report(' ', MessageType.DEFAULT));
-  Reporter.report(new Report('Test Failures:', MessageType.ROOT));
-  Reporter.report(new Report(' ', MessageType.DEFAULT));
-  failureList.forEach((failure: FailureReport) => {
-    failure.print();
-  });
-};
-
-const clearFailures = (): void => {
-  failureList.length = 0;
 };
 
 export default BedRock;

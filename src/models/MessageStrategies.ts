@@ -26,7 +26,9 @@ export const loadMessageStrategies = (): Array<MessageStrategy> => {
         new ErrorMessageStrategy(),
         new RootMessageStrategy(),
         new ComparisonMessageStrategy(),
-        new StackMessageStrategy()
+        new StackMessageStrategy(),
+        new IgnoredTestMessageStrategy(),
+        new IgnoredContextMessageStrategy()
     ];
 };
 
@@ -75,6 +77,44 @@ export class ErrorMessageStrategy extends MessageStrategy {
     }
 
 }
+
+export class IgnoredTestMessageStrategy extends MessageStrategy {
+    
+        constructor() {
+            super(MessageType.IGNOREDTEST);
+        }
+    
+        print(messages: Array<string> | string, counter: number, stdout: any): void {
+            typeof messages === 'string' ?
+                messages = ['- ' + ' '.repeat(counter * this.SPACES) + messages] :
+                messages = messages.map((message: string, index: number) => {
+                    return index === 0
+                        ? (' '.repeat(counter * this.SPACES) + '- ' + message)
+                        : message;
+                });
+            con.warn.apply(con, messages);
+        }
+    
+    }
+
+    export class IgnoredContextMessageStrategy extends MessageStrategy {
+        
+            constructor() {
+                super(MessageType.IGNOREDCONTEXT);
+            }
+        
+            print(messages: Array<string> | string, counter: number, stdout: any): void {
+                typeof messages === 'string' ?
+                    messages = [' '.repeat(counter * this.SPACES) + messages] :
+                    messages = messages.map((message: string, index: number) => {
+                        return index === 0
+                            ? (' '.repeat(counter * this.SPACES) + message)
+                            : message;
+                    });
+                con.warn.apply(con, messages);
+            }
+        
+        }
 
 export class OKMessageStrategy extends MessageStrategy {
 

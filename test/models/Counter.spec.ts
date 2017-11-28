@@ -50,6 +50,14 @@ describe('Counter', () => {
             });
         });
 
+        describe('WHEN incrementIgnoreCount has been called', () => {
+
+            it('THEN the ignoreCount increases by 1', () => {
+                Counter.incrementIgnoreCount();
+                expect(Counter.ignoreCount).to.eq(1);
+            });
+        });
+
         describe('WHEN reset has been called', () => {
 
             it('THEN all counts reset to 0', () => {
@@ -57,12 +65,10 @@ describe('Counter', () => {
                 expect(Counter.testCount).to.equal(0);
                 expect(Counter.passCount).to.equal(0);
                 expect(Counter.failCount).to.equal(0);
+                expect(Counter.ignoreCount).to.equal(0);
             });
         });
 
-
-
     });
-
 
 });

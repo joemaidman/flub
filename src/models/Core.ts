@@ -8,11 +8,13 @@ import * as Counter from './Counter';
 import Spy from './Spy';
 import Hooks from './Hooks';
 import ContextChain from './ContextChain';
+import { MessageStrategy } from './MessageStrategies';
 
 export let currentTestFocused: boolean = false;
 export const testSummary = new Array<Report>();
 export const testSummaryFocused = new Array<Report>();
 export let currentDescription: string;
+export let currentContextIgnored: boolean;
 
 export const context = (des: string, context: Function): void => {
     ContextChain.push(des);
@@ -27,8 +29,6 @@ export const context = (des: string, context: Function): void => {
     ContextChain.pop();
 };
 
-export const xcontext = (des: string, context: Function): void => { };
-
 export const test = (des: string, tests: () => any): void => {
     Hooks.runHooks('setupEachHooks');
     currentDescription = des;
@@ -37,7 +37,33 @@ export const test = (des: string, tests: () => any): void => {
     Hooks.runHooks('tearDownEachHooks');
 };
 
-export const xtest = (des: string, context: Function): void => { };
+export const ftest = (des: string, tests: () => any): void => {
+    Hooks.runHooks('setupEachHooks');
+    currentDescription = des;
+    Counter.incrementTestCount();
+    tests();
+    Hooks.runHooks('tearDownEachHooks');
+};
+
+export const xtest = (des: string, context: Function): void => {
+    Counter.incrementIgnoreCount();
+    Reporter.report(new Report(des, MessageType.IGNOREDTEST));
+ };
+ 
+ export const xcontext = (des: string, context: Function): void => {
+    currentContextIgnored = true;
+    ContextChain.push(des);
+    Reporter.report(new Report(des, MessageType.IGNOREDCONTEXT)); // Dim console
+    Counter.incrementDepth();
+    context();
+    Counter.decrementDepth();
+    Hooks.runHook('tearDownHooks', Counter.depth);
+    Hooks.removeHook('setupEachHooks', Counter.depth);
+    Hooks.removeHook('tearDownHooks', Counter.depth);
+    Hooks.removeHook('tearDownEachHooks', Counter.depth);
+    ContextChain.pop();
+    currentContextIgnored = false;
+ };
 
 export const expect = (subject: any): Expectation => {
     return new Expectation(subject, currentDescription, false);

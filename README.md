@@ -31,7 +31,7 @@ Run tests:
 
     npm test
 
-Bedrock will automatically load any files that match '*.spec.js'. This can be changed by passing a custom pattern (see [configuration](#configuration))
+Bedrock will automatically load any files that match '*.spec.js'. This can be changed by passing a custom pattern ([see configuration](#configuration))
 
 ## Configuration
 Bedrock accepts several flags on startup:
@@ -57,39 +57,48 @@ Bedrock exposes several core functions for composing tests:
 
 <b>```context(description: string, tests: function)```</b>
 
-A container for one or more tests (can be nested with other contexts)
+a container for one or more tests (can be nested with other contexts)
 
 <b>```test(description: string, assertions: function)```</b>
 
-A container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be passing and a spec with any failures will fail
+a container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be passing and a spec with any failures will fail
 
 <b>```expect(subject: any)```</b>
 
-Creates an assertion for a test
+creates an assertion for a test
 
 <b>```expect(subject: any).not```</b>
 
-Creates an assertion for a test and reversed the evaluation logic
+creates an assertion for a test and reversed the evaluation logic
 
 <b>```xcontext(description: string, tests: function)```</b>
 
-A container for one or more tests (can be nested with other contexts) which will be ignored
+a container for one or more tests (can be nested with other contexts) which will be ignored. NOTE: this overrides any nested focused tests (ftest) defined inside the context
 
 <b>```xtest(description: string, assertions: function)```</b>
 
-A container for a single test which will be ignored
+a container for a single test which will be ignored
+
+<b>```ftest(description: string, assertions: function)```</b>
+
+a container for a single test which will be focused. The presence of a single focused tests will cause any unfocused tests to be ignored.
 
 <b>```spy(target: any, functionName: string)```</b>
 
-A wrapper to spy on or stub an existing function or property of an object. See [Spies & Stubs](#spies-and-stubs) for more details
+a wrapper to spy on or stub an existing function or property of an object. See [Spies & Stubs](#spies-and-stubs) for more details
 
 
 ## Basic example test file
+
 
 ```js
 var context = require('bed-rock').context;  
 var test = require('bed-rock').test;  
 var expect = require('bed-rock').expect;  
+
+/* es6 import
+import { context, test, expect } from 'bed-rock;
+*/
 
 context("GIVEN the state of the world", () => {
     let myTestSubject = 1;
@@ -107,24 +116,23 @@ Comprehensive example usage of all matchers can be found in 'example-matchers.js
 
 ## Hooks
 
-These must be declared before any tests in a context.
+These must be declared before any tests in a context. Prefer variable assignment and function calls within these hooks rather.
 
 <b>```setup(function)```</b>
 
-Runs once before all tests in a context
+runs once before all tests in a context
 
 <b>```setupEach(function)```</b>
 
-
-Runs before each test in a context
+runs before each test in a context
 
 <b>```teardown(function)```</b>
 
-Runs once after all tests in a context
+runs once after all tests in a context
 
 <b>```tearDownEach(function)```</b>
 
-Runs after each test in a context
+runs after each test in a context
 
 ## Matchers
 
@@ -220,7 +228,7 @@ Bedrock combines the notion of spies and stubs:
 
 <b>```spy(target: any, functionName: string)```</b>
 
-A wrapper to spy on or stub an existing function or property of an object
+a wrapper to spy on or stub an existing function or property of an object
 
 <b>```andReturn(value: any)```</b>
 
@@ -247,10 +255,4 @@ returns the spy's call count. Prefer toHaveBeenCalled() matcher
 returns an array of the spy's call history. Prefer toHaveBeenCalledWith() matcher
 
  ## Future development
- - Focus tests
  - Async matchers (promise resolution)
- - Time manipulation
-
-
-
-

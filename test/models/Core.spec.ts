@@ -36,6 +36,7 @@ describe('Core', () => {
     let removeSingleHookSpy: sinon.SinonSpy;
     let addSingleHookSpy: sinon.SinonSpy;
     let testcountSpy: sinon.SinonSpy;
+    let ignorecountSpy: sinon.SinonSpy;
     let incrementDepthSpy: sinon.SinonSpy;
     let decrementDepthSpy: sinon.SinonSpy;
     let pushContextChainSpy: sinon.SinonSpy;
@@ -49,6 +50,7 @@ describe('Core', () => {
         removeSingleHookSpy = sinon.spy(Hooks, 'removeHook');
         addSingleHookSpy = sinon.spy(Hooks, 'addHook');
         testcountSpy = sinon.spy(Counter, 'incrementTestCount');
+        ignorecountSpy = sinon.spy(Counter, 'incrementIgnoreCount');
         incrementDepthSpy = sinon.spy(Counter, 'incrementDepth');
         decrementDepthSpy = sinon.spy(Counter, 'decrementDepth');
         pushContextChainSpy = sinon.spy(ContextChain, 'push');
@@ -64,6 +66,7 @@ describe('Core', () => {
         removeSingleHookSpy.reset();
         addSingleHookSpy.reset();
         testcountSpy.reset();
+        ignorecountSpy.reset();
         Counter.reset();
         incrementDepthSpy.reset();
         decrementDepthSpy.reset();
@@ -77,6 +80,7 @@ describe('Core', () => {
         runSingleHookSpy.restore();
         removeSingleHookSpy.restore();
         testcountSpy.restore();
+        ignorecountSpy.restore();
         incrementDepthSpy.restore();
         decrementDepthSpy.restore();
         pushContextChainSpy.restore();
@@ -140,20 +144,6 @@ describe('Core', () => {
             expect(ContextChain.chain).to.be.empty;
         });
 
-
-    });
-
-    describe('xcontext', () => {
-        let mockContext: any;
-
-        beforeEach(() => {
-            mockContext = xcontext('Context description', mockBodyFunction);
-        });
-
-        it('should do nothing', () => {
-            sinon.assert.notCalled(mockBodyFunction);
-        });
-
     });
 
     describe('test', () => {
@@ -190,9 +180,10 @@ describe('Core', () => {
             mockTest = xtest('Test description', mockBodyFunction);
         });
 
-        it('should do nothing', () => {
+        it('should not run the body or incrementTestCount but incrementIgnoreCount', () => {
             sinon.assert.notCalled(testcountSpy);
             sinon.assert.notCalled(mockBodyFunction);
+            sinon.assert.calledOnce(ignorecountSpy);
         });
 
     });
