@@ -83,8 +83,9 @@ const BedRock = () => {
       Hooks.clearHooks();
     });
 
+    printTestSummary(getElapsed());
+
     if (!flags.get('nosumm')) {
-      printTestSummary(getElapsed());
       printFailures(failureList);
     }
 
@@ -130,8 +131,9 @@ const BedRock = () => {
           Hooks.clearHooks();
         });
 
+        printTestSummary(getElapsed());
+
         if (!flags.get('nosumm')) {
-          printTestSummary(getElapsed());
           printFailures(failureList);
         }
 

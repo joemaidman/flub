@@ -34,7 +34,7 @@ Run tests:
 Bedrock will automatically load any files that match '*.spec.js'. This can be changed by passing a custom pattern ([see configuration](#configuration))
 
 ## Configuration
-Bedrock accepts several flags on startup:
+Bedrock accepts several flags on startup. Note that bed-rock will need to be restarted if running in watch mode, if any of these flags are changed.
 
 Set your test file extention (default spec)
 
@@ -112,7 +112,7 @@ context("GIVEN the state of the world", () => {
 });
 ```
 
-Comprehensive example usage of all matchers can be found in 'example-matchers.js' in the root directory.
+Comprehensive example usage of all matchers can be found in 'example-matchers.js' in the root directory. Note that exactly half of these example tests fail; this is deliberate and designed to show how each matcher can be set-up to both pass and fail.
 
 ## Hooks
 
@@ -206,10 +206,13 @@ subject (string) contains text with optional case sensitivity (default false)
 subject (string) matches the regexPatern
 
 <b>```toThrow(message: string)```</br></b>
-subject throws message. NOTE: function should be passed by name, NOT executed e.g. expect(myThrowingFunction).toThrow('My error Message'); 
+subject throws message. NOTE: function should be passed by name, NOT executed e.g. expect(myThrowingFunction).toThrow('My error Message'); To pass arguments to a function that is expected to throw, use the with() function. 
 
 <b>```toThrowError(errorType: any, errorMessage: string)```</br></b>
-subject throws an error of errorType with errorMessage. NOTE: function should be passed by name, NOT executed e.g. expect(myThrowingFunction).toThrow('My error Message');
+subject throws an error of errorType with errorMessage. NOTE: function should be passed by name, NOT executed e.g. expect(myThrowingFunction).toThrow('My error Message'); To pass arguments to a function that is expected to throw an error, use the with() function.
+
+<b>```with(arguments: any)```</br></b>
+pass arguments to a function that is expected toThrow or toThrowError. The call to with() should come immediately following the expectation containing the function name e.g. expect(myThrowingFunction).with(1).toThrow('My error Message');
 
 <b>```toHaveBeenCalled(callCount: Number)```</br></b>
 subject (Spy) was called callCount times

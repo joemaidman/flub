@@ -8,7 +8,10 @@ Run 'npm test' in the CLI.
 
 var BedRock = require('bed-rock');
 var context = require('bed-rock').context;
+var xcontext = require('bed-rock').xcontext;
 var test = require('bed-rock').test;
+var ftest = require('bed-rock').ftest;
+var xtest = require('bed-rock').xtest;
 var expect = require('bed-rock').expect;
 var setup = require('bed-rock').setup;
 var tearDown = require('bed-rock').tearDown;
@@ -1034,6 +1037,21 @@ context('Matchers', () => {
 
     })
 
+    context('Given toThrow().with.not', () => {
+        context('When it throws with args', () => {
+            let throwingFunction = (num) => { if (num > 1) { throw ('Invalid number') } }
+            test('Then it passes because it throws', () => {
+                expect(throwingFunction).with(1).not.toThrow('Invalid number');
+            })
+
+            test('Then it fails because it throws', () => {
+                expect(throwingFunction).with(2).not.toThrow('Invalid number');
+            })
+
+        })
+
+    })
+
     context('Given toThrowError()', () => {
         context('When it throws an error', () => {
             let throwingFunction = () => { throw new RangeError('Range message') }
@@ -1048,5 +1066,36 @@ context('Matchers', () => {
         })
 
     })
+
+    context('Given toThrowError().with', () => {
+        context('When it throws an error', () => {
+            let throwingFunction = (num) => { if (num != 2) { throw new RangeError('Range message') }}
+            test('Then it passes because it throws a RangeError', () => {
+                expect(throwingFunction).with(1).toThrowError(RangeError, 'Range message');
+            })
+
+            test('Then it fails because it did not throw a RangeError', () => {
+                expect(throwingFunction).with(2).toThrowError(RangeError, 'Range message');
+            })
+
+        })
+
+    })
+
+    context('Given toThrowError().with.not', () => {
+        context('When it throws an error', () => {
+            let throwingFunction = (num) => { if (num != 2) { throw new RangeError('Range message') }}
+            test('Then it passes because it throws a RangeError', () => {
+                expect(throwingFunction).with(2).not.toThrowError(RangeError, 'Range message');
+            })
+
+            test('Then it fails because it did not throw a RangeError', () => {
+                expect(throwingFunction).with(1).not.toThrowError(RangeError, 'Range message');
+            })
+
+        })
+
+    })
+
 
 });

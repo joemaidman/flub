@@ -19,7 +19,6 @@ import ContextChain from './ContextChain';
 import { ErrorStyle } from '../Resources/ErrorStyle';
 
 class Expectation {
-
     subject: any;
     expected: any;
     des: string;
@@ -48,6 +47,7 @@ class Expectation {
 
     with = function (...args: any[]): Expectation {
         this.throwsArgs = Array.prototype.slice.call(arguments);
+        this.not.throwsArgs = Array.prototype.slice.call(arguments);
         return this;
     };
 
@@ -306,7 +306,9 @@ class Expectation {
         let thrownMessage: string = '';
 
         try {
-            this.subject();
+            this.throwsArgs
+            ? this.subject(this.throwsArgs)
+            : this.subject();
         }
         catch (e) {
             didThrow = true;
