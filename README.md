@@ -253,9 +253,10 @@ restores the spy target's original function call or value
 
 returns the spy's call count. Prefer toHaveBeenCalled() matcher
 
-<b>```getCallHistory```</b>
+<b>```getCallHistory()```</b>
 
 returns an array of the spy's call history. Prefer toHaveBeenCalledWith() matcher
 
  ## Future development
+
  - Async matchers (promise resolution)
