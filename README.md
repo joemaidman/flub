@@ -44,7 +44,7 @@ Enable watch mode; Bedrock will automatically reload on file changes
 
     --watch
 
-Disable create of global window and document (DOM) objects
+Disable creation of global window and document (DOM) objects
 
     --nodom
 
@@ -61,7 +61,7 @@ a container for one or more tests (can be nested with other contexts)
 
 <b>```test(description: string, assertions: function)```</b>
 
-a container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be passing and a spec with any failures will fail
+a container for a single test. Can contain one or more assertions. A spec whose expectations all succeed will be green/passing and a spec with any failed expectations will be red/failing
 
 <b>```expect(subject: any)```</b>
 
@@ -83,7 +83,7 @@ a container for a single test which will be ignored
 
 a container for a single test which will be focused. The presence of a single focused tests will cause any unfocused tests to be ignored.
 
-<b>```spy(target: any, functionName: string)```</b>
+<b>```spy(target: any, functionOrPropertyName: string)```</b>
 
 a wrapper to spy on or stub an existing function or property of an object. See [Spies & Stubs](#spies-and-stubs) for more details
 
@@ -116,7 +116,7 @@ Comprehensive example usage of all matchers can be found in 'example-matchers.js
 
 ## Hooks
 
-These must be declared before any tests in a context. Prefer variable assignment and function calls within these hooks rather.
+These <b>must be declared before any tests in a context</b>. Prefer variable declaration/assignment and function calls within these hooks.
 
 <b>```setup(function)```</b>
 
@@ -137,10 +137,10 @@ runs after each test in a context
 ## Matchers
 
 <b>```toBe(value: any)```</br></b>
-subject and value are equal using '==='
+subject and value are equal using '==='. Use for comparing values
 
 <b>```toEqual(value: any)```</br></b>
-subject and value are deeply equal
+subject and value are deeply equal. Use for comparing objects
 
 <b>```toBeDefined()```</br></b>
 subject is defined
@@ -194,7 +194,7 @@ subject (Map or Object) contains key
 subject (Array, Set, Map, String) contains the item
 
 <b>```toBeFalsey()```</br></b>
-subject evaluates to false in a boolean context
+subject evaluates to false in a boolean context (undefined, null, NaN, 0, "" , false)
 
 <b>```toBeTruthy()```</br></b>
 subject evaluates to true in a boolean context
@@ -229,7 +229,7 @@ subject's (Spy) last call arguments equal specified args
 ## Spies and Stubs
 Bedrock combines the notion of spies and stubs:
 
-<b>```spy(target: any, functionName: string)```</b>
+<b>```spy(target: any, functionOrPropertyName: string)```</b>
 
 a wrapper to spy on or stub an existing function or property of an object
 
@@ -257,6 +257,7 @@ returns the spy's call count. Prefer toHaveBeenCalled() matcher
 
 returns an array of the spy's call history. Prefer toHaveBeenCalledWith() matcher
 
- ## Future development
+## Future development
 
  - Async matchers (promise resolution)
+ - Randomise tests
