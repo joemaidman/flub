@@ -50,9 +50,8 @@ const BedRock = () => {
 
   let getElapsed: Function;
 
-  const globString: string = flags.get('ext') ? '*.' + flags.get('ext') + '.js' : '*.spec.js';
+  const globString: string = flags.get('ext') ? '**/*.' + flags.get('ext') + '.js' : '**/*.spec.js';
 
-  const regexString: RegExp = new RegExp('.*?(?=\.' + flags.get('ext') + ').*?\.js');
   let testFiles: Array<string> = new Array<string>();
   Counter.reset();
   getElapsed = measureTime();
@@ -101,7 +100,7 @@ const BedRock = () => {
         Spy.restoreAllSpies();
         Spy.clearSpyList();
 
-        clearRequire.match(regexString);
+        clearRequire.all();
         getElapsed = measureTime();
         printReloadHeader();
 
@@ -125,8 +124,8 @@ const BedRock = () => {
             Counter.reset();
             Spy.restoreAllSpies();
             Spy.clearSpyList();
-            throw error;
-            // printCaughtException(error.message, error.stack);
+            // throw error;
+            printCaughtException(error.message, error.stack);
           }
           Hooks.clearHooks();
         });
