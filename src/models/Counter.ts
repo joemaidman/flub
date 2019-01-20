@@ -9,6 +9,7 @@ export const reset = () => {
     passCount = 0;
     failCount = 0;
     ignoreCount = 0;
+    depth = 0;
 };
 
 export const incrementDepth = () => {

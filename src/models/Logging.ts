@@ -7,7 +7,8 @@ import { FailureReport } from './FailureReport';
 export const printStartHeader = () => {
     Reporter.report(
         new Report('Bedrock starting...',
-            MessageType.DEFAULT)
+            MessageType.DEFAULT),
+        true
     );
     Reporter.report(
         new Report('',
@@ -23,7 +24,8 @@ export const printReloadHeader = () => {
     );
     Reporter.report(
         new Report('Bedrock reloading...',
-            MessageType.DEFAULT)
+            MessageType.DEFAULT),
+        true
     );
     Reporter.report(
         new Report([''],
@@ -39,7 +41,8 @@ export const printWatching = () => {
     );
     Reporter.report(
         new Report('Watching files...',
-            MessageType.DEFAULT)
+            MessageType.DEFAULT),
+        true
     );
     Reporter.report(
         new Report('',
@@ -57,21 +60,27 @@ export const printTestSummary = (elapsed: any) => {
             + ' tests in '
             + elapsed.millisecondsTotal
             + ' ms',
-            MessageType.DEFAULT)
+            MessageType.DEFAULT),
+        true
     );
     Reporter.report(
         new Report(Counter.passCount + ' passed',
-            MessageType.OK)
+            MessageType.OK),
+        true
     );
-    Reporter.report(
-        new Report(Counter.failCount + ' failed',
-            MessageType.ERROR)
-    );
+    if (Counter.failCount > 0) {
+        Reporter.report(
+            new Report(Counter.failCount + ' failed',
+                MessageType.ERROR),
+            true
+        );
+    }
     if (Counter.ignoreCount > 0) {
-        
+
         Reporter.report(
             new Report(Counter.ignoreCount + ' ignored',
-            MessageType.IGNOREDTEST)
+                MessageType.IGNOREDTEST),
+            true
         );
     }
 
@@ -88,7 +97,8 @@ export const printCaughtException = (stack: string, message: string = '') => {
 export const printFailures = (failureList: Array<FailureReport>): void => {
     if (failureList.length > 0) {
         Reporter.report(new Report(' ', MessageType.DEFAULT));
-        Reporter.report(new Report('Test Failures:', MessageType.ROOT));
+        Reporter.report(new Report('Test Failures:', MessageType.ROOT)),
+            true;
         Reporter.report(new Report(' ', MessageType.DEFAULT));
 
         failureList.forEach((failure: FailureReport) => {

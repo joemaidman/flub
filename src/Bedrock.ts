@@ -35,6 +35,7 @@ import {
   scanTreeForFunction,
   replaceChildFunctionCalls
 } from './models/Parser';
+import ContextChain from './models/ContextChain';
 
 const BedRock = () => {
   flags.defineString('ext', 'spec', 'Test file extentions');
@@ -50,10 +51,9 @@ const BedRock = () => {
 
   let getElapsed: Function;
 
-  const globString: string = flags.get('ext') ? '**/*.' + flags.get('ext') + '.js' : '**/*.spec.js';
+  const globString: string = flags.get('ext') ? '!(node_modules)**/*.' + flags.get('ext') + '.js' : '!(node_modules)**/*.spec.js';
 
   let testFiles: Array<string> = new Array<string>();
-  Counter.reset();
   getElapsed = measureTime();
   printStartHeader();
 
@@ -74,16 +74,19 @@ const BedRock = () => {
         requireFromString(sanitisedSource);
       }
       catch (error) {
-        Counter.reset();
-        Spy.restoreAllSpies();
-        Spy.clearSpyList();
         printCaughtException(error.message, error.stack);
+       
       }
-      Hooks.clearHooks();
+     
     });
 
     printTestSummary(getElapsed());
-
+    Counter.reset();
+    ContextChain.reset();
+    Spy.restoreAllSpies();
+    Spy.clearSpyList();
+    Hooks.clearHooks();
+    
     if (!flags.get('nosumm')) {
       printFailures(failureList);
     }
@@ -97,10 +100,11 @@ const BedRock = () => {
       watcher.on('change', (event: string) => {
         testFiles = new Array();
         Counter.reset();
+        ContextChain.reset();
         Spy.restoreAllSpies();
         Spy.clearSpyList();
 
-        clearRequire.all();
+        // clearRequire.all();
         getElapsed = measureTime();
         printReloadHeader();
 
@@ -121,17 +125,16 @@ const BedRock = () => {
             requireFromString(sanitisedSource);
           }
           catch (error) {
-            Counter.reset();
-            Spy.restoreAllSpies();
-            Spy.clearSpyList();
-            // throw error;
             printCaughtException(error.message, error.stack);
           }
           Hooks.clearHooks();
         });
 
         printTestSummary(getElapsed());
-
+        Counter.reset();
+        ContextChain.reset();
+        Spy.restoreAllSpies();
+        Spy.clearSpyList();
         if (!flags.get('nosumm')) {
           printFailures(failureList);
         }
