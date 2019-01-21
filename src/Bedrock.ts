@@ -20,12 +20,8 @@ import {
 } from './models/Logging';
 import {
   failureList,
-  FailureReport,
   clearFailures
 } from './models/FailureReport';
-import Report from './models/Report';
-import Reporter from './models/Reporter';
-import MessageType from './models/MessageType';
 import {
   replaceFunctionCalls,
   scanTreeForFunction,
