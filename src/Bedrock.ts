@@ -1,15 +1,11 @@
 import * as glob from 'glob';
 import * as measureTime from 'measure-time';
 import * as chokidar from 'chokidar';
-import * as clearRequire from 'clear-require';
-import * as path from 'path';
 import * as flags from 'flags';
 import { JSDOM } from 'jsdom';
-import * as Esprima from 'esprima';
-import * as estraverse from 'estraverse';
-import * as ESTree from 'estree';
 import * as fs from 'fs';
 import * as requireFromString from 'require-from-string';
+import * as findRequires from 'find-requires';
 
 import * as Counter from './models/Counter';
 import Spy from './models/Spy';
@@ -36,6 +32,21 @@ import {
   replaceChildFunctionCalls
 } from './models/Parser';
 import ContextChain from './models/ContextChain';
+
+function magic(base, relative) {
+  let stack = base.split('/');
+  let parts = relative.split('/');
+  stack.pop();
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] === '.')
+      continue;
+    if (parts[i] === '..')
+      stack.pop();
+    else
+      stack.push(parts[i]);
+  }
+  return stack.join('/');
+}
 
 const BedRock = () => {
   flags.defineString('ext', 'spec', 'Test file extentions');
@@ -75,9 +86,9 @@ const BedRock = () => {
       }
       catch (error) {
         printCaughtException(error.message, error.stack);
-       
+
       }
-     
+
     });
 
     printTestSummary(getElapsed());
@@ -86,7 +97,7 @@ const BedRock = () => {
     Spy.restoreAllSpies();
     Spy.clearSpyList();
     Hooks.clearHooks();
-    
+
     if (!flags.get('nosumm')) {
       printFailures(failureList);
     }
@@ -95,52 +106,60 @@ const BedRock = () => {
 
     if (flags.get('watch')) {
       printWatching();
-      const watcher = chokidar.watch(process.cwd());
-
+      const watcher = chokidar.watch(process.cwd(), {
+        usePolling: true,
+        interval: 100,
+      });
+      let running = false;
       watcher.on('change', (event: string) => {
-        testFiles = new Array();
-        Counter.reset();
-        ContextChain.reset();
-        Spy.restoreAllSpies();
-        Spy.clearSpyList();
+        if (!running) {
+          running = true;
+          testFiles = new Array();
+          Counter.reset();
+          ContextChain.reset();
+          Spy.restoreAllSpies();
+          Spy.clearSpyList();
 
-        // clearRequire.all();
-        getElapsed = measureTime();
-        printReloadHeader();
+          getElapsed = measureTime();
+          printReloadHeader();
 
-        files.forEach((file: any) => {
-          testFiles.push(
-            process.cwd() + '/' + file);
-          try {
-            let sanitisedSource: string = fs.readFileSync(process.cwd() + '/' + file, 'UTF8');
+          files.forEach((file: any) => {
+            testFiles.push(
+              process.cwd() + '/' + file);
+            try {
+              let sanitisedSource: string = fs.readFileSync(process.cwd() + '/' + file, 'UTF8');
+              const reqs = findRequires(sanitisedSource);
+              reqs.map(req => { if (req !== 'bed-rock') delete require.cache[require.resolve(magic((process.cwd() + '/' + file), req))]; });
 
-            if (scanTreeForFunction(sanitisedSource, 'xcontext')) {
-              sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'context', 'xcontext');
-              sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'test', 'xtest');
-              sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'ftest', 'xtest');
+              if (scanTreeForFunction(sanitisedSource, 'xcontext')) {
+                sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'context', 'xcontext');
+                sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'test', 'xtest');
+                sanitisedSource = replaceChildFunctionCalls(sanitisedSource, 'xcontext', 'ftest', 'xtest');
+              }
+              if (scanTreeForFunction(sanitisedSource, 'ftest')) {
+                sanitisedSource = replaceFunctionCalls(sanitisedSource, 'test', 'xtest');
+              }
+              requireFromString(sanitisedSource);
             }
-            if (scanTreeForFunction(sanitisedSource, 'ftest')) {
-              sanitisedSource = replaceFunctionCalls(sanitisedSource, 'test', 'xtest');
+            catch (error) {
+              printCaughtException(error.message, error.stack);
             }
-            requireFromString(sanitisedSource);
-          }
-          catch (error) {
-            printCaughtException(error.message, error.stack);
-          }
-          Hooks.clearHooks();
-        });
+            Hooks.clearHooks();
+          });
 
-        printTestSummary(getElapsed());
-        Counter.reset();
-        ContextChain.reset();
-        Spy.restoreAllSpies();
-        Spy.clearSpyList();
-        if (!flags.get('nosumm')) {
-          printFailures(failureList);
+          printTestSummary(getElapsed());
+          Counter.reset();
+          ContextChain.reset();
+          Spy.restoreAllSpies();
+          Spy.clearSpyList();
+
+          if (!flags.get('nosumm')) {
+            printFailures(failureList);
+          }
+
+          clearFailures();
+          running = false;
         }
-
-        clearFailures();
-
       });
     }
   });
