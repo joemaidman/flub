@@ -11,7 +11,6 @@ export const checkType = (name: string | Array<string>, object: any): boolean =>
       + ' not of type '
       + name.join('/')
     );
-    return false;
   }
   return true;
 };
