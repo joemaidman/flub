@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import Expectation from '../../src/models/Expectation';
+import Expectation from '../../src/expectation/Expectation';
 import Reporter from '../../src/models/Reporter';
 import Report from '../../src/models/Report';
-import Spy from '../../src/models/Spy';
+import Spy from '../../src/spy/Spy';
 import MessageType from '../../src/models/MessageType';
-import * as Counter from '../../src/models/Counter';
+import * as Counter from '../../src/counter/Counter';
 import { failureList, FailureReport } from '../../src/models/FailureReport';
 
 describe('Expectation', () => {

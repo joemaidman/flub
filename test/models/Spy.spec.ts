@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { reset } from './../../src/models/Counter';
-import Spy from '../../src/models/Spy';
+import { reset } from '../../src/counter/Counter';
+import Spy from '../../src/spy/Spy';
 
 describe('Spy', () => {
 

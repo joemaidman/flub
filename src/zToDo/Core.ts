@@ -1,14 +1,13 @@
 // Public interface
 
-import Expectation from './Expectation';
+import Expectation from '../expectation/Expectation';
 import MessageType from './MessageType';
 import Reporter from './Reporter';
 import Report from './Report';
-import * as Counter from './Counter';
-import Spy from './Spy';
+import * as Counter from '../counter/Counter';
+import Spy from '../spy/Spy';
 import Hooks from './Hooks';
 import ContextChain from './ContextChain';
-import { MessageStrategy } from './MessageStrategies';
 
 export let currentTestFocused: boolean = false;
 export const testSummary = new Array<Report>();

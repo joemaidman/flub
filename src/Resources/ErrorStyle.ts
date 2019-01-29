@@ -1,4 +1,4 @@
-export const ErrorStyle = {
+export const errorStyle = {
     'pretty-error > header > title > kind': {
         display: 'none'
     },

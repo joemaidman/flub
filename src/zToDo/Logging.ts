@@ -1,8 +1,8 @@
-import MessageType from './MessageType';
 import Reporter from './Reporter';
 import Report from './Report';
-import * as Counter from './Counter';
+import * as Counter from '../counter/Counter';
 import { FailureReport } from './FailureReport';
+import MessageType from './messages/MessageType';
 
 export const printStartHeader = () => {
     Reporter.report(

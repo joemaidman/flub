@@ -16,15 +16,15 @@ import {
     currentDescription,
     levelType
 } from '../../src/models/Core';
-import Expectation from '../../src/models/Expectation';
-import Spy from '../../src/models/Spy';
+import Expectation from '../../src/expectation/Expectation';
+import Spy from '../../src/spy/Spy';
 import Reporter from '../../src/models/Reporter';
 import Report from '../../src/models/Report';
 import MessageType from '../../src/models/MessageType';
-import * as Counter from '../../src/models/Counter';
+import * as Counter from '../../src/counter/Counter';
 import Hooks from '../../src/models/Hooks';
 import ContextChain from '../../src/models/ContextChain';
-import { testCount } from './../../src/models/Counter';
+import { testCount } from '../../src/counter/Counter';
 
 describe('Core', () => {
 

@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { checkType } from '../../src/models/Utilities';
+import { checkType } from '../../src/utilities/utilities';
 import MessageType from '../../src/models/MessageType';
-import * as Counter from '../../src/models/Counter';
+import * as Counter from '../../src/counter/Counter';
 
 describe('Utilities', () => {
 

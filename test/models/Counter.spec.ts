@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import * as Counter from '../../src/models/Counter';
+import * as Counter from '../../src/counter/Counter';
 
 describe('Counter', () => {
 

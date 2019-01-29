@@ -1,7 +1,7 @@
 import MessageType from './MessageType';
 import Report from './Report';
 import { getMessageStrategy } from './MessageStrategies';
-import * as Counter from './Counter';
+import * as Counter from '../counter/Counter';
 
 class Reporter {
 
