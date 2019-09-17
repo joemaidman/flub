@@ -1,11 +1,15 @@
-import { BedrockConfig } from './Config';
+export interface BedrockConfig {
+    testFileExtension: string;
+    watchMode: boolean;
+    noSummary: boolean;
+    noDOM: boolean;
+    ignorePaths?: string[];
+}
 
-const config: BedrockConfig = {
-  testFileExtension: 'spec',
-  watchMode: false,
-  noSummary: false,
-  noDOM: false,
-  ignorePaths: ['node_modules']
+export const defaultConfig: BedrockConfig = {
+    testFileExtension: 'spec',
+    watchMode: false,
+    noSummary: false,
+    noDOM: false,
+    ignorePaths: ['node_modules'],
 };
-
-export default config;

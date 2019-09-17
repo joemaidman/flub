@@ -1,5 +1,3 @@
-import Report from '../models/Report';
-import ContextChain from './ContextChain';
 import {
     toEqual,
     toBeDefined,
@@ -9,7 +7,8 @@ import {
     toBeNull,
     toBeGreaterThanOrEqualTo,
     toBeLessThanOrEqualTo,
-    toBeGreaterThan, toBeLessThan,
+    toBeGreaterThan,
+    toBeLessThan,
     toBeBetweenExclusive,
     toBeCloseToInclusive,
     toBeCloseToExclusive,
@@ -28,8 +27,10 @@ import {
     toHaveBeenCalledWith,
     toHaveBeenCalledWithFirst,
     toHaveBeenCalledWithLast,
-    toBeBetweenInclusive
+    toBeBetweenInclusive,
 } from '../matchers';
+import ContextChain from '../context/ContextChain';
+import Report from '../reporter/Report';
 
 class Expectation {
     subject: any;
@@ -58,7 +59,7 @@ class Expectation {
         }
     }
 
-    with = function (...args: any[]): Expectation {
+    with = function(...args: any[]): Expectation {
         this.throwsArgs = Array.prototype.slice.call(arguments);
         this.not.throwsArgs = Array.prototype.slice.call(arguments);
         return this;
@@ -94,7 +95,6 @@ class Expectation {
     toHaveBeenCalledWith = toHaveBeenCalledWith;
     toHaveBeenCalledWithFirst = toHaveBeenCalledWithFirst;
     toHaveBeenCalledWithLast = toHaveBeenCalledWithLast;
-
 }
 
 export default Expectation;

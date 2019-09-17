@@ -23,7 +23,6 @@ class Spy {
         return this.callHistory;
     }
 
-
     getCallHistoryFormatted(): string {
         return '\n    ' + this.callHistory.join('\n    ');
     }
@@ -46,11 +45,9 @@ class Spy {
 
         if (this.override) {
             return this.override(Array.prototype.slice.call(args));
-        }
-        else {
+        } else {
             return this.originalFunction(Array.prototype.slice.call(args));
         }
-        
     }
 
     reset(): void {
@@ -65,9 +62,7 @@ class Spy {
     }
 
     static getSpyList(): Array<Spy> {
-        return Spy.spyList
-            ? Spy.spyList
-            : Spy.spyList = new Array<Spy>();
+        return Spy.spyList ? Spy.spyList : (Spy.spyList = new Array<Spy>());
     }
 
     static removeSpy(target: any, name: string): void {
@@ -87,7 +82,6 @@ class Spy {
             }
         });
     }
-
 }
 
 export default Spy;

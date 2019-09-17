@@ -1,6 +1,6 @@
-export const inputCodeWithNormalTests: string = 'context(\'Context\', () => {test(\'Test\', () => { });});';
+export const inputCodeWithNormalTests: string = `context('Context', () => {test('Test', () => { });});`;
 
-export const inputSimpleCodeWithFocusedContexts: string = 'xcontext(\'Parent Context\', () => {context(\'Child Context\',() => {test(\'Test\', () => {});});});';
+export const inputSimpleCodeWithFocusedContexts: string = `xcontext('Parent Context', () => {context('Child Context',() => {test('Test', () => {});});});`;
 
 export const outputCodeWithTestsIgnored: string = `context('Context', () => {
     xtest('Test', () => {
@@ -14,7 +14,7 @@ export const outputSimpleCodeWithChildContextsIgnored: string = `xcontext('Paren
     });
 });`;
 
-export const t1: string = `context('Matchers', () => {
+export const codeSampleXContextInput: string = `context('Matchers', () => {
     
         context('Given toEqual', () => {
             xcontext('When you pass 1 and 1', () => {
@@ -32,7 +32,7 @@ export const t1: string = `context('Matchers', () => {
     });
 `;
 
-export const t2: string = `context('Matchers', () => {
+export const codeSampleXContextExpectedOutput: string = `context('Matchers', () => {
     context('Given toEqual', () => {
         xcontext('When you pass 1 and 1', () => {
             xtest('THEN it passes', () => {

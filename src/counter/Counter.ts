@@ -1,39 +1,46 @@
-export let testCount: number = 0;
-export let passCount: number = 0;
-export let failCount: number = 0;
-export let ignoreCount: number = 0;
-export let depth: number = 0;
+import MessageType from '../messages/MessageType';
 
-export const reset = () => {
-    testCount = 0;
-    passCount = 0;
-    failCount = 0;
-    ignoreCount = 0;
-    depth = 0;
-};
+export class Counter {
+    static testCount: number = 0;
+    static passCount: number = 0;
+    static failCount: number = 0;
+    static ignoreCount: number = 0;
+    static depth: number = 0;
 
-export const incrementDepth = () => {
-    depth++;
-};
-
-export const decrementDepth = () => {
-    if (depth > 0) {
-        depth--;
+    static incrementDepth() {
+        Counter.depth++;
     }
-};
 
-export const incrementTestCount = () => {
-    testCount++;
-};
+    static decrementDepth() {
+        if (Counter.depth > 0) {
+            Counter.depth--;
+        }
+    }
 
-export const incrementPassCount = () => {
-    passCount++;
-};
+    static incrementTestCount() {
+        Counter.testCount++;
+    }
 
-export const incrementFailCount = () => {
-    failCount++;
-};
+    static incrementPassCount() {
+        Counter.passCount++;
+    }
 
-export const incrementIgnoreCount = () => {
-    ignoreCount++;
-};
+    static incrementFailCount() {
+        Counter.failCount++;
+    }
+
+    static incrementIgnoreCount() {
+        Counter.ignoreCount++;
+    }
+    static reset() {
+        Counter.testCount = 0;
+        Counter.passCount = 0;
+        Counter.failCount = 0;
+        Counter.ignoreCount = 0;
+        Counter.depth = 0;
+    }
+
+    static levelType(): MessageType {
+        return Counter.depth === 0 ? MessageType.ROOT : MessageType.DEFAULT;
+    }
+}

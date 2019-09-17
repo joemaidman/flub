@@ -9,14 +9,14 @@ import { IgnoredTestMessageStrategy } from './strategies/IgnoredTestMessageStrat
 import { IgnoredContextMessageStrategy } from './strategies/IgnoredContextMessageStrategy';
 
 export const loadMessageStrategies = (): Array<MessageStrategy> => {
-  return [
-      new DefaultMessageStrategy(),
-      new OKMessageStrategy(),
-      new ErrorMessageStrategy(),
-      new RootMessageStrategy(),
-      new ComparisonMessageStrategy(),
-      new StackMessageStrategy(),
-      new IgnoredTestMessageStrategy(),
-      new IgnoredContextMessageStrategy()
-  ];
+    return [
+        new DefaultMessageStrategy(),
+        new OKMessageStrategy(),
+        new ErrorMessageStrategy(),
+        new RootMessageStrategy(),
+        new ComparisonMessageStrategy(),
+        new StackMessageStrategy(),
+        new IgnoredTestMessageStrategy(),
+        new IgnoredContextMessageStrategy(),
+    ];
 };
