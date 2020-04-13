@@ -9,8 +9,8 @@ import {
     setupEach,
     tearDownEach,
     setup,
-    tearDown
-} from './models/Core';
+    tearDown,
+} from './api';
 
 export {
     context,
@@ -23,5 +23,5 @@ export {
     setupEach,
     tearDownEach,
     setup,
-    tearDown
+    tearDown,
 };

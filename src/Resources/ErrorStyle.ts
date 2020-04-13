@@ -1,30 +1,30 @@
-export const ErrorStyle = {
+export const errorStyle = {
     'pretty-error > header > title > kind': {
-        display: 'none'
+        display: 'none',
     },
     'pretty-error > header > colon': {
-        display: 'none'
+        display: 'none',
     },
     'pretty-error > header > message': {
-        display: 'none'
+        display: 'none',
     },
     'pretty-error > trace > item > header > pointer > file': {
-        color: 'cyan'
+        color: 'cyan',
     },
     'pretty-error > trace > item > header > pointer > colon': {
-        color: 'cyan'
+        color: 'cyan',
     },
     'pretty-error > trace > item > header > pointer > line': {
-        color: 'cyan'
+        color: 'cyan',
     },
     'pretty-error > trace > item': {
         display: 'block',
         marginBottom: 0,
         marginLeft: 2,
-        bullet: '"<grey></grey>"'
+        bullet: '"<grey></grey>"',
     },
     'pretty-error > trace': {
         display: 'block',
-        marginTop: 0
-    }
+        marginTop: 0,
+    },
 };
