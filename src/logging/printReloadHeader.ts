@@ -5,7 +5,7 @@ import Report from '../reporter/Report';
 export const printReloadHeader = () => {
     Reporter.report(new Report('', MessageType.DEFAULT));
     Reporter.report(
-        new Report('Bedrock reloading...', MessageType.DEFAULT),
+        new Report('Flub reloading...', MessageType.DEFAULT),
         true
     );
     Reporter.report(new Report([''], MessageType.DEFAULT));

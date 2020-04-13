@@ -1,4 +1,4 @@
-export interface BedrockConfig {
+export interface FlubConfig {
     testFileExtension: string;
     watchMode: boolean;
     noSummary: boolean;
@@ -6,7 +6,7 @@ export interface BedrockConfig {
     ignorePaths?: string[];
 }
 
-export const defaultConfig: BedrockConfig = {
+export const defaultConfig: FlubConfig = {
     testFileExtension: 'spec',
     watchMode: false,
     noSummary: false,

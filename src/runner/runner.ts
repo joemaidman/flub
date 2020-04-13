@@ -45,7 +45,7 @@ export const runner = (ext: string, nosumm: boolean, watch: boolean) => {
                 );
                 const reqs = findRequires(sanitisedSource);
                 reqs.map(req => {
-                    if (req !== 'bed-rock')
+                    if (req !== 'flub')
                         delete require.cache[
                             require.resolve(
                                 convertRelativePath(

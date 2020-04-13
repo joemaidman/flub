@@ -26,7 +26,7 @@ export function assert(testResult: boolean, expectation: Expectation): boolean {
             throw new Error('Assertion error');
         } catch (error) {
             let prettyError = new PrettyError();
-            prettyError.skipPackage('bed-rock');
+            prettyError.skipPackage('flub');
             prettyError.appendStyle(errorStyle);
 
             let prettyTrace = prettyError.render(error);

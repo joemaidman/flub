@@ -3,10 +3,10 @@ import * as flags from 'flags';
 import { JSDOM } from 'jsdom';
 
 import { runner } from './runner';
-import { BedrockConfig } from './config/default';
+import { FlubConfig } from './config/default';
 import { printWatching } from './logging';
 
-const parseArguments = (): BedrockConfig => {
+const parseArguments = (): FlubConfig => {
     flags.defineString('ext', 'spec', 'Test file extension');
     flags.defineBoolean('watch', false, 'Enable watch mode');
     flags.defineBoolean(
@@ -35,7 +35,7 @@ const configureDOM = (noDOM: boolean) => {
     }
 };
 
-const watch = ({ testFileExtension, noSummary, watchMode }: BedrockConfig) => {
+const watch = ({ testFileExtension, noSummary, watchMode }: FlubConfig) => {
     printWatching();
     const watcher = chokidar.watch(process.cwd(), {
         usePolling: true,
@@ -51,7 +51,7 @@ const watch = ({ testFileExtension, noSummary, watchMode }: BedrockConfig) => {
     });
 };
 
-const BedRock = () => {
+const Flub = () => {
     const { testFileExtension, noSummary, watchMode, noDOM } = parseArguments();
 
     configureDOM(noDOM);
@@ -63,4 +63,4 @@ const BedRock = () => {
     }
 };
 
-export default BedRock;
+export default Flub;

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import Bedrock from './Bedrock';
+import Flub from './Flub';
 
-Bedrock();
+Flub();

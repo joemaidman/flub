@@ -4,7 +4,7 @@ import MessageType from '../messages/MessageType';
 
 export const printStartHeader = () => {
     Reporter.report(
-        new Report('Bedrock starting...', MessageType.DEFAULT),
+        new Report('Flub starting...', MessageType.DEFAULT),
         true
     );
     Reporter.report(new Report('', MessageType.DEFAULT));

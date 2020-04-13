@@ -1,25 +1,24 @@
 /*
-This is an example bed-rock test file showing usage of most matchers.
-To use, run npm i bed-rock --save-dev and move this file in your project.
+This is an example flub test file showing usage of most matchers.
+To use, run npm i flub --save-dev and move this file in your project.
 Rename the file to include your test file extention (e.g. .spec.js).
-Set your test script to 'bed-rock' in package.json, including any flags required.
+Set your test script to 'flub' in package.json, including any flags required.
 Run 'npm test' in the CLI.
 */
 
-var BedRock = require('bed-rock');
-var context = require('bed-rock').context;
-var xcontext = require('bed-rock').xcontext;
-var test = require('bed-rock').test;
-var ftest = require('bed-rock').ftest;
-var xtest = require('bed-rock').xtest;
-var expect = require('bed-rock').expect;
-var setup = require('bed-rock').setup;
-var tearDown = require('bed-rock').tearDown;
-var setupEach = require('bed-rock').setupEach;
-var tearDownEach = require('bed-rock').tearDownEach;
+var Flub = require('flub');
+var context = require('flub').context;
+var xcontext = require('flub').xcontext;
+var test = require('flub').test;
+var ftest = require('flub').ftest;
+var xtest = require('flub').xtest;
+var expect = require('flub').expect;
+var setup = require('flub').setup;
+var tearDown = require('flub').tearDown;
+var setupEach = require('flub').setupEach;
+var tearDownEach = require('flub').tearDownEach;
 
 context('Matchers', () => {
-
     context('Given toEqual', () => {
         context('When you pass 1 and 1', () => {
             test('THEN it passes', () => {
@@ -393,7 +392,6 @@ context('Matchers', () => {
     });
 
     context('Given toHaveKey', () => {
-
         context('When you test a map', () => {
             test('THEN it passes', () => {
                 expect(new Map().set(1, 1)).toHaveKey(1);
@@ -413,11 +411,9 @@ context('Matchers', () => {
                 expect({ a: 1 }).toHaveKey('b');
             });
         });
-
     });
 
     context('Given not.haveKey', () => {
-
         context('When you test a map', () => {
             test('THEN it passes', () => {
                 expect(new Map().set(1, 1)).not.toHaveKey(2);
@@ -437,7 +433,6 @@ context('Matchers', () => {
                 expect({ a: 1 }).not.toHaveKey('a');
             });
         });
-
     });
 
     context('Given toContain', () => {
@@ -480,7 +475,6 @@ context('Matchers', () => {
                 expect('Test').toContain('Wrong');
             });
         });
-
     });
 
     context('Given not.toContain', () => {
@@ -523,11 +517,9 @@ context('Matchers', () => {
                 expect('Test').not.toContain('Test');
             });
         });
-
     });
 
     context('Given toBeStringContaining', () => {
-
         context('WHEN case sensitive', () => {
             test('THEN it passes', () => {
                 expect('Hello World').toBeStringContaining('World', true);
@@ -536,7 +528,7 @@ context('Matchers', () => {
             test('THEN it fails', () => {
                 expect('Hello World').toBeStringContaining('world', true);
             });
-        })
+        });
 
         context('WHEN case insensitive', () => {
             test('THEN it passes', () => {
@@ -546,12 +538,10 @@ context('Matchers', () => {
             test('THEN it fails', () => {
                 expect('Hello World').toBeStringContaining('Wrong', false);
             });
-        })
-
+        });
     });
 
     context('Given not.toBeStringContaining', () => {
-
         context('WHEN case sensitive', () => {
             test('THEN it passes', () => {
                 expect('Hello World').not.toBeStringContaining('Wrong', true);
@@ -560,7 +550,7 @@ context('Matchers', () => {
             test('THEN it fails', () => {
                 expect('Hello World').not.toBeStringContaining('World', true);
             });
-        })
+        });
 
         context('WHEN case insensitive', () => {
             test('THEN it passes', () => {
@@ -570,24 +560,23 @@ context('Matchers', () => {
             test('THEN it fails', () => {
                 expect('Hello World').not.toBeStringContaining('hello', false);
             });
-        })
-
+        });
     });
 
     context('Given toBeStringMatching', () => {
-
         test('THEN it passes', () => {
             expect('Hello World').toBeStringMatching(new RegExp(/^Hello/));
         });
 
         test('THEN it fails', () => {
-            expect('Hello World').toBeStringMatching(new RegExp(/^wrong/), true);
+            expect('Hello World').toBeStringMatching(
+                new RegExp(/^wrong/),
+                true
+            );
         });
-
     });
 
     context('Given not.toBeStringMatching', () => {
-
         test('THEN it passes', () => {
             expect('Hello World').not.toBeStringMatching(new RegExp(/^wrong/));
         });
@@ -595,11 +584,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect('Hello World').not.toBeStringMatching(new RegExp(/^Hello/));
         });
-
     });
 
     context('Given toBeTypeOf', () => {
-
         test('THEN it passes', () => {
             expect(1).toBeTypeOf('Number');
         });
@@ -607,11 +594,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect(1).toBeTypeOf('String');
         });
-
     });
 
     context('Given not.toBeTypeOf', () => {
-
         test('THEN it passes', () => {
             expect('Hello World').not.toBeTypeOf('Number');
         });
@@ -619,11 +604,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect('Hello World').not.toBeTypeOf('String');
         });
-
     });
 
     context('Given toRespondTo', () => {
-
         test('THEN it passes', () => {
             expect(Math).toRespondTo('round');
         });
@@ -631,11 +614,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect(Math).toRespondTo('hi');
         });
-
     });
 
     context('Given not.toRespondTo', () => {
-
         test('THEN it passes', () => {
             expect('Hello World').not.toRespondTo('round');
         });
@@ -643,11 +624,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect('Hello World').not.toRespondTo('length');
         });
-
     });
 
     context('Given toBeFalsey', () => {
-
         test('THEN it passes', () => {
             expect(false).toBeFalsey();
         });
@@ -655,11 +634,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect(true).toBeFalsey();
         });
-
     });
 
     context('Given not.toBeFalsey', () => {
-
         test('THEN it passes', () => {
             expect(true).not.toBeFalsey();
         });
@@ -667,12 +644,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect(false).not.toBeFalsey();
         });
-
     });
 
-
     context('Given toBeTruthy', () => {
-
         test('THEN it passes', () => {
             expect(true).toBeTruthy();
         });
@@ -680,11 +654,9 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect(false).toBeTruthy();
         });
-
     });
 
     context('Given not.toBeTruthy', () => {
-
         test('THEN it passes', () => {
             expect(false).not.toBeTruthy();
         });
@@ -692,14 +664,13 @@ context('Matchers', () => {
         test('THEN it fails', () => {
             expect(true).not.toBeTruthy();
         });
-
     });
 
     context('Given toHaveBeenCalled()', () => {
         let mySpy;
 
         setup(() => {
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDown(() => {
@@ -710,22 +681,21 @@ context('Matchers', () => {
             test('Then it passed because the spy has been called 1 time', () => {
                 Math.round(1);
                 expect(mySpy).toHaveBeenCalled(1);
-            })
-        })
+            });
+        });
         context('When the spy has been called twice', () => {
             test('Then it fails because the spy it has been called 2 times', () => {
                 Math.round(1);
                 expect(mySpy).toHaveBeenCalled(1);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given not.toHaveBeenCalled()', () => {
         let mySpy;
 
         setup(() => {
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
             Math.round(1);
         });
 
@@ -735,23 +705,21 @@ context('Matchers', () => {
 
         context('When the spy has been called once', () => {
             test('Then it passed because the spy has not been called 2 times', () => {
-
                 expect(mySpy).not.toHaveBeenCalled(2);
-            })
-        })
+            });
+        });
         context('When the spy has been called once', () => {
             test('Then it fails because the spy has been called 1 times', () => {
                 expect(mySpy).not.toHaveBeenCalled(1);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given toHaveBeenCalledWith()', () => {
         let mySpy;
 
         setup(() => {
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDown(() => {
@@ -762,21 +730,20 @@ context('Matchers', () => {
             test('Then it passed because the spy has been called with 1', () => {
                 Math.round(1);
                 expect(mySpy).toHaveBeenCalledWith(1);
-            })
-        })
+            });
+        });
         context('When the spy has been called', () => {
             test('Then it fails because the spy was not called with 3', () => {
                 expect(mySpy).toHaveBeenCalledWith(3);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given not.toHaveBeenCalledWith()', () => {
         let mySpy;
 
         setup(() => {
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDown(() => {
@@ -787,16 +754,15 @@ context('Matchers', () => {
             test('Then it passed because the spy has not been called with 2', () => {
                 Math.round(1);
                 expect(mySpy).not.toHaveBeenCalledWith(2);
-            })
-        })
+            });
+        });
         context('When the spy has been called with 1', () => {
             test('Then it fails because the spy was called with 1', () => {
                 Math.round(2);
                 expect(mySpy).not.toHaveBeenCalledWith(1);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given toHaveBeenCalledWithFirst()', () => {
         let mySpy;
@@ -805,7 +771,7 @@ context('Matchers', () => {
             if (mySpy) {
                 mySpy.reset();
             }
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDownEach(() => {
@@ -817,15 +783,14 @@ context('Matchers', () => {
                 Math.round(1);
                 Math.round(2);
                 expect(mySpy).toHaveBeenCalledWithFirst(1);
-            })
-        })
+            });
+        });
         context('When the spy has not been called first with 1', () => {
             test('Then it fails because the spy was not called with 1', () => {
                 expect(mySpy).toHaveBeenCalledWithFirst(1);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given not.toHaveBeenCalledWithFirst()', () => {
         let mySpy;
@@ -834,7 +799,7 @@ context('Matchers', () => {
             if (mySpy) {
                 mySpy.reset();
             }
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDownEach(() => {
@@ -845,17 +810,16 @@ context('Matchers', () => {
             test('Then it passed because the spy has been called first with 1', () => {
                 Math.round(2);
                 expect(mySpy).not.toHaveBeenCalledWithFirst(1);
-            })
-        })
+            });
+        });
         context('When the spy has been called with 1 and then 2', () => {
             test('Then it fails because the spy was not called with 1', () => {
                 Math.round(1);
                 Math.round(2);
                 expect(mySpy).not.toHaveBeenCalledWithFirst(1);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given toHaveBeenCalledWithLast()', () => {
         let mySpy;
@@ -864,7 +828,7 @@ context('Matchers', () => {
             if (mySpy) {
                 mySpy.reset();
             }
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDownEach(() => {
@@ -876,15 +840,14 @@ context('Matchers', () => {
                 Math.round(1);
                 Math.round(2);
                 expect(mySpy).toHaveBeenCalledWithLast(2);
-            })
-        })
+            });
+        });
         context('When the spy has not been called', () => {
             test('Then it fails because the spy was not called with 1', () => {
                 expect(mySpy).toHaveBeenCalledWithLast(1);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given not.toHaveBeenCalledWithLast()', () => {
         let mySpy;
@@ -893,7 +856,7 @@ context('Matchers', () => {
             if (mySpy) {
                 mySpy.reset();
             }
-            mySpy = BedRock.spy(Math, 'round');
+            mySpy = Flub.spy(Math, 'round');
         });
 
         tearDownEach(() => {
@@ -904,198 +867,223 @@ context('Matchers', () => {
             test('Then it passed because the spy has not been called last with 1', () => {
                 Math.round(2);
                 expect(mySpy).not.toHaveBeenCalledWithLast(1);
-            })
-        })
+            });
+        });
         context('When the spy has been called with 1 and then 2', () => {
             test('Then it fails because the spy was called with 2', () => {
                 Math.round(1);
                 Math.round(2);
                 expect(mySpy).not.toHaveBeenCalledWithLast(2);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given toHaveLength()', () => {
         context('When the subject is an Array', () => {
             let testArray = [1, 2, 3, 4, 5];
             test('Then it passes as the array has 5 elements', () => {
                 expect(testArray).toHaveLength(5);
-            })
+            });
             test('Then it fails as the array does not have 6 elements', () => {
                 expect(testArray).toHaveLength(6);
-            })
-        })
+            });
+        });
 
         context('When the subject is a Set', () => {
             let testSet = new Set();
             testSet.add({ 1: 1 });
             test('Then it passes as the set has 5 elements', () => {
                 expect(testSet).toHaveLength(1);
-            })
+            });
             test('Then it fails as the array does not have 6 elements', () => {
                 expect(testSet).toHaveLength(2);
-            })
-        })
+            });
+        });
 
         context('When the subject is a Map', () => {
             let testMap = new Map();
             testMap.set({ 1: 1 });
             test('Then it passes as the map has 1 elements', () => {
                 expect(testMap).toHaveLength(1);
-            })
+            });
             test('Then it fails as the map does not have 2 elements', () => {
                 expect(testMap).toHaveLength(2);
-            })
-        })
+            });
+        });
 
         context('When the subject is a String', () => {
             test('Then it passes as string has 1 character', () => {
                 expect('T').toHaveLength(1);
-            })
+            });
 
             test('Then it fails as the string does not have 2 elements', () => {
                 expect('T').toHaveLength(2);
-            })
-        })
-
-    })
+            });
+        });
+    });
 
     context('Given not.toHaveLength()', () => {
         context('When the subject is an Array', () => {
             let testArray = [1, 2, 3, 4, 5];
             test('Then it passes as the array has 5 elements', () => {
                 expect(testArray).not.toHaveLength(4);
-            })
+            });
             test('Then it fails as the array does not have 6 elements', () => {
                 expect(testArray).not.toHaveLength(5);
-            })
-        })
+            });
+        });
 
         context('When the subject is a Set', () => {
             let testSet = new Set();
             testSet.add({ 1: 1 });
             test('Then it passes as the set has 5 elements', () => {
                 expect(testSet).not.toHaveLength(2);
-            })
+            });
             test('Then it fails as the array does not have 6 elements', () => {
                 expect(testSet).not.toHaveLength(1);
-            })
-        })
+            });
+        });
 
         context('When the subject is a Map', () => {
             let testMap = new Map();
             testMap.set({ 1: 1 });
             test('Then it passes as the map has 1 elements', () => {
                 expect(testMap).not.toHaveLength(2);
-            })
+            });
             test('Then it fails as the map does not have 2 elements', () => {
                 expect(testMap).not.toHaveLength(1);
-            })
-        })
+            });
+        });
 
         context('When the subject is a String', () => {
             test('Then it passes as string has 1 character', () => {
                 expect('T').not.toHaveLength(2);
-            })
+            });
 
             test('Then it fails as the string does not have 2 elements', () => {
                 expect('T').not.toHaveLength(1);
-            })
-        })
-
-    })
-
+            });
+        });
+    });
 
     context('Given toThrow()', () => {
         context('When it throws', () => {
-            let throwingFunction = () => { throw ('Error message') }
+            let throwingFunction = () => {
+                throw 'Error message';
+            };
             test('Then it passes because it throws', () => {
                 expect(throwingFunction).toThrow('Error message');
-            })
+            });
 
             test('Then it fails because it did not throw', () => {
-                expect(Math.round).with(1).toThrow('Error message');
-            })
-
-        })
-
-    })
+                expect(Math.round)
+                    .with(1)
+                    .toThrow('Error message');
+            });
+        });
+    });
 
     context('Given toThrow().with', () => {
         context('When it throws with args', () => {
-            let throwingFunction = (num) => { if (num > 1) { throw ('Invalid number') } }
+            let throwingFunction = num => {
+                if (num > 1) {
+                    throw 'Invalid number';
+                }
+            };
             test('Then it passes because it throws', () => {
-                expect(throwingFunction).with(2).toThrow('Invalid number');
-            })
+                expect(throwingFunction)
+                    .with(2)
+                    .toThrow('Invalid number');
+            });
 
             test('Then it fails because it did not throw', () => {
-                expect(Math.round).with(2).toThrow('Invalid number');
-            })
-
-        })
-
-    })
+                expect(Math.round)
+                    .with(2)
+                    .toThrow('Invalid number');
+            });
+        });
+    });
 
     context('Given toThrow().with.not', () => {
         context('When it throws with args', () => {
-            let throwingFunction = (num) => { if (num > 1) { throw ('Invalid number') } }
+            let throwingFunction = num => {
+                if (num > 1) {
+                    throw 'Invalid number';
+                }
+            };
             test('Then it passes because it throws', () => {
-                expect(throwingFunction).with(1).not.toThrow('Invalid number');
-            })
+                expect(throwingFunction)
+                    .with(1)
+                    .not.toThrow('Invalid number');
+            });
 
             test('Then it fails because it throws', () => {
-                expect(throwingFunction).with(2).not.toThrow('Invalid number');
-            })
-
-        })
-
-    })
+                expect(throwingFunction)
+                    .with(2)
+                    .not.toThrow('Invalid number');
+            });
+        });
+    });
 
     context('Given toThrowError()', () => {
         context('When it throws an error', () => {
-            let throwingFunction = () => { throw new RangeError('Range message') }
+            let throwingFunction = () => {
+                throw new RangeError('Range message');
+            };
             test('Then it passes because it throws a RangeError', () => {
-                expect(throwingFunction).toThrowError(RangeError, 'Range message');
-            })
+                expect(throwingFunction).toThrowError(
+                    RangeError,
+                    'Range message'
+                );
+            });
 
             test('Then it fails because it did not throw a RangeError', () => {
-                expect(() => { throw new Error('Normal error'); }).toThrowError(RangeError, 'Range message');
-            })
-
-        })
-
-    })
+                expect(() => {
+                    throw new Error('Normal error');
+                }).toThrowError(RangeError, 'Range message');
+            });
+        });
+    });
 
     context('Given toThrowError().with', () => {
         context('When it throws an error', () => {
-            let throwingFunction = (num) => { if (num != 2) { throw new RangeError('Range message') }}
+            let throwingFunction = num => {
+                if (num != 2) {
+                    throw new RangeError('Range message');
+                }
+            };
             test('Then it passes because it throws a RangeError', () => {
-                expect(throwingFunction).with(1).toThrowError(RangeError, 'Range message');
-            })
+                expect(throwingFunction)
+                    .with(1)
+                    .toThrowError(RangeError, 'Range message');
+            });
 
             test('Then it fails because it did not throw a RangeError', () => {
-                expect(throwingFunction).with(2).toThrowError(RangeError, 'Range message');
-            })
-
-        })
-
-    })
+                expect(throwingFunction)
+                    .with(2)
+                    .toThrowError(RangeError, 'Range message');
+            });
+        });
+    });
 
     context('Given toThrowError().with.not', () => {
         context('When it throws an error', () => {
-            let throwingFunction = (num) => { if (num != 2) { throw new RangeError('Range message') }}
+            let throwingFunction = num => {
+                if (num != 2) {
+                    throw new RangeError('Range message');
+                }
+            };
             test('Then it passes because it throws a RangeError', () => {
-                expect(throwingFunction).with(2).not.toThrowError(RangeError, 'Range message');
-            })
+                expect(throwingFunction)
+                    .with(2)
+                    .not.toThrowError(RangeError, 'Range message');
+            });
 
             test('Then it fails because it did not throw a RangeError', () => {
-                expect(throwingFunction).with(1).not.toThrowError(RangeError, 'Range message');
-            })
-
-        })
-
-    })
-
-
+                expect(throwingFunction)
+                    .with(1)
+                    .not.toThrowError(RangeError, 'Range message');
+            });
+        });
+    });
 });

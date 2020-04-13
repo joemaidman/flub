@@ -1,13 +1,13 @@
 {
-    "name": "bed-rock",
+    "name": "flub",
     "author": "Joe Maidman",
-    "license": "ISC",
-    "version": "2.6.0",
+    "license": "MIT",
+    "version": "1.0.0",
     "description": "A javascript unit testing framework",
     "main": "./dist/src/index.js",
     "types": "./dist/src/index.d.ts",
     "bin": {
-        "bed-rock": "./dist/src/app.js"
+        "flub": "./dist/src/app.js"
     },
     "files": [
         "dist"

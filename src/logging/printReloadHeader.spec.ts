@@ -23,7 +23,7 @@ describe('printReloadHeader', () => {
         );
         sinon.assert.calledWith(
             reporterSpy,
-            new Report('Bedrock reloading...', MessageType.DEFAULT)
+            new Report('Flub reloading...', MessageType.DEFAULT)
         );
         sinon.assert.calledWith(
             reporterSpy,
