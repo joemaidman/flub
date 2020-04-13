@@ -13,7 +13,7 @@ import {
     replaceFunctionCalls,
 } from '../parser';
 import { failureList, clearFailures } from '../reporter/FailureReport';
-import ContextChain from '../context/ContextChain';
+import ContextChain from '../context-chain/ContextChain';
 import HooksManager from '../hooks/HookManager';
 import { convertRelativePath } from '../utilities';
 import {
@@ -32,10 +32,11 @@ export const runner = (ext: string, nosumm: boolean, watch: boolean) => {
     getElapsed = measureTime();
     printStartHeader();
 
-    glob(globString, { cwd: process.cwd() }, function(
+    glob(globString, { cwd: process.cwd() }, function (
         _: any,
         files: Array<string>
     ) {
+
         files.forEach((file: any) => {
             try {
                 let sanitisedSource: string = fs.readFileSync(

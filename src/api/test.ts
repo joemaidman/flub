@@ -1,6 +1,6 @@
 import HooksManager from '../hooks/HookManager';
 import { Counter } from '../counter';
-import ContextChain from '../context/ContextChain';
+import ContextChain from '../context-chain/ContextChain';
 
 export const test = (des: string, tests: () => any): void => {
     HooksManager.runHooks('setupEachHooks');

@@ -5,9 +5,9 @@ import MessageType from '../messages/MessageType';
 import Report from '../reporter/Report';
 import { failureList } from '../reporter/FailureReport';
 import { assert } from './assert';
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
-describe('GIVEN assert', () => {
+describe('assert', () => {
     let expectation: Expectation;
     let reporter: Reporter;
     let reportStub: sinon.SinonSpy;
@@ -19,7 +19,7 @@ describe('GIVEN assert', () => {
         reportStub = sinon.stub(Reporter, 'report');
     });
 
-    afterAll(function() {
+    afterAll(function () {
         reportStub.restore();
     });
     describe('WHEN called on a regular expectation', () => {
@@ -29,7 +29,7 @@ describe('GIVEN assert', () => {
             beforeAll(() => {
                 expectation = new Expectation(1, 'Description');
                 Counter.reset();
-                reportStub.reset();
+                reportStub.resetHistory();
                 assertResult = assert(true, expectation);
             });
 
@@ -57,7 +57,7 @@ describe('GIVEN assert', () => {
             beforeAll(() => {
                 expectation = new Expectation(1, 'Description');
                 Counter.reset();
-                reportStub.reset();
+                reportStub.resetHistory();
                 failureList.length = 0;
                 assertResult = assert(false, expectation);
             });

@@ -1,4 +1,4 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
 import { FailureReport } from '../reporter/FailureReport';
 import Report from '../reporter/Report';

@@ -1,5 +1,5 @@
 import HooksManager from '../hooks/HookManager';
-import ContextChain from '../context/ContextChain';
+import ContextChain from '../context-chain/ContextChain';
 import { Counter } from '../counter';
 
 export const ftest = (des: string, tests: () => any): void => {

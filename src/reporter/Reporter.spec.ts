@@ -1,4 +1,4 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
 import { DefaultMessageStrategy } from '../messages/strategies/DefaultMessageStrategy';
 import * as GetMessageStrategyParent from '../messages';

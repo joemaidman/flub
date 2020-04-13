@@ -1,26 +1,25 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 import * as _ from 'lodash';
 
 import Reporter from '../reporter/Reporter';
 import HooksManager from '../hooks/HookManager';
 import { Counter } from '../counter';
-import ContextChain from '../context/ContextChain';
+import ContextChain from '../context-chain/ContextChain';
+import { xcontext } from './xcontext';
 import Report from '../reporter/Report';
 import MessageType from '../messages/MessageType';
-import Expectation from '../expectation/Expectation';
-import { expect as expectBR } from './expect';
-import { context } from './context';
 
-describe('Core', () => {
+describe('xcontext', () => {
+    let mockContext: any;
     let reportSpy: sinon.SinonSpy;
     let mockBodyFunction: sinon.SinonSpy;
     let runSingleHookSpy: sinon.SinonSpy;
     let removeSingleHookSpy: sinon.SinonSpy;
-    let ignorecountSpy: sinon.SinonSpy;
     let incrementDepthSpy: sinon.SinonSpy;
     let decrementDepthSpy: sinon.SinonSpy;
     let pushContextChainSpy: sinon.SinonSpy;
     let popContextChainSpy: sinon.SinonSpy;
+    let toggleCurrentContextIgnoredSpy: sinon.SinonSpy;
 
     beforeAll(() => {
         reportSpy = sinon.stub(Reporter, 'report');
@@ -31,6 +30,7 @@ describe('Core', () => {
         decrementDepthSpy = sinon.spy(Counter, 'decrementDepth');
         pushContextChainSpy = sinon.spy(ContextChain, 'push');
         popContextChainSpy = sinon.spy(ContextChain, 'pop');
+        toggleCurrentContextIgnoredSpy = sinon.spy(ContextChain, 'toggleCurrentContextIgnored');
     });
 
     beforeEach(() => {
@@ -43,6 +43,9 @@ describe('Core', () => {
         decrementDepthSpy.resetHistory();
         pushContextChainSpy.resetHistory();
         popContextChainSpy.resetHistory();
+        toggleCurrentContextIgnoredSpy.resetHistory();
+
+        mockContext = xcontext('Context description', mockBodyFunction);
     });
 
     afterAll(() => {
@@ -53,50 +56,57 @@ describe('Core', () => {
         decrementDepthSpy.restore();
         pushContextChainSpy.restore();
         popContextChainSpy.restore();
+        toggleCurrentContextIgnoredSpy.restore();
     });
 
-    describe('xcontext', () => {
-        // let mockContext: any;
-        // beforeEach(() => {
-        //     mockContext = context('Context description', mockBodyFunction);
-        // });
-        // it('prints its description', () => {
-        //     sinon.assert.calledWith(
-        //         reportSpy,
-        //         new Report('Context description', MessageType.ROOT)
-        //     );
-        // });
-        // it('should increment and decrement depth', () => {
-        //     sinon.assert.calledOnce(incrementDepthSpy);
-        //     sinon.assert.calledOnce(decrementDepthSpy);
-        //     expect(Counter.depth).toEqual(0);
-        // });
-        // it('should run its body', () => {
-        //     sinon.assert.calledOnce(mockBodyFunction);
-        // });
-        // it('should add the description to the CurrentContext chain', () => {
-        //     sinon.assert.calledOnce(pushContextChainSpy);
-        //     sinon.assert.calledWith(pushContextChainSpy, 'Context description');
-        // });
-        // it('should remove the description to the CurrentContext chain', () => {
-        //     sinon.assert.calledOnce(popContextChainSpy);
-        // });
-        // it('should run tearDownHooks', () => {
-        //     sinon.assert.calledOnce(runSingleHookSpy);
-        //     sinon.assert.calledWith(runSingleHookSpy, 'tearDownHooks', 0);
-        // });
-        // it('should run removeHook three times', () => {
-        //     sinon.assert.calledThrice(removeSingleHookSpy);
-        //     sinon.assert.calledWith(removeSingleHookSpy, 'setupEachHooks', 0);
-        //     sinon.assert.calledWith(removeSingleHookSpy, 'tearDownHooks', 0);
-        //     sinon.assert.calledWith(
-        //         removeSingleHookSpy,
-        //         'tearDownEachHooks',
-        //         0
-        //     );
-        // });
-        // it('should clear the context chain', () => {
-        //     expect(ContextChain.chain).toHaveLength(0);
-        // });
+    it('sets the current context ignored and then resets it', () => {
+        sinon.assert.calledTwice(toggleCurrentContextIgnoredSpy);
     });
+
+    it('prints its description', () => {
+        sinon.assert.calledWith(
+            reportSpy,
+            new Report('Context description', MessageType.IGNORED_CONTEXT)
+        );
+    });
+
+    it('should increment and decrement depth', () => {
+        sinon.assert.calledOnce(incrementDepthSpy);
+        sinon.assert.calledOnce(decrementDepthSpy);
+        expect(Counter.depth).toEqual(0);
+    });
+
+    it('should run its body', () => {
+        sinon.assert.calledOnce(mockBodyFunction);
+    });
+
+    it('should add the description to the CurrentContext chain', () => {
+        sinon.assert.calledOnce(pushContextChainSpy);
+        sinon.assert.calledWith(pushContextChainSpy, 'Context description');
+    });
+
+    it('should remove the description to the CurrentContext chain', () => {
+        sinon.assert.calledOnce(popContextChainSpy);
+    });
+
+    it('should run tearDownHooks', () => {
+        sinon.assert.calledOnce(runSingleHookSpy);
+        sinon.assert.calledWith(runSingleHookSpy, 'tearDownHooks', 0);
+    });
+
+    it('should run removeHook three times', () => {
+        sinon.assert.calledThrice(removeSingleHookSpy);
+        sinon.assert.calledWith(removeSingleHookSpy, 'setupEachHooks', 0);
+        sinon.assert.calledWith(removeSingleHookSpy, 'tearDownHooks', 0);
+        sinon.assert.calledWith(
+            removeSingleHookSpy,
+            'tearDownEachHooks',
+            0
+        );
+    });
+
+    it('should clear the context chain', () => {
+        expect(ContextChain.chain).toHaveLength(0);
+    });
+
 });

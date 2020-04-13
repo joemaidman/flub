@@ -1,4 +1,4 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
 import { printReloadHeader } from './printReloadHeader';
 import Reporter from '../reporter/Reporter';

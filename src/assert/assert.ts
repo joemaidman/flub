@@ -20,7 +20,7 @@ export function assert(testResult: boolean, expectation: Expectation): boolean {
         failureMessages.push(
             new Report(expectation.failureDetails, MessageType.COMPARISON)
         );
-
+        expectation.failureMessages = failureMessages;
         Counter.incrementFailCount();
         try {
             throw new Error('Assertion error');
@@ -34,12 +34,12 @@ export function assert(testResult: boolean, expectation: Expectation): boolean {
                 new FailureReport(
                     expectation.des,
                     failureList.length +
-                        1 +
-                        ') ' +
-                        expectation.contextChain.join(' => ') +
-                        ' => ' +
-                        expectation.des +
-                        ': ',
+                    1 +
+                    ') ' +
+                    expectation.contextChain.join(' => ') +
+                    ' => ' +
+                    expectation.des +
+                    ': ',
                     error.message,
                     expectation.failureMessages,
                     prettyTrace

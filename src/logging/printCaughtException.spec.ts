@@ -1,4 +1,4 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
 import { printCaughtException } from './printCaughtException';
 import MessageType from '../messages/MessageType';

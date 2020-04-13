@@ -1,8 +1,9 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 import * as _ from 'lodash';
 import { Counter } from '../counter';
+import { xtest } from './xtest';
 
-describe('Core', () => {
+describe('xtest', () => {
     let mockBodyFunction: sinon.SinonSpy;
 
     let ignorecountSpy: sinon.SinonSpy;
@@ -10,25 +11,27 @@ describe('Core', () => {
 
     beforeAll(() => {
         testcountSpy = sinon.spy(Counter, 'incrementTestCount');
+        ignorecountSpy = sinon.spy(Counter, 'incrementIgnoreCount');
         mockBodyFunction = sinon.stub();
     });
 
     beforeEach(() => {
         testcountSpy.resetHistory();
+        ignorecountSpy.resetHistory();
         mockBodyFunction.resetHistory();
     });
 
-    describe('xtest', () => {
-        let mockTest: any;
 
-        beforeEach(() => {
-            mockTest = xtest('Test description', mockBodyFunction);
-        });
+    let mockTest: any;
 
-        it('should not run the body or incrementTestCount but incrementIgnoreCount', () => {
-            sinon.assert.notCalled(testcountSpy);
-            sinon.assert.notCalled(mockBodyFunction);
-            sinon.assert.calledOnce(ignorecountSpy);
-        });
+    beforeEach(() => {
+        mockTest = xtest('Test description', mockBodyFunction);
     });
+
+    it('should not run the body or incrementTestCount but incrementIgnoreCount', () => {
+        sinon.assert.notCalled(testcountSpy);
+        sinon.assert.notCalled(mockBodyFunction);
+        sinon.assert.calledOnce(ignorecountSpy);
+    });
+
 });

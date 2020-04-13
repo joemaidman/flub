@@ -3,6 +3,10 @@ export default class ContextChain {
     static currentDescription: string;
     static currentContextIgnored: boolean;
 
+    static toggleCurrentContextIgnored(): void {
+        ContextChain.currentContextIgnored = !ContextChain.currentContextIgnored;
+    }
+
     static pop(): void {
         ContextChain.chain.pop();
     }

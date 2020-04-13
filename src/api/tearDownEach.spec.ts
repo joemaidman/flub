@@ -1,10 +1,10 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 import * as _ from 'lodash';
 
 import { tearDownEach } from './tearDownEach';
 import HooksManager from '../hooks/HookManager';
 
-describe('Core', () => {
+describe('tearDownEach', () => {
     let mockBodyFunction: sinon.SinonSpy;
     let addSingleHookSpy: sinon.SinonSpy;
 
@@ -17,20 +17,19 @@ describe('Core', () => {
         addSingleHookSpy = sinon.spy(HooksManager, 'addHook');
     });
 
-    describe('tearDownEach', () => {
-        let mockTearDownEach: any;
 
-        beforeEach(() => {
-            mockTearDownEach = tearDownEach(mockBodyFunction);
-        });
+    let mockTearDownEach: any;
 
-        it('should run addHook', () => {
-            sinon.assert.calledOnce(addSingleHookSpy);
-            sinon.assert.calledWith(
-                addSingleHookSpy,
-                'tearDownEachHooks',
-                mockBodyFunction
-            );
-        });
+    beforeEach(() => {
+        mockTearDownEach = tearDownEach(mockBodyFunction);
+    });
+
+    it('should run addHook', () => {
+        sinon.assert.calledOnce(addSingleHookSpy);
+        sinon.assert.calledWith(
+            addSingleHookSpy,
+            'tearDownEachHooks',
+            mockBodyFunction
+        );
     });
 });

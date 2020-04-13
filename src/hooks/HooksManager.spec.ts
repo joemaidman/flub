@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
 import HooksManager from './HookManager';
 

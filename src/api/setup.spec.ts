@@ -1,9 +1,9 @@
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 import * as _ from 'lodash';
 
 import { setup } from './setup';
 
-describe('Core', () => {
+describe('setup', () => {
     let mockBodyFunction: sinon.SinonSpy;
     beforeAll(() => {
         mockBodyFunction = sinon.stub();
@@ -13,15 +13,15 @@ describe('Core', () => {
         mockBodyFunction.resetHistory();
     });
 
-    describe('setup', () => {
-        let mockSetup: any;
 
-        beforeEach(() => {
-            mockSetup = setup(mockBodyFunction);
-        });
+    let mockSetup: any;
 
-        it('should run its body', () => {
-            sinon.assert.calledOnce(mockBodyFunction);
-        });
+    beforeEach(() => {
+        mockSetup = setup(mockBodyFunction);
     });
+
+    it('should run its body', () => {
+        sinon.assert.calledOnce(mockBodyFunction);
+    });
+
 });

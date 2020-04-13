@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 
 import Expectation from '../../src/expectation/Expectation';
 import Reporter from '../reporter/Reporter';
@@ -16,7 +16,7 @@ describe('Expectation', () => {
         reportStub = sinon.stub(Reporter, 'report');
     });
 
-    afterAll(function() {
+    afterAll(function () {
         reportStub.restore();
     });
 

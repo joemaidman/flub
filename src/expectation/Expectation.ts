@@ -29,7 +29,7 @@ import {
     toHaveBeenCalledWithLast,
     toBeBetweenInclusive,
 } from '../matchers';
-import ContextChain from '../context/ContextChain';
+import ContextChain from '../context-chain/ContextChain';
 import Report from '../reporter/Report';
 
 class Expectation {
@@ -59,7 +59,7 @@ class Expectation {
         }
     }
 
-    with = function(...args: any[]): Expectation {
+    with = function (...args: any[]): Expectation {
         this.throwsArgs = Array.prototype.slice.call(arguments);
         this.not.throwsArgs = Array.prototype.slice.call(arguments);
         return this;
