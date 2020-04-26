@@ -1,9 +1,9 @@
-import Expectation from '../expectation/Expectation';
+import Expectation from '../expectation/expectation';
 import { Counter } from '../counter';
-import Reporter from '../reporter/Reporter';
-import MessageType from '../messages/MessageType';
-import Report from '../reporter/Report';
-import { failureList } from '../reporter/FailureReport';
+import Reporter from '../reporter/reporter';
+import MessageType from '../messages/message-type';
+import Report from '../reporter/report';
+import { failureList } from '../reporter/failure-report';
 import { assert } from './assert';
 const sinon = require('sinon');
 

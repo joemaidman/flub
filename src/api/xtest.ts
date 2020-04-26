@@ -1,6 +1,6 @@
-import Reporter from '../reporter/Reporter';
-import Report from '../reporter/Report';
-import MessageType from '../messages/MessageType';
+import Reporter from '../reporter/reporter';
+import Report from '../reporter/report';
+import MessageType from '../messages/message-type';
 import { Counter } from '../counter';
 
 export const xtest = (des: string, context: Function): void => {

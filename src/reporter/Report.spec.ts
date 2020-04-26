@@ -1,5 +1,5 @@
-import Report from './Report';
-import MessageType from '../messages/MessageType';
+import Report from './report';
+import MessageType from '../messages/message-type';
 
 describe('Report', () => {
     describe('GIVEN a new report has been created', () => {

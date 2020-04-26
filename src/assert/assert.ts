@@ -1,12 +1,12 @@
 import * as PrettyError from 'pretty-error';
 
-import MessageType from '../messages/MessageType';
+import MessageType from '../messages/message-type';
 import { Counter } from '../counter';
-import { errorStyle } from '../resources/errorStyle';
-import Expectation from '../expectation/Expectation';
-import { failureList, FailureReport } from '../reporter/FailureReport';
-import Reporter from '../reporter/Reporter';
-import Report from '../reporter/Report';
+import { errorStyle } from '../resources/error-style';
+import Expectation from '../expectation/expectation';
+import { failureList, FailureReport } from '../reporter/failure-report';
+import Reporter from '../reporter/reporter';
+import Report from '../reporter/report';
 
 export function assert(testResult: boolean, expectation: Expectation): boolean {
     if (expectation.isNot ? testResult : !testResult) {

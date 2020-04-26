@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import Flub from './Flub';
+import Flub from './flub';
 
 Flub();

@@ -7,9 +7,9 @@ import {
     expect,
     spy,
     setupEach,
-    tearDownEach,
+    teardownEach,
     setup,
-    tearDown,
+    teardown,
 } from './api';
 
 export {
@@ -21,7 +21,7 @@ export {
     expect,
     spy,
     setupEach,
-    tearDownEach,
+    teardownEach,
     setup,
-    tearDown,
+    teardown,
 };

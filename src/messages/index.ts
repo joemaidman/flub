@@ -1,3 +1,3 @@
-export * from './loadMessageStrategy';
-export * from './getMessageStrategy';
-export * from './MessageType';
+export * from './load-message-strategy';
+export * from './get-message-strategy';
+export * from './message-type';

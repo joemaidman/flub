@@ -1,2 +1,2 @@
-export * from './checkType';
+export * from './check-type';
 export * from './convertRelativePath';

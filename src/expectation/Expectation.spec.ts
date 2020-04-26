@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 const sinon = require('sinon');
 
-import Expectation from '../../src/expectation/Expectation';
-import Reporter from '../reporter/Reporter';
+import Expectation from './expectation';
+import Reporter from '../reporter/reporter';
 
 describe('Expectation', () => {
     let expectation: Expectation;

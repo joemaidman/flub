@@ -1,4 +1,4 @@
-import Expectation from '../expectation/Expectation';
+import Expectation from '../expectation/expectation';
 import { expect as expectBR } from './expect';
 
 

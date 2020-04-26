@@ -1,10 +1,10 @@
 const sinon = require('sinon');
 
-import { DefaultMessageStrategy } from '../messages/strategies/DefaultMessageStrategy';
+import { DefaultMessageStrategy } from '../messages/strategies/default-message-strategy';
 import * as GetMessageStrategyParent from '../messages';
-import Reporter from './Reporter';
-import Report from './Report';
-import MessageType from '../messages/MessageType';
+import Reporter from './reporter';
+import Report from './report';
+import MessageType from '../messages/message-type';
 
 describe('Reporter', () => {
     let defaultMessageStrategy = new DefaultMessageStrategy();

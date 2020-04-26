@@ -29,8 +29,8 @@ import {
     toHaveBeenCalledWithLast,
     toBeBetweenInclusive,
 } from '../matchers';
-import ContextChain from '../context-chain/contextChain';
-import Report from '../reporter/Report';
+import ContextChain from '../context-chain/context-chain';
+import Report from '../reporter/report';
 
 class Expectation {
     subject: any;

@@ -1,9 +1,9 @@
 const sinon = require('sinon');
 import * as _ from 'lodash';
 
-import ContextChain from '../context-chain/ContextChain';
+import ContextChain from '../context-chain/context-chain';
 import { Counter } from '../counter';
-import HooksManager from '../hooks/HookManager';
+import HooksManager from '../hooks/hooks-manager';
 import { test } from '../api/test';
 
 describe('test', () => {
@@ -36,10 +36,10 @@ describe('test', () => {
         mockTest = test('Test description', mockBodyFunction);
     });
 
-    it('should run setupEach and tearDownEach hooks', () => {
+    it('should run setupEach and teardownEach hooks', () => {
         sinon.assert.calledTwice(runHooksSpy);
         sinon.assert.calledWith(runHooksSpy, 'setupEachHooks');
-        sinon.assert.calledWith(runHooksSpy, 'tearDownEachHooks');
+        sinon.assert.calledWith(runHooksSpy, 'teardownEachHooks');
     });
 
     it('should run its body', () => {

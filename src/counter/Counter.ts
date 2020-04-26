@@ -1,4 +1,4 @@
-import MessageType from '../messages/MessageType';
+import MessageType from '../messages/message-type';
 
 export class Counter {
     static testCount: number = 0;

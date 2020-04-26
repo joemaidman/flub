@@ -1,13 +1,13 @@
 const sinon = require('sinon');
 import * as _ from 'lodash';
 
-import Reporter from '../reporter/Reporter';
-import HooksManager from '../hooks/HookManager';
+import Reporter from '../reporter/reporter';
+import HooksManager from '../hooks/hooks-manager';
 import { Counter } from '../counter';
-import ContextChain from '../context-chain/ContextChain';
+import ContextChain from '../context-chain/context-chain';
 import { xcontext } from './xcontext';
-import Report from '../reporter/Report';
-import MessageType from '../messages/MessageType';
+import Report from '../reporter/report';
+import MessageType from '../messages/message-type';
 
 describe('xcontext', () => {
     let mockContext: any;
@@ -89,18 +89,18 @@ describe('xcontext', () => {
         sinon.assert.calledOnce(popContextChainSpy);
     });
 
-    it('should run tearDownHooks', () => {
+    it('should run teardownHooks', () => {
         sinon.assert.calledOnce(runSingleHookSpy);
-        sinon.assert.calledWith(runSingleHookSpy, 'tearDownHooks', 0);
+        sinon.assert.calledWith(runSingleHookSpy, 'teardownHooks', 0);
     });
 
     it('should run removeHook three times', () => {
         sinon.assert.calledThrice(removeSingleHookSpy);
         sinon.assert.calledWith(removeSingleHookSpy, 'setupEachHooks', 0);
-        sinon.assert.calledWith(removeSingleHookSpy, 'tearDownHooks', 0);
+        sinon.assert.calledWith(removeSingleHookSpy, 'teardownHooks', 0);
         sinon.assert.calledWith(
             removeSingleHookSpy,
-            'tearDownEachHooks',
+            'teardownEachHooks',
             0
         );
     });

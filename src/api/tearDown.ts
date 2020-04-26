@@ -1,5 +1,6 @@
-import HooksManager from '../hooks/HookManager';
+import HooksManager from '../hooks/hooks-manager';
 
-export const tearDown = (func: Function): void => {
-    HooksManager.addHook('tearDownHooks', func);
+
+export const teardown = (func: Function): void => {
+    HooksManager.addHook('teardownHooks', func);
 };

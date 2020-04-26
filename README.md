@@ -122,7 +122,7 @@ runs before each test in a context
 
 runs once after all tests in a context
 
-<b>`tearDownEach(function)`</b>
+<b>`teardownEach(function)`</b>
 
 runs after each test in a context
 

@@ -1,4 +1,4 @@
-import Report from './Report';
+import Report from './report';
 import { Counter } from '../counter';
 import { getMessageStrategy } from '../messages';
 

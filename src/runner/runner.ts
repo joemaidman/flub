@@ -6,15 +6,15 @@ import * as findRequires from 'find-requires';
 
 import { Counter } from '../counter';
 import Spy from '../spy/spy';
-import { printStartHeader } from '../logging/printStartHeader';
+import { printStartHeader } from '../logging/print-start-header';
 import {
     scanTreeForFunction,
     replaceChildFunctionCalls,
     replaceFunctionCalls,
 } from '../parser';
-import { failureList, clearFailures } from '../reporter/FailureReport';
-import ContextChain from '../context-chain/contextChain';
-import HooksManager from '../hooks/HookManager';
+import { failureList, clearFailures } from '../reporter/failure-report';
+import ContextChain from '../context-chain/context-chain';
+import HooksManager from '../hooks/hooks-manager';
 import { convertRelativePath } from '../utilities';
 import {
     printCaughtException,

@@ -14,9 +14,9 @@ var ftest = require('flub').ftest;
 var xtest = require('flub').xtest;
 var expect = require('flub').expect;
 var setup = require('flub').setup;
-var tearDown = require('flub').tearDown;
+var teardown = require('flub').teardown;
 var setupEach = require('flub').setupEach;
-var tearDownEach = require('flub').tearDownEach;
+var teardownEach = require('flub').teardownEach;
 
 context('Matchers', () => {
     context('Given toEqual', () => {
@@ -673,7 +673,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDown(() => {
+        teardown(() => {
             mySpy.restore();
         });
 
@@ -699,7 +699,7 @@ context('Matchers', () => {
             Math.round(1);
         });
 
-        tearDown(() => {
+        teardown(() => {
             mySpy.restore();
         });
 
@@ -722,7 +722,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDown(() => {
+        teardown(() => {
             mySpy.restore();
         });
 
@@ -746,7 +746,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDown(() => {
+        teardown(() => {
             mySpy.restore();
         });
 
@@ -774,7 +774,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDownEach(() => {
+        teardownEach(() => {
             mySpy.restore();
         });
 
@@ -802,7 +802,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDownEach(() => {
+        teardownEach(() => {
             mySpy.restore();
         });
 
@@ -831,7 +831,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDownEach(() => {
+        teardownEach(() => {
             mySpy.restore();
         });
 
@@ -859,7 +859,7 @@ context('Matchers', () => {
             mySpy = Flub.spy(Math, 'round');
         });
 
-        tearDownEach(() => {
+        teardownEach(() => {
             mySpy.restore();
         });
 

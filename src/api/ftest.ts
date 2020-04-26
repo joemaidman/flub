@@ -1,5 +1,5 @@
-import HooksManager from '../hooks/HookManager';
-import ContextChain from '../context-chain/contextChain';
+import HooksManager from '../hooks/hooks-manager';
+import ContextChain from '../context-chain/context-chain';
 import { Counter } from '../counter';
 
 export const ftest = (des: string, tests: () => any): void => {
@@ -7,5 +7,5 @@ export const ftest = (des: string, tests: () => any): void => {
     ContextChain.currentDescription = des;
     Counter.incrementTestCount();
     tests();
-    HooksManager.runHooks('tearDownEachHooks');
+    HooksManager.runHooks('teardownEachHooks');
 };
