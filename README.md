@@ -254,3 +254,4 @@ returns an array of the spy's call history. Prefer toHaveBeenCalledWith() matche
 
 -   Async matchers (promise resolution)
 -   Randomise tests
+-   Typescript tooling
