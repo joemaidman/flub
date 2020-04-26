@@ -236,7 +236,7 @@ stubs the spy target's attribute to call the function
 
 <b>`reset()`</b>
 
-resets a spy, cleaing the call cound and call history
+resets a spy, cleaing the call count and call history
 
 <b>`restore()`</b>
 
