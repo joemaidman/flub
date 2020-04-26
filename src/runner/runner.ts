@@ -24,19 +24,14 @@ import {
 
 export const runner = (ext: string, nosumm: boolean, watch: boolean) => {
     let getElapsed: Function;
-
-    const globString: string = ext
-        ? '!(node_modules)**/*.' + ext + '.js'
-        : '!(node_modules)**/*.spec.js';
+    const globString: string = '**/*.' + ext + '.js';
 
     getElapsed = measureTime();
     printStartHeader();
-
-    glob(globString, { cwd: process.cwd() }, function (
+    glob(globString, { cwd: process.cwd(), ignore: 'node_modules/**' }, function (
         _: any,
         files: Array<string>
     ) {
-
         files.forEach((file: any) => {
             try {
                 let sanitisedSource: string = fs.readFileSync(
@@ -45,7 +40,7 @@ export const runner = (ext: string, nosumm: boolean, watch: boolean) => {
                 );
                 const reqs = findRequires(sanitisedSource);
                 reqs.map(req => {
-                    if (req !== 'flub')
+                    if (req !== 'flub') {
                         delete require.cache[
                             require.resolve(
                                 convertRelativePath(
@@ -54,6 +49,7 @@ export const runner = (ext: string, nosumm: boolean, watch: boolean) => {
                                 )
                             )
                         ];
+                    }
                 });
                 if (scanTreeForFunction(sanitisedSource, 'xcontext')) {
                     sanitisedSource = replaceChildFunctionCalls(

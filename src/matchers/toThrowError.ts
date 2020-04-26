@@ -40,11 +40,11 @@ export function toThrowError(errorType: any, errorMessage: string): boolean {
             'but it did not throw',
         ];
     }
-
+    const expectedErrorType = typeof errorType === 'string' ? errorType : errorType.name;
     return assert(
         didThrow === true &&
-            thrownMessage === errorMessage &&
-            thrownType === errorType,
+        thrownMessage === errorMessage &&
+        thrownType === expectedErrorType,
         this
     );
 }

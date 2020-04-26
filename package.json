@@ -2,12 +2,12 @@
     "name": "flub",
     "author": "Joe Maidman",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "A javascript unit testing framework",
-    "main": "./dist/src/index.js",
-    "types": "./dist/src/index.d.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "bin": {
-        "flub": "./dist/src/app.js"
+        "flub": "./dist/app.js"
     },
     "files": [
         "dist"
@@ -18,7 +18,7 @@
         "build:watch": "tsc --watch -p tsconfig.build.json",
         "bundle": "webpack --config ./webpack.config.js",
         "bundle:watch": "webpack --watch --config ./webpack.config.js",
-        "prepublish": "tsc --declaration --outDir dist/",
+        "release": "npm run build && npm publish",
         "test": "jest",
         "test:watch": "jest --watch"
     },
@@ -31,6 +31,7 @@
         "@types/glob": "^5.0.32",
         "@types/jsdom": "^11.0.2",
         "@types/lodash": "^4.14.74",
+        "@types/node": "^13.11.1",
         "@types/ramda": "^0.24.13",
         "@types/require-from-string": "^1.2.0",
         "@types/stack-trace": "0.0.28",

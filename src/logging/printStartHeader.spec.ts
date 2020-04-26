@@ -20,7 +20,7 @@ describe('printStartHeader', () => {
         sinon.assert.calledTwice(reporterSpy);
         sinon.assert.calledWith(
             reporterSpy,
-            new Report('Flub starting...', MessageType.DEFAULT)
+            new Report('Flub runnings...', MessageType.DEFAULT)
         );
         sinon.assert.calledWith(
             reporterSpy,
