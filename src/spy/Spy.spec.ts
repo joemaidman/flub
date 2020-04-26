@@ -1,4 +1,4 @@
-import Spy from './Spy';
+import Spy from './spy';
 
 describe('Spy', () => {
     describe('GIVEN a new spy has been created', () => {

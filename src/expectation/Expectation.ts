@@ -29,7 +29,7 @@ import {
     toHaveBeenCalledWithLast,
     toBeBetweenInclusive,
 } from '../matchers';
-import ContextChain from '../context-chain/ContextChain';
+import ContextChain from '../context-chain/contextChain';
 import Report from '../reporter/Report';
 
 class Expectation {

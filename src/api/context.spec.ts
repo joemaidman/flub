@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import Reporter from '../reporter/Reporter';
 import HooksManager from '../hooks/HookManager';
 import { Counter } from '../counter';
-import ContextChain from '../context-chain/ContextChain';
+import ContextChain from '../context-chain/contextChain';
 import { context } from './context';
 import Report from '../reporter/Report';
 import MessageType from '../messages/MessageType';

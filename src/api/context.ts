@@ -1,4 +1,4 @@
-import ContextChain from '../context-chain/ContextChain';
+import ContextChain from '../context-chain/contextChain';
 import Reporter from '../reporter/Reporter';
 import Report from '../reporter/Report';
 import { Counter } from '../counter';

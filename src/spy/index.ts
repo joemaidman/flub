@@ -1,1 +1,1 @@
-export * from './Spy';
+export * from './spy';

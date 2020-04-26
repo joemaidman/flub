@@ -1,4 +1,4 @@
-import ContextChain from './ContextChain';
+import ContextChain from './contextChain';
 
 describe('ContextChain', () => {
     beforeAll(() => {

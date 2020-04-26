@@ -5,7 +5,7 @@ import * as requireFromString from 'require-from-string';
 import * as findRequires from 'find-requires';
 
 import { Counter } from '../counter';
-import Spy from '../spy/Spy';
+import Spy from '../spy/spy';
 import { printStartHeader } from '../logging/printStartHeader';
 import {
     scanTreeForFunction,
@@ -13,7 +13,7 @@ import {
     replaceFunctionCalls,
 } from '../parser';
 import { failureList, clearFailures } from '../reporter/FailureReport';
-import ContextChain from '../context-chain/ContextChain';
+import ContextChain from '../context-chain/contextChain';
 import HooksManager from '../hooks/HookManager';
 import { convertRelativePath } from '../utilities';
 import {

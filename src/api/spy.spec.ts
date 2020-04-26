@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import Spy from '../spy/Spy';
+import Spy from '../spy/spy';
 import { spy as spyBR } from './spy';
 
 
